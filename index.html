@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a1b1e" />
+
+    <!-- Primary SEO -->
+    <title>Notes — A Free Markdown Notes App with Live Preview, Mermaid Diagrams & Offline Support</title>
+    <meta
+      name="description"
+      content="Notes is a free, privacy-friendly markdown notes app. Write in real markdown with live preview, build mermaid diagrams, organize with nested folders, drag-and-drop, syntax highlighting, dark mode and offline support. Try the demo — no signup required."
+    />
+    <meta
+      name="keywords"
+      content="markdown notes app, free markdown editor, mermaid diagram editor, offline notes app, notes pwa, markdown editor with live preview, distraction free writing, knowledge management, plain text notes"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Notes" />
+    <link rel="canonical" href="https://notes.app/" />
+
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Notes" />
+    <meta property="og:title" content="Notes — Free Markdown Notes App with Live Preview & Mermaid" />
+    <meta
+      property="og:description"
+      content="Markdown notes that don't lock you in. Live preview, mermaid diagrams, nested folders, dark mode, offline. Free, no signup required to try."
+    />
+    <meta property="og:url" content="https://notes.app/" />
+    <meta property="og:image" content="/landing/screenshot-dark.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="1000" />
+    <meta property="og:image:alt" content="Screenshot of the Notes app showing a markdown note with code syntax highlighting and an outline panel." />
+
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Notes — Free Markdown Notes App" />
+    <meta
+      name="twitter:description"
+      content="Markdown notes with live preview, mermaid diagrams, nested folders, dark mode, and offline support. Free, no signup to try."
+    />
+    <meta name="twitter:image" content="/landing/screenshot-dark.png" />
+
+    <!-- PWA / icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <!-- Structured data (Schema.org WebApplication) — helps search engines
+         understand what the page describes and may surface a richer result. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Notes",
+        "description": "A free, privacy-friendly markdown notes app with live preview, mermaid diagrams, nested folders, drag-and-drop, dark mode, and offline support.",
+        "url": "https://notes.app/",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web, iOS, Android, macOS, Windows, Linux",
+        "browserRequirements": "Requires a modern browser. Works offline as a PWA.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Live markdown preview",
+          "Mermaid diagrams",
+          "Syntax highlighting",
+          "Nested folders with drag-and-drop",
+          "Read mode",
+          "Dark and light themes",
+          "Offline-first PWA",
+          "Free forever for personal use"
+        ]
+      }
+    </script>
+
+    <script>
+      // Set color scheme synchronously to avoid FOUC, and preload the LCP
+      // image (landing-page screenshot) so the browser can start fetching it
+      // during HTML parse instead of waiting for React + Suspense to mount the
+      // <img>. Both improvements run before any other CSS / JS / paint.
+      (function () {
+        var scheme = 'light';
+        try {
+          var stored = localStorage.getItem('notes-color-scheme');
+          scheme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+          document.documentElement.setAttribute('data-mantine-color-scheme', scheme);
+          document.documentElement.style.colorScheme = scheme;
+          document.documentElement.style.background = scheme === 'dark' ? '#1a1b1e' : '#ffffff';
+        } catch (e) {}
+
+        // Preload the LCP image (landing-page screenshot) on the landing
+        // route only. Use imagesrcset + imagesizes to mirror the runtime
+        // <picture> srcset so the browser preloads exactly the candidate it
+        // will need — not the full-resolution one.
+        try {
+          var p = location.pathname;
+          if (p === '/' || p === '') {
+            var prefix = '/landing/screenshot-' + scheme;
+            var link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.type = 'image/webp';
+            link.href = prefix + '.webp';
+            link.setAttribute('fetchpriority', 'high');
+            link.setAttribute(
+              'imagesrcset',
+              prefix + '-800.webp 800w, ' +
+              prefix + '-1200.webp 1200w, ' +
+              prefix + '-1600.webp 1600w, ' +
+              prefix + '-2400.webp 2400w',
+            );
+            link.setAttribute('imagesizes', '(min-width: 1600px) 1568px, 92vw');
+            document.head.appendChild(link);
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Server-rendered fallback for crawlers without JS. Hidden once React mounts. -->
+    <noscript>
+      <h1>Notes — Free Markdown Notes App with Live Preview &amp; Mermaid Diagrams</h1>
+      <p>
+        Notes is a free, privacy-friendly markdown notes app. It supports live preview, mermaid
+        diagrams, nested folders with drag-and-drop, syntax highlighting, dark mode and works
+        offline as a Progressive Web App. JavaScript is required to use the editor.
+      </p>
+      <p><a href="/demo">Try the demo</a></p>
+    </noscript>
+    <!-- Inline boot splash. Paints immediately so FCP doesn't wait for React
+         to compile + evaluate + render. ReactDOM.createRoot() replaces the
+         contents of #root on mount, so the splash is automatically discarded. -->
+    <style>
+      .boot-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        opacity: 0;
+        animation: bsplash-in 200ms ease-out 80ms forwards;
+      }
+      @keyframes bsplash-in { to { opacity: 1; } }
+      [data-mantine-color-scheme='dark'] .boot-splash { color: #e4e4e7; }
+      [data-mantine-color-scheme='light'] .boot-splash { color: #37352f; }
+      .boot-splash__logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+      }
+      .boot-splash__bar {
+        width: 80px;
+        height: 2px;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      [data-mantine-color-scheme='dark'] .boot-splash__bar { background: #27272a; }
+      [data-mantine-color-scheme='light'] .boot-splash__bar { background: #ebebea; }
+      .boot-splash__bar::before {
+        content: '';
+        display: block;
+        width: 30%;
+        height: 100%;
+        background: #2383e2;
+        animation: bsplash-bar 1.4s ease-in-out infinite;
+        transform: translateX(-100%);
+      }
+      @keyframes bsplash-bar {
+        0%   { transform: translateX(-100%); }
+        50%  { transform: translateX(180%); }
+        100% { transform: translateX(380%); }
+      }
+    </style>
+    <div id="root">
+      <div class="boot-splash" aria-hidden="true">
+        <span class="boot-splash__logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 19a2 2 0 0 1 2-2h14V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14z" />
+            <polyline points="3 6 7 6" />
+            <polyline points="3 11 7 11" />
+            <polyline points="3 16 7 16" />
+          </svg>
+          Notes
+        </span>
+        <span class="boot-splash__bar" aria-hidden="true"></span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

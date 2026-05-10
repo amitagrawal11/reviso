@@ -1,0 +1,714 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+/* ── Demo banner (shown above the shell in /demo) ── */
+.demo-banner {
+  height: 44px;
+  display: flex;
+  align-items: flex-start; /* actions hug the top */
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
+  border-bottom: 1px solid;
+  font-size: 14px;
+}
+.demo-banner__msg {
+  display: flex;
+  align-items: center; /* message vertically centered in the row */
+  gap: 8px;
+  min-width: 0;
+  height: 100%;
+}
+.demo-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  height: 100%;
+}
+[data-mantine-color-scheme="light"] .demo-banner {
+  background: #fef3c7; /* amber-100 — visible against off-white shell */
+  border-bottom-color: #fbbf24; /* amber-400 */
+  color: #78350f; /* amber-900 */
+}
+[data-mantine-color-scheme="light"] .demo-banner__icon {
+  color: #b45309; /* amber-700 */
+}
+[data-mantine-color-scheme="dark"] .demo-banner {
+  background: rgba(217, 119, 6, 0.16); /* amber, low alpha */
+  border-bottom-color: rgba(251, 191, 36, 0.4);
+  color: var(--mantine-color-yellow-2);
+}
+[data-mantine-color-scheme="dark"] .demo-banner__icon {
+  color: var(--mantine-color-yellow-4);
+}
+/* Make sure dimmed body text inside the banner stays readable per scheme. */
+[data-mantine-color-scheme="light"] .demo-banner [data-c="dimmed"],
+[data-mantine-color-scheme="light"]
+  .demo-banner
+  .mantine-Text-root[data-c="dimmed"] {
+  color: #92400e !important;
+}
+[data-mantine-color-scheme="dark"] .demo-banner [data-c="dimmed"] {
+  color: var(--mantine-color-yellow-3) !important;
+}
+
+/* ── Header layout — flex with a flexible center search ── */
+.app-header-row {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-header-search {
+  flex: 1;
+  max-width: 520px;
+  margin: 0 auto;
+}
+/* On mobile the search bar is hidden (a search icon appears in the right group instead),
+   so push the right group to the far edge. */
+@media (max-width: 48em) {
+  .app-header-row > :first-child {
+    flex: 1;
+  }
+}
+
+/* ── Deep dark theme — coherent grayscale ramp applied to every component ── */
+[data-mantine-color-scheme="dark"] {
+  --app-shell-bg: #0a0a0c; /* shell — near-black */
+  --app-main-bg: #141416; /* main "page" surface */
+  --app-surface: #1c1c1f; /* secondary surfaces (inputs, toolbars, code) */
+  --app-surface-hi: #232327; /* hover / active surfaces */
+  --app-border: #27272a;
+  --app-text: #e4e4e7;
+  /* Bumped from #71717a (3.86:1 vs main bg) → #a1a1aa (~7.6:1) so dimmed
+     body text meets WCAG AA. Still reads as "secondary" against #e4e4e7. */
+  --app-text-muted: #a1a1aa;
+  --app-accent: #2383e2;
+  --app-accent-hover: #3a92e8;
+
+  /* Mantine token overrides so every Mantine component picks up the palette. */
+  --mantine-color-text: var(--app-text);
+  --mantine-color-dimmed: var(--app-text-muted);
+  --mantine-color-body: var(--app-main-bg);
+  --mantine-color-default-border: var(--app-border);
+  --mantine-color-default: var(--app-surface);
+  --mantine-color-default-hover: var(--app-surface-hi);
+
+  /* Override Mantine's full dark palette so any component referencing
+     dark-N (Tooltip, Card, Popover, etc.) lands inside this ramp. */
+  --mantine-color-dark-0: #d4d4d8;
+  --mantine-color-dark-1: #a1a1aa;
+  --mantine-color-dark-2: #71717a;
+  --mantine-color-dark-3: #52525b;
+  --mantine-color-dark-4: #3f3f46;
+  --mantine-color-dark-5: var(--app-surface-hi);
+  --mantine-color-dark-6: var(--app-surface);
+  --mantine-color-dark-7: var(--app-main-bg);
+  --mantine-color-dark-8: var(--app-shell-bg);
+  --mantine-color-dark-9: #050507;
+}
+[data-mantine-color-scheme="dark"] .mantine-AppShell-root {
+  background: var(--app-shell-bg);
+}
+[data-mantine-color-scheme="dark"] .mantine-AppShell-main {
+  background: var(--app-main-bg);
+  border-top-left-radius: 8px;
+  border-left: 1px solid var(--app-border);
+  border-top: 1px solid var(--app-border);
+}
+[data-mantine-color-scheme="dark"] .mantine-AppShell-navbar,
+[data-mantine-color-scheme="dark"] .mantine-AppShell-header {
+  background: var(--app-shell-bg);
+  border-color: var(--app-border) !important;
+}
+/* ── Notion-warm light theme ── */
+[data-mantine-color-scheme="light"] {
+  --app-shell-bg: #f7f6f3; /* shell — warm off-white */
+  --app-main-bg: #ffffff; /* main page surface */
+  --app-border: #ebebea; /* very soft warm gray */
+  --app-text: #37352f; /* near-black with a touch of warmth */
+  /* Bumped from #787774 (4.27:1 on white) → #5b5953 (~6.7:1) so dimmed
+     body text meets WCAG AA on the warm light theme too. */
+  --app-text-muted: #5b5953;
+  --app-accent: #2383e2; /* Notion blue */
+  --app-accent-hover: #1a6fd0;
+
+  /* Override Mantine's default tokens so all components inherit warmly. */
+  --mantine-color-text: var(--app-text);
+  --mantine-color-dimmed: var(--app-text-muted);
+  --mantine-color-body: var(--app-main-bg);
+  --mantine-color-default-border: var(--app-border);
+  --mantine-color-default-hover: #f4f4f3;
+  --mantine-color-default: #fafaf9;
+}
+[data-mantine-color-scheme="light"] .mantine-AppShell-root {
+  background: var(--app-shell-bg);
+}
+[data-mantine-color-scheme="light"] .mantine-AppShell-main {
+  background: var(--app-main-bg);
+  border-top-left-radius: 8px;
+  border-left: 1px solid var(--app-border);
+  border-top: 1px solid var(--app-border);
+}
+[data-mantine-color-scheme="light"] .mantine-AppShell-navbar,
+[data-mantine-color-scheme="light"] .mantine-AppShell-header {
+  background: var(--app-shell-bg);
+  border-color: var(--app-border) !important;
+}
+
+/* ── Headings: rehypeAutolinkHeadings wraps them in <a>, so we de-blue and de-underline them. ── */
+.markdown h1 a,
+.markdown h2 a,
+.markdown h3 a,
+.markdown h4 a,
+.markdown h5 a,
+.markdown h6 a,
+.wmde-markdown h1 a,
+.wmde-markdown h2 a,
+.wmde-markdown h3 a,
+.wmde-markdown h4 a {
+  color: var(--mantine-color-text) !important;
+  text-decoration: none !important;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.wmde-markdown h1,
+.wmde-markdown h2,
+.wmde-markdown h3 {
+  color: var(--mantine-color-text) !important;
+  border-bottom-color: var(--mantine-color-default-border) !important;
+}
+
+/* Heading hover — accent color, smooth transition. */
+.markdown h1 a,
+.markdown h2 a,
+.markdown h3 a,
+.markdown h4 a,
+.markdown h5 a,
+.markdown h6 a {
+  transition: color 120ms ease;
+}
+.markdown h1 a:hover,
+.markdown h2 a:hover,
+.markdown h3 a:hover,
+.markdown h4 a:hover,
+.markdown h5 a:hover,
+.markdown h6 a:hover {
+  color: var(--mantine-color-blue-6) !important;
+}
+[data-mantine-color-scheme="light"] .markdown h1 a:hover,
+[data-mantine-color-scheme="light"] .markdown h2 a:hover,
+[data-mantine-color-scheme="light"] .markdown h3 a:hover,
+[data-mantine-color-scheme="light"] .markdown h4 a:hover,
+[data-mantine-color-scheme="light"] .markdown h5 a:hover,
+[data-mantine-color-scheme="light"] .markdown h6 a:hover {
+  color: var(--app-accent) !important;
+}
+
+/* ── Sidebar NavLink anchors should not pick up the default link blue. ── */
+.mantine-AppShell-navbar a,
+.mantine-AppShell-navbar a:visited {
+  color: var(--mantine-color-text);
+}
+
+/* ── Inline body links: Notion blue accent. ── */
+[data-mantine-color-scheme="light"] .markdown a,
+[data-mantine-color-scheme="light"] .wmde-markdown a {
+  color: var(--app-accent);
+  text-decoration-color: rgba(35, 131, 226, 0.4);
+  text-underline-offset: 3px;
+}
+[data-mantine-color-scheme="light"] .markdown a:hover {
+  color: var(--app-accent-hover);
+  text-decoration-color: var(--app-accent-hover);
+}
+
+/* Hide scrollbars when content isn't actually overflowing.
+   Use overlay-style scrollbars that only appear on hover/scroll. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*:hover {
+  scrollbar-color: var(--mantine-color-default-border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 8px;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: var(--mantine-color-default-border);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--mantine-color-dimmed);
+}
+
+.row .row-menu {
+  opacity: 0;
+  transition: opacity 120ms;
+}
+.row:hover .row-menu,
+.row:focus-within .row-menu {
+  opacity: 1;
+}
+/* Touch devices have no hover — always show the menu trigger so users
+   can rename / delete / move notes from the sidebar. */
+@media (hover: none) {
+  .row .row-menu {
+    opacity: 1;
+  }
+}
+
+.profile-trigger {
+  transition: background-color 120ms;
+}
+.profile-trigger:hover {
+  background: var(--mantine-color-default-hover);
+}
+
+.markdown pre {
+  border-radius: 8px;
+}
+
+.codeblock-wrap {
+  position: relative;
+}
+.codeblock-wrap .codeblock-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+.codeblock-wrap:hover .codeblock-copy,
+.codeblock-wrap:focus-within .codeblock-copy {
+  opacity: 1;
+}
+/* Touch devices: keep copy button visible at 60% so it's discoverable
+   without crowding the visual. */
+@media (hover: none) {
+  .codeblock-wrap .codeblock-copy {
+    opacity: 0.6;
+  }
+}
+
+/* ── Touch-friendly tap targets ──
+   Mantine's small ActionIcons are ~26px which is below the 44px touch target
+   guideline. On touch devices, bump everything in the sidebar / row context
+   to at least 36px so they're easy to hit without breaking the dense layout. */
+@media (hover: none) {
+  .row .mantine-ActionIcon-root,
+  .mantine-AppShell-navbar .mantine-ActionIcon-root {
+    --ai-size: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+  /* Give rows a bit more vertical breathing room so they're easier to tap. */
+  .row {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  scroll-margin-top: 70px;
+}
+
+/* ── Match @uiw/react-md-editor to Mantine theme ── */
+
+/* Light */
+:root,
+[data-mantine-color-scheme="light"] .w-md-editor,
+[data-mantine-color-scheme="light"] .wmde-markdown {
+  --color-canvas-default: var(--mantine-color-body);
+  --color-canvas-subtle: var(--mantine-color-gray-0);
+  --color-border-default: var(--mantine-color-gray-3);
+  --color-border-muted: var(--mantine-color-gray-2);
+  --color-fg-default: var(--mantine-color-text);
+  --color-fg-muted: var(--mantine-color-dimmed);
+  --color-accent-fg: var(--mantine-color-blue-6);
+}
+
+/* Dark — sync editor's GitHub-style palette with the deep dark theme. */
+[data-mantine-color-scheme="dark"] .w-md-editor.w-md-editor,
+[data-mantine-color-scheme="dark"] .w-md-editor[data-color-mode],
+[data-mantine-color-scheme="dark"] .wmde-markdown,
+[data-mantine-color-scheme="dark"] .wmde-markdown[data-color-mode] {
+  --color-canvas-default: var(--app-main-bg);
+  --color-canvas-subtle: var(--app-surface);
+  --color-border-default: var(--app-border);
+  --color-border-muted: var(--app-border);
+  --color-fg-default: var(--app-text);
+  --color-fg-muted: var(--app-text-muted);
+  --color-accent-fg: var(--app-accent);
+  --color-neutral-muted: var(--app-surface-hi);
+  background: var(--app-main-bg);
+}
+
+.w-md-editor {
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: none !important;
+  position: relative;
+}
+
+/* ── Editor + line-number gutter ── */
+.md-with-gutter {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--app-shell-bg, var(--mantine-color-default));
+}
+/* Fullscreen — when the inner editor toggles fullscreen, lift the entire
+   wrapper (gutter + editor) so the gutter remains visible. */
+.md-with-gutter:has(.w-md-editor-fullscreen) {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  height: 100vh;
+  border-radius: 0;
+  border: none;
+}
+.md-with-gutter:has(.w-md-editor-fullscreen) .w-md-editor-fullscreen {
+  position: static !important;
+  height: 100% !important;
+}
+
+/* ── Mobile editor — no gutter, toolbar wraps gracefully ── */
+.md-with-gutter--mobile .w-md-editor {
+  border: none !important;
+  border-radius: inherit !important;
+  height: 100%;
+}
+@media (max-width: 48em) {
+  /* Allow the toolbar to wrap to two rows if needed instead of squeezing
+     the icons into an unreadable mess. */
+  .w-md-editor-toolbar {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    min-height: 32px;
+    padding: 4px 6px !important;
+  }
+  .w-md-editor-toolbar ul {
+    flex-wrap: wrap !important;
+  }
+  /* Fullscreen toggle on mobile is awkward — hide it. */
+  .w-md-editor-toolbar [data-name='fullscreen'] {
+    display: none !important;
+  }
+  /* Tighten editor padding so more text is visible. */
+  .w-md-editor-text-input,
+  .w-md-editor-text-pre {
+    padding: 8px !important;
+  }
+  /* In single-pane mobile mode, don't show the right border (which was a
+     divider between panes). */
+  .w-md-editor-preview {
+    box-shadow: none !important;
+  }
+}
+.md-with-gutter-editor {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.md-with-gutter .w-md-editor {
+  border: none !important;
+  border-radius: 0 !important;
+  height: 100%;
+}
+
+.md-gutter {
+  display: flex;
+  flex-direction: column;
+  min-width: 44px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--mantine-color-default-border);
+  background: var(--app-shell-bg, var(--mantine-color-default));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--mantine-color-dimmed);
+  user-select: none;
+}
+/* Top strip aligned with the toolbar — covers any line numbers that scroll
+   up past the gutter scroll area. */
+.md-gutter-cap {
+  background: var(--mantine-color-default);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+  flex-shrink: 0;
+}
+.md-gutter-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden; /* scrolled programmatically, not by user */
+  /* Top padding must match the textarea/pre's internal padding-top
+     (@uiw/react-md-editor uses 10px) so line numbers align with text rows. */
+  padding: 10px 8px 12px 12px;
+  text-align: right;
+}
+.w-md-editor-toolbar {
+  background: var(--mantine-color-default) !important;
+  border-bottom: 1px solid var(--mantine-color-default-border) !important;
+}
+.w-md-editor-toolbar li > button {
+  color: var(--mantine-color-text) !important;
+}
+.w-md-editor-toolbar li.active > button,
+.w-md-editor-toolbar li > button:hover {
+  background: var(--mantine-color-default-hover) !important;
+  color: var(--mantine-color-text) !important;
+}
+
+/* ── Editor pane (left, editable) — slightly darker than preview to feel "input-like" ── */
+[data-mantine-color-scheme="dark"] .w-md-editor-content .w-md-editor-text,
+[data-mantine-color-scheme="dark"] .w-md-editor-input {
+  background: var(--app-shell-bg) !important;
+}
+[data-mantine-color-scheme="light"] .w-md-editor-content .w-md-editor-text,
+[data-mantine-color-scheme="light"] .w-md-editor-input {
+  background: var(--mantine-color-gray-0) !important;
+}
+/* The textarea and the pre/tokens MUST use identical font + width metrics or
+   the cursor drifts. We force them on every descendant, including Prism token
+   spans (which can inherit a different font-family from Prism's own CSS). */
+.w-md-editor-text,
+.w-md-editor-text *,
+.w-md-editor-text textarea,
+.w-md-editor-text-input,
+.w-md-editor-text-pre,
+.w-md-editor-text-pre code,
+.w-md-editor-text-pre .token {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+  font-variant-ligatures: none !important;
+  font-feature-settings: 'liga' 0, 'calt' 0 !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+}
+.w-md-editor-text,
+.w-md-editor-text-input,
+.w-md-editor-text-pre > code,
+.w-md-editor-text textarea {
+  color: var(--mantine-color-text) !important;
+  caret-color: var(--mantine-color-blue-5);
+}
+
+/* ── Preview pane (right, read-only) ── */
+.w-md-editor-preview {
+  background: var(--mantine-color-body) !important;
+  box-shadow: inset 1px 0 0 var(--mantine-color-default-border) !important;
+  padding: 16px 20px !important;
+}
+
+/* ── Pane labels: only show the badge for whichever pane(s) are visible ── */
+.w-md-editor-content::before,
+.w-md-editor-content::after {
+  display: none;
+  position: absolute;
+  top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mantine-color-dimmed);
+  pointer-events: none;
+  z-index: 2;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--mantine-color-default);
+  border: 1px solid var(--mantine-color-default-border);
+}
+
+/* Split view (live): both panes visible → both badges visible. */
+.w-md-editor-show-live .w-md-editor-content::before {
+  display: block;
+  content: "Edit";
+  left: calc(50% - 60px); /* top-right of the left pane */
+}
+.w-md-editor-show-live .w-md-editor-content::after {
+  display: block;
+  content: "Preview";
+  right: 12px; /* top-right of the right pane */
+}
+
+/* Edit-only: show only Edit, anchored to the full-width right edge. */
+.w-md-editor-show-edit .w-md-editor-content::before {
+  display: block;
+  content: "Edit";
+  right: 12px;
+}
+
+/* Preview-only: show only Preview, anchored to the full-width right edge. */
+.w-md-editor-show-preview .w-md-editor-content::after {
+  display: block;
+  content: "Preview";
+  right: 12px;
+}
+
+.wmde-markdown {
+  background: transparent !important;
+  color: var(--mantine-color-text) !important;
+}
+.wmde-markdown code,
+.wmde-markdown pre,
+.markdown code,
+.markdown pre {
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border);
+}
+.wmde-markdown code:not(pre code),
+.markdown code:not(pre code) {
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+.wmde-markdown pre code,
+.markdown pre code {
+  border: none;
+  background: transparent !important;
+}
+
+/* Inline code + un-tokenized fallback — colors per scheme so both themes stay readable. */
+[data-mantine-color-scheme="dark"] .wmde-markdown code:not(pre code),
+[data-mantine-color-scheme="dark"] .markdown code:not(pre code) {
+  color: #f9c74f; /* warm amber on dark */
+}
+[data-mantine-color-scheme="dark"] .wmde-markdown pre code,
+[data-mantine-color-scheme="dark"] .markdown pre code {
+  color: #e4e4e7;
+}
+[data-mantine-color-scheme="light"] .wmde-markdown code:not(pre code),
+[data-mantine-color-scheme="light"] .markdown code:not(pre code) {
+  color: #c7254e; /* soft crimson — readable on warm off-white */
+  background: #faf6f1 !important;
+  border-color: #ebebea;
+}
+[data-mantine-color-scheme="light"] .wmde-markdown pre code,
+[data-mantine-color-scheme="light"] .markdown pre code {
+  color: #1f2937;
+}
+[data-mantine-color-scheme="light"] .wmde-markdown pre,
+[data-mantine-color-scheme="light"] .markdown pre {
+  background: #faf6f1 !important;
+  border-color: #ebebea !important;
+}
+
+/* ── Brighter highlight.js dark palette — github-dark is too dim against
+      our deep dark surface (#1c1c1f). Override the most-used token classes. ── */
+[data-mantine-color-scheme="dark"] .markdown .hljs,
+[data-mantine-color-scheme="dark"] .wmde-markdown .hljs {
+  color: #e6edf3 !important;
+  background: transparent !important;
+}
+[data-mantine-color-scheme="dark"] .hljs-comment,
+[data-mantine-color-scheme="dark"] .hljs-quote {
+  color: #8b949e !important;
+  font-style: italic;
+}
+[data-mantine-color-scheme="dark"] .hljs-keyword,
+[data-mantine-color-scheme="dark"] .hljs-selector-tag,
+[data-mantine-color-scheme="dark"] .hljs-literal,
+[data-mantine-color-scheme="dark"] .hljs-section,
+[data-mantine-color-scheme="dark"] .hljs-link {
+  color: #ff7b72 !important;
+}
+[data-mantine-color-scheme="dark"] .hljs-function .hljs-title,
+[data-mantine-color-scheme="dark"] .hljs-title.function_,
+[data-mantine-color-scheme="dark"] .hljs-title {
+  color: #d2a8ff !important;
+}
+[data-mantine-color-scheme="dark"] .hljs-string,
+[data-mantine-color-scheme="dark"] .hljs-attr,
+[data-mantine-color-scheme="dark"] .hljs-meta,
+[data-mantine-color-scheme="dark"] .hljs-symbol,
+[data-mantine-color-scheme="dark"] .hljs-bullet,
+[data-mantine-color-scheme="dark"] .hljs-addition {
+  color: #a5d6ff !important;
+}
+[data-mantine-color-scheme="dark"] .hljs-number,
+[data-mantine-color-scheme="dark"] .hljs-built_in,
+[data-mantine-color-scheme="dark"] .hljs-class .hljs-title,
+[data-mantine-color-scheme="dark"] .hljs-title.class_,
+[data-mantine-color-scheme="dark"] .hljs-type {
+  color: #ffa657 !important;
+}
+[data-mantine-color-scheme="dark"] .hljs-variable,
+[data-mantine-color-scheme="dark"] .hljs-template-variable,
+[data-mantine-color-scheme="dark"] .hljs-attribute,
+[data-mantine-color-scheme="dark"] .hljs-name,
+[data-mantine-color-scheme="dark"] .hljs-tag {
+  color: #79c0ff !important;
+}
+[data-mantine-color-scheme="dark"] .hljs-deletion,
+[data-mantine-color-scheme="dark"] .hljs-regexp {
+  color: #ffa198 !important;
+}
+
+/* ── Editor pane — markdown source colors (the left panel) ──
+   The editor highlights its own markdown source via prismjs token classes.
+   Make headings, code-fence content, links, etc. visible against dark-8. */
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token,
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre code {
+  color: #e4e4e7 !important;
+}
+/* IMPORTANT: keep `font-weight: normal` and `font-style: normal` on editor
+   tokens. The editor is a textarea overlaid on a syntax-highlighted <pre>;
+   the textarea is plain text so its glyphs are always regular weight. If
+   the <pre> tokens render bold or italic, the monospace glyph widths drift
+   and the cursor visibly desyncs from the visible end-of-line. Color is
+   safe to vary; weight/style is not. */
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.title,
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.bold {
+  color: #79c0ff !important;
+  font-weight: normal !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.italic {
+  color: #d2a8ff !important;
+  font-style: normal !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.code,
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.code-snippet {
+  color: #f9c74f !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.url,
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.url-link,
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.link {
+  color: #a5d6ff !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.punctuation {
+  color: #8b949e !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.list {
+  color: #ffa657 !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.blockquote {
+  color: #8b949e !important;
+  font-style: normal !important;
+}
+[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.hr {
+  color: #ff7b72 !important;
+}
