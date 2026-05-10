@@ -9,7 +9,7 @@ import {
   Menu,
   Stack,
   Box,
-} from "@mantine/core";
+} from '@mantine/core';
 import {
   IconPlus,
   IconStar,
@@ -23,9 +23,9 @@ import {
   IconUser,
   IconSettings,
   IconLogout,
-} from "@tabler/icons-react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { memo, useCallback, useMemo, useState } from "react";
+} from '@tabler/icons-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { memo, useCallback, useMemo, useState } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -38,26 +38,20 @@ import {
   useDraggable,
   useDroppable,
   DragOverlay,
-} from "@dnd-kit/core";
-import { Item } from "../mock/data";
-import { notifications } from "@mantine/notifications";
-import { useAuth } from "../lib/auth";
-import { supabase } from "../lib/supabase";
-import { useNavigate as useNav } from "react-router-dom";
-import {
-  useItems,
-  useRepo,
-  useModePath,
-  useDataMode,
-  usingSupabase,
-} from "../lib/data-mode";
+} from '@dnd-kit/core';
+import { Item } from '../mock/data';
+import { notifications } from '@mantine/notifications';
+import { useAuth } from '../lib/auth';
+import { supabase } from '../lib/supabase';
+import { useNavigate as useNav } from 'react-router-dom';
+import { useItems, useRepo, useModePath, useDataMode, usingSupabase } from '../lib/data-mode';
 import {
   openItemDialog,
   openConfirm,
   openRenameDialog,
   prefetchDialogs,
-} from "../components/dialogs-lazy";
-import { prefetchMarkdown } from "../components/LazyMarkdown";
+} from '../components/dialogs-lazy';
+import { prefetchMarkdown } from '../components/LazyMarkdown';
 
 // Walk descendants of a folder via a precomputed children index — O(N) overall
 // regardless of tree depth. Used both for DnD validation and tree rendering.
@@ -159,20 +153,24 @@ export default function Sidebar() {
     if (!overId) return;
 
     // overId is either "root" or a folder id.
-    const newParent = overId === "root" ? null : overId;
+    const newParent = overId === 'root' ? null : overId;
     const dragged = items.find((i) => i.id === draggedId);
     if (!dragged) return;
 
     // Prevent invalid moves.
-    if (newParent && dragged.isFolder && isDescendantOrSelf(childrenByParent, draggedId, newParent)) {
-      notifications.show({ message: "Can't move a folder into itself", color: "yellow" });
+    if (
+      newParent &&
+      dragged.isFolder &&
+      isDescendantOrSelf(childrenByParent, draggedId, newParent)
+    ) {
+      notifications.show({ message: "Can't move a folder into itself", color: 'yellow' });
       return;
     }
     if (dragged.parentId === newParent) return; // no-op
 
     repo.update(draggedId, { parentId: newParent });
-    const target = newParent ? items.find((i) => i.id === newParent)?.title : "top level";
-    notifications.show({ message: `Moved "${dragged.title}" to ${target}`, color: "green" });
+    const target = newParent ? items.find((i) => i.id === newParent)?.title : 'top level';
+    notifications.show({ message: `Moved "${dragged.title}" to ${target}`, color: 'green' });
   }
 
   const activeItem = activeId ? items.find((i) => i.id === activeId) : null;
@@ -265,22 +263,22 @@ export default function Sidebar() {
         gap={2}
         mt="auto"
         pt="xs"
-        style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+        style={{ borderTop: '1px solid var(--mantine-color-default-border)' }}
       >
         <NavRow
-          to={path("/recent")}
+          to={path('/recent')}
           icon={<IconClock size={18} />}
           label="Recent"
           badge={counts.recent}
         />
         <NavRow
-          to={path("/starred")}
+          to={path('/starred')}
           icon={<IconStar size={18} />}
           label="Starred"
           badge={counts.starred}
         />
         <NavRow
-          to={path("/trash")}
+          to={path('/trash')}
           icon={<IconTrash size={18} />}
           label="Trash"
           badge={counts.trash || undefined}
@@ -327,13 +325,15 @@ function ProfileMenu() {
           px="sm"
           py={10}
           style={{
-            borderTop: "1px solid var(--mantine-color-default-border)",
+            borderTop: '1px solid var(--mantine-color-default-border)',
             borderRadius: 0,
-            display: "block",
+            display: 'block',
           }}
         >
           <Group gap="sm" wrap="nowrap" align="center">
-            <Avatar radius="xl" color="blue" size="md">{initial}</Avatar>
+            <Avatar radius="xl" color="blue" size="md">
+              {initial}
+            </Avatar>
             <div style={{ flex: 1, minWidth: 0 }}>
               <Text size="sm" fw={600} truncate lh={1.2}>
                 {display}
@@ -375,16 +375,14 @@ function NavRow({
   badge?: number;
 }) {
   return (
-    <NavLink to={to} style={{ textDecoration: "none" }}>
+    <NavLink to={to} style={{ textDecoration: 'none' }}>
       {({ isActive }) => (
         <Box
           px={8}
           py={6}
           style={{
             borderRadius: 6,
-            background: isActive
-              ? "var(--mantine-color-default-hover)"
-              : "transparent",
+            background: isActive ? 'var(--mantine-color-default-hover)' : 'transparent',
           }}
         >
           <Group justify="space-between">
@@ -443,9 +441,7 @@ function CollectionNode({
 
   // This folder accepts drops, unless the active drag is itself or a descendant.
   const canDrop =
-    !!activeId &&
-    !isDescendantOrSelf(childrenByParent, item.id, activeId) &&
-    activeId !== item.id;
+    !!activeId && !isDescendantOrSelf(childrenByParent, item.id, activeId) && activeId !== item.id;
   const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: item.id,
     disabled: !canDrop,
@@ -516,14 +512,17 @@ function Row({
       <ActionIcon
         variant="transparent"
         size="sm"
-        onClick={(e) => { e.stopPropagation(); onToggle(); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle();
+        }}
         onPointerDown={(e) => e.stopPropagation()}
       >
         <IconChevronRight
           size={16}
           style={{
-            transform: open ? "rotate(90deg)" : "none",
-            transition: "transform 120ms",
+            transform: open ? 'rotate(90deg)' : 'none',
+            transition: 'transform 120ms',
           }}
         />
       </ActionIcon>
@@ -584,13 +583,7 @@ const RowMenu = memo(function RowMenu({ item }: { item: Item }) {
   const repo = useRepo();
   const path = useModePath();
   return (
-    <Menu
-      shadow="md"
-      width={200}
-      position="right-start"
-      opened={opened}
-      onChange={setOpened}
-    >
+    <Menu shadow="md" width={200} position="right-start" opened={opened} onChange={setOpened}>
       <Menu.Target>
         <ActionIcon
           size="sm"
@@ -609,9 +602,7 @@ const RowMenu = memo(function RowMenu({ item }: { item: Item }) {
           <>
             <Menu.Item
               leftSection={<IconFilePlus size={16} />}
-              onClick={() =>
-                openItemDialog({ isFolder: false, parentId: item.id, repo, path })
-              }
+              onClick={() => openItemDialog({ isFolder: false, parentId: item.id, repo, path })}
             >
               New note
             </Menu.Item>
@@ -629,7 +620,7 @@ const RowMenu = memo(function RowMenu({ item }: { item: Item }) {
             leftSection={<IconStar size={16} />}
             onClick={() => repo.update(item.id, { starred: !item.starred })}
           >
-            {item.starred ? "Unstar" : "Star"}
+            {item.starred ? 'Unstar' : 'Star'}
           </Menu.Item>
         )}
         <Menu.Item

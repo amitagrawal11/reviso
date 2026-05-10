@@ -25,15 +25,59 @@ type PathFn = (p: string) => string;
 // Curated emoji sets — note-taking-specific imagery for notes,
 // container/category imagery for collections.
 const NOTE_EMOJIS = [
-  '📝','📓','📔','📒','📕','📗','📘','📙','📖','🗒️',
-  '📋','✏️','✍️','💡','🧠','💭','📌','🔖','🏷️','✅',
-  '📅','🎯','⭐','❤️','🔍',
+  '📝',
+  '📓',
+  '📔',
+  '📒',
+  '📕',
+  '📗',
+  '📘',
+  '📙',
+  '📖',
+  '🗒️',
+  '📋',
+  '✏️',
+  '✍️',
+  '💡',
+  '🧠',
+  '💭',
+  '📌',
+  '🔖',
+  '🏷️',
+  '✅',
+  '📅',
+  '🎯',
+  '⭐',
+  '❤️',
+  '🔍',
 ];
 
 const COLLECTION_EMOJIS = [
-  '📁','📂','🗂️','🗃️','📚','📑','📔','📓','📒','📕',
-  '📗','📘','📙','💼','📋','📊','📌','🔖','🏷️','⭐',
-  '🎯','✅','💡','🧰','📦',
+  '📁',
+  '📂',
+  '🗂️',
+  '🗃️',
+  '📚',
+  '📑',
+  '📔',
+  '📓',
+  '📒',
+  '📕',
+  '📗',
+  '📘',
+  '📙',
+  '💼',
+  '📋',
+  '📊',
+  '📌',
+  '🔖',
+  '🏷️',
+  '⭐',
+  '🎯',
+  '✅',
+  '💡',
+  '🧰',
+  '📦',
 ];
 
 type ParentChoice =
@@ -62,10 +106,10 @@ function CollectionPicker({
 
   const displayValue =
     value.kind === 'existing'
-      ? options.find((o) => o.id === value.id)?.label ?? ''
+      ? (options.find((o) => o.id === value.id)?.label ?? '')
       : value.kind === 'new'
-      ? `+ Create "${value.name}"`
-      : '';
+        ? `+ Create "${value.name}"`
+        : '';
 
   return (
     <Combobox
@@ -221,7 +265,9 @@ function ItemForm({
         <CollectionPicker options={collectionOptions} value={parent} onChange={setParent} />
       )}
       <div>
-        <Text size="sm" fw={500} mb={4}>Icon</Text>
+        <Text size="sm" fw={500} mb={4}>
+          Icon
+        </Text>
         <Group gap={6}>
           {emojiSet.map((e) => (
             <Button
@@ -239,7 +285,9 @@ function ItemForm({
         </Group>
       </div>
       <Group justify="flex-end">
-        <Button variant="default" onClick={onClose}>Cancel</Button>
+        <Button variant="default" onClick={onClose}>
+          Cancel
+        </Button>
         <Button onClick={submit}>Create</Button>
       </Group>
     </Stack>
@@ -291,17 +339,27 @@ function RenameForm({ item, onClose, repo }: { item: Item; onClose: () => void; 
         onKeyDown={(e) => e.key === 'Enter' && submit()}
       />
       <div>
-        <Text size="sm" fw={500} mb={4}>Icon</Text>
+        <Text size="sm" fw={500} mb={4}>
+          Icon
+        </Text>
         <Group gap={6}>
           {emojiSet.map((e) => (
-            <Button key={e} variant={icon === e ? 'filled' : 'default'} size="compact-sm" onClick={() => setIcon(e)} styles={{ root: { padding: '0 8px', fontSize: 16 } }}>
+            <Button
+              key={e}
+              variant={icon === e ? 'filled' : 'default'}
+              size="compact-sm"
+              onClick={() => setIcon(e)}
+              styles={{ root: { padding: '0 8px', fontSize: 16 } }}
+            >
               {e}
             </Button>
           ))}
         </Group>
       </div>
       <Group justify="flex-end">
-        <Button variant="default" onClick={onClose}>Cancel</Button>
+        <Button variant="default" onClick={onClose}>
+          Cancel
+        </Button>
         <Button onClick={submit}>Save</Button>
       </Group>
     </Stack>

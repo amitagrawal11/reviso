@@ -30,30 +30,28 @@ body,
   flex-shrink: 0;
   height: 100%;
 }
-[data-mantine-color-scheme="light"] .demo-banner {
+[data-mantine-color-scheme='light'] .demo-banner {
   background: #fef3c7; /* amber-100 — visible against off-white shell */
   border-bottom-color: #fbbf24; /* amber-400 */
   color: #78350f; /* amber-900 */
 }
-[data-mantine-color-scheme="light"] .demo-banner__icon {
+[data-mantine-color-scheme='light'] .demo-banner__icon {
   color: #b45309; /* amber-700 */
 }
-[data-mantine-color-scheme="dark"] .demo-banner {
+[data-mantine-color-scheme='dark'] .demo-banner {
   background: rgba(217, 119, 6, 0.16); /* amber, low alpha */
   border-bottom-color: rgba(251, 191, 36, 0.4);
   color: var(--mantine-color-yellow-2);
 }
-[data-mantine-color-scheme="dark"] .demo-banner__icon {
+[data-mantine-color-scheme='dark'] .demo-banner__icon {
   color: var(--mantine-color-yellow-4);
 }
 /* Make sure dimmed body text inside the banner stays readable per scheme. */
-[data-mantine-color-scheme="light"] .demo-banner [data-c="dimmed"],
-[data-mantine-color-scheme="light"]
-  .demo-banner
-  .mantine-Text-root[data-c="dimmed"] {
+[data-mantine-color-scheme='light'] .demo-banner [data-c='dimmed'],
+[data-mantine-color-scheme='light'] .demo-banner .mantine-Text-root[data-c='dimmed'] {
   color: #92400e !important;
 }
-[data-mantine-color-scheme="dark"] .demo-banner [data-c="dimmed"] {
+[data-mantine-color-scheme='dark'] .demo-banner [data-c='dimmed'] {
   color: var(--mantine-color-yellow-3) !important;
 }
 
@@ -78,7 +76,7 @@ body,
 }
 
 /* ── Deep dark theme — coherent grayscale ramp applied to every component ── */
-[data-mantine-color-scheme="dark"] {
+[data-mantine-color-scheme='dark'] {
   --app-shell-bg: #0a0a0c; /* shell — near-black */
   --app-main-bg: #141416; /* main "page" surface */
   --app-surface: #1c1c1f; /* secondary surfaces (inputs, toolbars, code) */
@@ -112,22 +110,22 @@ body,
   --mantine-color-dark-8: var(--app-shell-bg);
   --mantine-color-dark-9: #050507;
 }
-[data-mantine-color-scheme="dark"] .mantine-AppShell-root {
+[data-mantine-color-scheme='dark'] .mantine-AppShell-root {
   background: var(--app-shell-bg);
 }
-[data-mantine-color-scheme="dark"] .mantine-AppShell-main {
+[data-mantine-color-scheme='dark'] .mantine-AppShell-main {
   background: var(--app-main-bg);
   border-top-left-radius: 8px;
   border-left: 1px solid var(--app-border);
   border-top: 1px solid var(--app-border);
 }
-[data-mantine-color-scheme="dark"] .mantine-AppShell-navbar,
-[data-mantine-color-scheme="dark"] .mantine-AppShell-header {
+[data-mantine-color-scheme='dark'] .mantine-AppShell-navbar,
+[data-mantine-color-scheme='dark'] .mantine-AppShell-header {
   background: var(--app-shell-bg);
   border-color: var(--app-border) !important;
 }
 /* ── Notion-warm light theme ── */
-[data-mantine-color-scheme="light"] {
+[data-mantine-color-scheme='light'] {
   --app-shell-bg: #f7f6f3; /* shell — warm off-white */
   --app-main-bg: #ffffff; /* main page surface */
   --app-border: #ebebea; /* very soft warm gray */
@@ -146,17 +144,17 @@ body,
   --mantine-color-default-hover: #f4f4f3;
   --mantine-color-default: #fafaf9;
 }
-[data-mantine-color-scheme="light"] .mantine-AppShell-root {
+[data-mantine-color-scheme='light'] .mantine-AppShell-root {
   background: var(--app-shell-bg);
 }
-[data-mantine-color-scheme="light"] .mantine-AppShell-main {
+[data-mantine-color-scheme='light'] .mantine-AppShell-main {
   background: var(--app-main-bg);
   border-top-left-radius: 8px;
   border-left: 1px solid var(--app-border);
   border-top: 1px solid var(--app-border);
 }
-[data-mantine-color-scheme="light"] .mantine-AppShell-navbar,
-[data-mantine-color-scheme="light"] .mantine-AppShell-header {
+[data-mantine-color-scheme='light'] .mantine-AppShell-navbar,
+[data-mantine-color-scheme='light'] .mantine-AppShell-header {
   background: var(--app-shell-bg);
   border-color: var(--app-border) !important;
 }
@@ -202,12 +200,12 @@ body,
 .markdown h6 a:hover {
   color: var(--mantine-color-blue-6) !important;
 }
-[data-mantine-color-scheme="light"] .markdown h1 a:hover,
-[data-mantine-color-scheme="light"] .markdown h2 a:hover,
-[data-mantine-color-scheme="light"] .markdown h3 a:hover,
-[data-mantine-color-scheme="light"] .markdown h4 a:hover,
-[data-mantine-color-scheme="light"] .markdown h5 a:hover,
-[data-mantine-color-scheme="light"] .markdown h6 a:hover {
+[data-mantine-color-scheme='light'] .markdown h1 a:hover,
+[data-mantine-color-scheme='light'] .markdown h2 a:hover,
+[data-mantine-color-scheme='light'] .markdown h3 a:hover,
+[data-mantine-color-scheme='light'] .markdown h4 a:hover,
+[data-mantine-color-scheme='light'] .markdown h5 a:hover,
+[data-mantine-color-scheme='light'] .markdown h6 a:hover {
   color: var(--app-accent) !important;
 }
 
@@ -218,13 +216,13 @@ body,
 }
 
 /* ── Inline body links: Notion blue accent. ── */
-[data-mantine-color-scheme="light"] .markdown a,
-[data-mantine-color-scheme="light"] .wmde-markdown a {
+[data-mantine-color-scheme='light'] .markdown a,
+[data-mantine-color-scheme='light'] .wmde-markdown a {
   color: var(--app-accent);
   text-decoration-color: rgba(35, 131, 226, 0.4);
   text-underline-offset: 3px;
 }
-[data-mantine-color-scheme="light"] .markdown a:hover {
+[data-mantine-color-scheme='light'] .markdown a:hover {
   color: var(--app-accent-hover);
   text-decoration-color: var(--app-accent-hover);
 }
@@ -334,8 +332,8 @@ body,
 
 /* Light */
 :root,
-[data-mantine-color-scheme="light"] .w-md-editor,
-[data-mantine-color-scheme="light"] .wmde-markdown {
+[data-mantine-color-scheme='light'] .w-md-editor,
+[data-mantine-color-scheme='light'] .wmde-markdown {
   --color-canvas-default: var(--mantine-color-body);
   --color-canvas-subtle: var(--mantine-color-gray-0);
   --color-border-default: var(--mantine-color-gray-3);
@@ -346,10 +344,10 @@ body,
 }
 
 /* Dark — sync editor's GitHub-style palette with the deep dark theme. */
-[data-mantine-color-scheme="dark"] .w-md-editor.w-md-editor,
-[data-mantine-color-scheme="dark"] .w-md-editor[data-color-mode],
-[data-mantine-color-scheme="dark"] .wmde-markdown,
-[data-mantine-color-scheme="dark"] .wmde-markdown[data-color-mode] {
+[data-mantine-color-scheme='dark'] .w-md-editor.w-md-editor,
+[data-mantine-color-scheme='dark'] .w-md-editor[data-color-mode],
+[data-mantine-color-scheme='dark'] .wmde-markdown,
+[data-mantine-color-scheme='dark'] .wmde-markdown[data-color-mode] {
   --color-canvas-default: var(--app-main-bg);
   --color-canvas-subtle: var(--app-surface);
   --color-border-default: var(--app-border);
@@ -481,12 +479,12 @@ body,
 }
 
 /* ── Editor pane (left, editable) — slightly darker than preview to feel "input-like" ── */
-[data-mantine-color-scheme="dark"] .w-md-editor-content .w-md-editor-text,
-[data-mantine-color-scheme="dark"] .w-md-editor-input {
+[data-mantine-color-scheme='dark'] .w-md-editor-content .w-md-editor-text,
+[data-mantine-color-scheme='dark'] .w-md-editor-input {
   background: var(--app-shell-bg) !important;
 }
-[data-mantine-color-scheme="light"] .w-md-editor-content .w-md-editor-text,
-[data-mantine-color-scheme="light"] .w-md-editor-input {
+[data-mantine-color-scheme='light'] .w-md-editor-content .w-md-editor-text,
+[data-mantine-color-scheme='light'] .w-md-editor-input {
   background: var(--mantine-color-gray-0) !important;
 }
 /* The textarea and the pre/tokens MUST use identical font + width metrics or
@@ -499,13 +497,14 @@ body,
 .w-md-editor-text-pre,
 .w-md-editor-text-pre code,
 .w-md-editor-text-pre .token {
-  font-family:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 14px !important;
   line-height: 1.55 !important;
   letter-spacing: 0 !important;
   font-variant-ligatures: none !important;
-  font-feature-settings: 'liga' 0, 'calt' 0 !important;
+  font-feature-settings:
+    'liga' 0,
+    'calt' 0 !important;
   font-weight: normal !important;
   font-style: normal !important;
 }
@@ -546,26 +545,26 @@ body,
 /* Split view (live): both panes visible → both badges visible. */
 .w-md-editor-show-live .w-md-editor-content::before {
   display: block;
-  content: "Edit";
+  content: 'Edit';
   left: calc(50% - 60px); /* top-right of the left pane */
 }
 .w-md-editor-show-live .w-md-editor-content::after {
   display: block;
-  content: "Preview";
+  content: 'Preview';
   right: 12px; /* top-right of the right pane */
 }
 
 /* Edit-only: show only Edit, anchored to the full-width right edge. */
 .w-md-editor-show-edit .w-md-editor-content::before {
   display: block;
-  content: "Edit";
+  content: 'Edit';
   right: 12px;
 }
 
 /* Preview-only: show only Preview, anchored to the full-width right edge. */
 .w-md-editor-show-preview .w-md-editor-content::after {
   display: block;
-  content: "Preview";
+  content: 'Preview';
   right: 12px;
 }
 
@@ -593,86 +592,86 @@ body,
 }
 
 /* Inline code + un-tokenized fallback — colors per scheme so both themes stay readable. */
-[data-mantine-color-scheme="dark"] .wmde-markdown code:not(pre code),
-[data-mantine-color-scheme="dark"] .markdown code:not(pre code) {
+[data-mantine-color-scheme='dark'] .wmde-markdown code:not(pre code),
+[data-mantine-color-scheme='dark'] .markdown code:not(pre code) {
   color: #f9c74f; /* warm amber on dark */
 }
-[data-mantine-color-scheme="dark"] .wmde-markdown pre code,
-[data-mantine-color-scheme="dark"] .markdown pre code {
+[data-mantine-color-scheme='dark'] .wmde-markdown pre code,
+[data-mantine-color-scheme='dark'] .markdown pre code {
   color: #e4e4e7;
 }
-[data-mantine-color-scheme="light"] .wmde-markdown code:not(pre code),
-[data-mantine-color-scheme="light"] .markdown code:not(pre code) {
+[data-mantine-color-scheme='light'] .wmde-markdown code:not(pre code),
+[data-mantine-color-scheme='light'] .markdown code:not(pre code) {
   color: #c7254e; /* soft crimson — readable on warm off-white */
   background: #faf6f1 !important;
   border-color: #ebebea;
 }
-[data-mantine-color-scheme="light"] .wmde-markdown pre code,
-[data-mantine-color-scheme="light"] .markdown pre code {
+[data-mantine-color-scheme='light'] .wmde-markdown pre code,
+[data-mantine-color-scheme='light'] .markdown pre code {
   color: #1f2937;
 }
-[data-mantine-color-scheme="light"] .wmde-markdown pre,
-[data-mantine-color-scheme="light"] .markdown pre {
+[data-mantine-color-scheme='light'] .wmde-markdown pre,
+[data-mantine-color-scheme='light'] .markdown pre {
   background: #faf6f1 !important;
   border-color: #ebebea !important;
 }
 
 /* ── Brighter highlight.js dark palette — github-dark is too dim against
       our deep dark surface (#1c1c1f). Override the most-used token classes. ── */
-[data-mantine-color-scheme="dark"] .markdown .hljs,
-[data-mantine-color-scheme="dark"] .wmde-markdown .hljs {
+[data-mantine-color-scheme='dark'] .markdown .hljs,
+[data-mantine-color-scheme='dark'] .wmde-markdown .hljs {
   color: #e6edf3 !important;
   background: transparent !important;
 }
-[data-mantine-color-scheme="dark"] .hljs-comment,
-[data-mantine-color-scheme="dark"] .hljs-quote {
+[data-mantine-color-scheme='dark'] .hljs-comment,
+[data-mantine-color-scheme='dark'] .hljs-quote {
   color: #8b949e !important;
   font-style: italic;
 }
-[data-mantine-color-scheme="dark"] .hljs-keyword,
-[data-mantine-color-scheme="dark"] .hljs-selector-tag,
-[data-mantine-color-scheme="dark"] .hljs-literal,
-[data-mantine-color-scheme="dark"] .hljs-section,
-[data-mantine-color-scheme="dark"] .hljs-link {
+[data-mantine-color-scheme='dark'] .hljs-keyword,
+[data-mantine-color-scheme='dark'] .hljs-selector-tag,
+[data-mantine-color-scheme='dark'] .hljs-literal,
+[data-mantine-color-scheme='dark'] .hljs-section,
+[data-mantine-color-scheme='dark'] .hljs-link {
   color: #ff7b72 !important;
 }
-[data-mantine-color-scheme="dark"] .hljs-function .hljs-title,
-[data-mantine-color-scheme="dark"] .hljs-title.function_,
-[data-mantine-color-scheme="dark"] .hljs-title {
+[data-mantine-color-scheme='dark'] .hljs-function .hljs-title,
+[data-mantine-color-scheme='dark'] .hljs-title.function_,
+[data-mantine-color-scheme='dark'] .hljs-title {
   color: #d2a8ff !important;
 }
-[data-mantine-color-scheme="dark"] .hljs-string,
-[data-mantine-color-scheme="dark"] .hljs-attr,
-[data-mantine-color-scheme="dark"] .hljs-meta,
-[data-mantine-color-scheme="dark"] .hljs-symbol,
-[data-mantine-color-scheme="dark"] .hljs-bullet,
-[data-mantine-color-scheme="dark"] .hljs-addition {
+[data-mantine-color-scheme='dark'] .hljs-string,
+[data-mantine-color-scheme='dark'] .hljs-attr,
+[data-mantine-color-scheme='dark'] .hljs-meta,
+[data-mantine-color-scheme='dark'] .hljs-symbol,
+[data-mantine-color-scheme='dark'] .hljs-bullet,
+[data-mantine-color-scheme='dark'] .hljs-addition {
   color: #a5d6ff !important;
 }
-[data-mantine-color-scheme="dark"] .hljs-number,
-[data-mantine-color-scheme="dark"] .hljs-built_in,
-[data-mantine-color-scheme="dark"] .hljs-class .hljs-title,
-[data-mantine-color-scheme="dark"] .hljs-title.class_,
-[data-mantine-color-scheme="dark"] .hljs-type {
+[data-mantine-color-scheme='dark'] .hljs-number,
+[data-mantine-color-scheme='dark'] .hljs-built_in,
+[data-mantine-color-scheme='dark'] .hljs-class .hljs-title,
+[data-mantine-color-scheme='dark'] .hljs-title.class_,
+[data-mantine-color-scheme='dark'] .hljs-type {
   color: #ffa657 !important;
 }
-[data-mantine-color-scheme="dark"] .hljs-variable,
-[data-mantine-color-scheme="dark"] .hljs-template-variable,
-[data-mantine-color-scheme="dark"] .hljs-attribute,
-[data-mantine-color-scheme="dark"] .hljs-name,
-[data-mantine-color-scheme="dark"] .hljs-tag {
+[data-mantine-color-scheme='dark'] .hljs-variable,
+[data-mantine-color-scheme='dark'] .hljs-template-variable,
+[data-mantine-color-scheme='dark'] .hljs-attribute,
+[data-mantine-color-scheme='dark'] .hljs-name,
+[data-mantine-color-scheme='dark'] .hljs-tag {
   color: #79c0ff !important;
 }
-[data-mantine-color-scheme="dark"] .hljs-deletion,
-[data-mantine-color-scheme="dark"] .hljs-regexp {
+[data-mantine-color-scheme='dark'] .hljs-deletion,
+[data-mantine-color-scheme='dark'] .hljs-regexp {
   color: #ffa198 !important;
 }
 
 /* ── Editor pane — markdown source colors (the left panel) ──
    The editor highlights its own markdown source via prismjs token classes.
    Make headings, code-fence content, links, etc. visible against dark-8. */
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token,
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre code {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token,
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre code {
   color: #e4e4e7 !important;
 }
 /* IMPORTANT: keep `font-weight: normal` and `font-style: normal` on editor
@@ -681,34 +680,34 @@ body,
    the <pre> tokens render bold or italic, the monospace glyph widths drift
    and the cursor visibly desyncs from the visible end-of-line. Color is
    safe to vary; weight/style is not. */
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.title,
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.bold {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.title,
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.bold {
   color: #79c0ff !important;
   font-weight: normal !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.italic {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.italic {
   color: #d2a8ff !important;
   font-style: normal !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.code,
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.code-snippet {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.code,
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.code-snippet {
   color: #f9c74f !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.url,
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.url-link,
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.link {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.url,
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.url-link,
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.link {
   color: #a5d6ff !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.punctuation {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.punctuation {
   color: #8b949e !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.list {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.list {
   color: #ffa657 !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.blockquote {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.blockquote {
   color: #8b949e !important;
   font-style: normal !important;
 }
-[data-mantine-color-scheme="dark"] .w-md-editor-text-pre .token.hr {
+[data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.hr {
   color: #ff7b72 !important;
 }

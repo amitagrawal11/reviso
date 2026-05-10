@@ -20,7 +20,8 @@ function isMermaid(node: ReactNode): boolean {
   if (Array.isArray(node)) return node.some(isMermaid);
   if (isValidElement(node)) {
     const props = node.props as { className?: string; children?: ReactNode };
-    if (typeof props.className === 'string' && /\blanguage-mermaid\b/.test(props.className)) return true;
+    if (typeof props.className === 'string' && /\blanguage-mermaid\b/.test(props.className))
+      return true;
     return isMermaid(props.children);
   }
   return false;
@@ -34,7 +35,10 @@ export function CodeBlock(props: React.HTMLAttributes<HTMLPreElement>) {
 
   const text = nodeText(props.children);
   // Also sniff common mermaid keywords in case the className got stripped.
-  const mermaidByText = /^\s*(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt|pie|journey|gitGraph|mindmap|timeline|quadrantChart|requirementDiagram|C4Context)\b/.test(text);
+  const mermaidByText =
+    /^\s*(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt|pie|journey|gitGraph|mindmap|timeline|quadrantChart|requirementDiagram|C4Context)\b/.test(
+      text,
+    );
 
   if (isMermaid(props.children) || mermaidByText) {
     return <MermaidBlock source={text} />;

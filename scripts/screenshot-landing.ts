@@ -96,9 +96,7 @@ async function snap(browser: Browser, theme: 'light' | 'dark') {
     .toFile(webpDefault);
 
   // eslint-disable-next-line no-console
-  console.log(
-    `✓ ${theme}: PNG + ${RESPONSIVE_WIDTHS.length + 1} WebP variants`,
-  );
+  console.log(`✓ ${theme}: PNG + ${RESPONSIVE_WIDTHS.length + 1} WebP variants`);
 }
 
 async function main() {

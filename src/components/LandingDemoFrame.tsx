@@ -5,14 +5,7 @@
 // overlay button. Clicking the overlay navigates to /demo as a normal
 // page navigation — no iframes, no nested instances of the landing page.
 
-import {
-  AspectRatio,
-  Box,
-  Card,
-  Center,
-  Image,
-  useComputedColorScheme,
-} from '@mantine/core';
+import { AspectRatio, Box, Card, Center, Image, useComputedColorScheme } from '@mantine/core';
 import { IconPlayerPlayFilled } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -50,7 +43,11 @@ export function LandingDemoFrame() {
       withBorder
       radius="lg"
       p={0}
-      style={{ overflow: 'hidden', boxShadow: '0 30px 80px rgba(0,0,0,0.25)', position: 'relative' }}
+      style={{
+        overflow: 'hidden',
+        boxShadow: '0 30px 80px rgba(0,0,0,0.25)',
+        position: 'relative',
+      }}
     >
       <AspectRatio ratio={16 / 10}>
         <Box style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -87,8 +84,7 @@ export function LandingDemoFrame() {
             style={{
               position: 'absolute',
               inset: 0,
-              background:
-                'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%)',
+              background: 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%)',
               cursor: 'pointer',
               textDecoration: 'none',
             }}

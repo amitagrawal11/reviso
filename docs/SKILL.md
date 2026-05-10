@@ -6,12 +6,15 @@ description: Conventions, architecture cheats, and gotchas for the markdown note
 # Notes App — SKILL
 
 ## When to use
+
 Triggers: paths under `/Users/amitagrawal/Documents/PersonalProjects/NotesApp` or any of: `src/App.tsx`, `src/components/Shell.tsx`, `Sidebar.tsx`, `TocSidebar.tsx`, `LazyMarkdown.tsx`, `CodeBlock.tsx`, `MermaidBlock.tsx`, `LandingDemoFrame.tsx`, `DemoBanner.tsx`, `EditorWithLineNumbers.tsx`, `dialogs.tsx`, `lib/data-mode.tsx`, `lib/auth.tsx`, `lib/notes.ts`, `store/mock-repo.ts`, `pages/Landing.tsx`, `pages/NoteEdit.tsx`, `pages/Profile.tsx`, `vite.config.ts`, `index.html`, `styles.css`, `scripts/screenshot-landing.ts`. Anything mentioning "markdown notes PWA", "data mode", "demo tree", "supabase repo", "spotlight ⌘K", "read mode", "TOC scroll-spy", "dnd-kit sidebar", "mermaid block", "boot splash", "LCP preload", "landing page", `nohighlight`, or `notes-color-scheme`.
 
 ## Stack
+
 React 19 + TS + Vite 6 + Mantine v7 + react-router-dom v7. Markdown via `@uiw/react-md-editor/nohighlight` + `remark-gfm` + `remark-breaks` + `rehype-slug/autolink-headings/highlight`. Mermaid + dnd-kit + vite-plugin-pwa. Auth + sync via Supabase (`@supabase/supabase-js`, lazy-imported). State is a swappable `Repo` interface implemented by either `mockRepo` (localStorage) or `supabaseRepo` (Postgres + RLS + realtime). Screenshot pipeline: Playwright + Sharp generating responsive WebP variants.
 
 ## Two trees: real vs demo
+
 The router serves two parallel sub-trees under `App.tsx`:
 
 - **Real tree** at `/`, `/n/:id`, `/c/:id`, `/recent`, `/starred`, `/trash`, `/profile`, `/settings`. Gated by `RealRoot`: shows `Landing` to logged-out guests on `/`, `Shell` to logged-in users, redirects `Navigate to="/"` for any other path. `DataModeProvider mode="real"` wraps the Shell — repo is `supabaseRepo` if `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` are set, else `mockRepo`.
@@ -20,6 +23,7 @@ The router serves two parallel sub-trees under `App.tsx`:
 `useModePath()` from `lib/data-mode.tsx` is the canonical way to build links — it auto-prefixes `/demo` when called inside the demo tree. Never hardcode `/n/:id` or `/c/:id` in shared components.
 
 ## File map (current)
+
 - Bootstrap: `src/main.tsx` (Mantine + Modals + Notifications + AuthProvider + Router) → `src/App.tsx` (route table + `RealRoot` + `DataModeProvider`).
 - Shell + chrome: `src/components/Shell.tsx`. Reads `useDataMode()` to know whether to render the demo banner.
 - Sidebar tree + DnD + row menus + account footer: `src/components/Sidebar.tsx`.
@@ -42,6 +46,7 @@ The router serves two parallel sub-trees under `App.tsx`:
 - Screenshot pipeline (Playwright + Sharp → 4 WebP widths × 2 themes): `scripts/screenshot-landing.ts`.
 
 ## Conventions
+
 - **Mantine v7 styling.** Token overrides live in `src/styles.css` under `[data-mantine-color-scheme='dark']` and `[data-mantine-color-scheme='light']`. Reassign Mantine CSS vars (`--mantine-color-*`) — don't introduce per-component styles unless necessary.
 - **Color scheme** is persisted under localStorage key `notes-color-scheme`. Mantine reads it via `localStorageColorSchemeManager` in `main.tsx`; the inline pre-paint script in `index.html` reads the same key AND writes a preload `<link>` for the LCP screenshot.
 - **State.** Read items with `useItems()` from `src/lib/data-mode.tsx`. Mutate via `useRepo()` then `repo.create/update/trash/restore/hardDelete`. Never call `mockRepo` or `supabaseRepo` directly from a component.
@@ -68,36 +73,43 @@ The router serves two parallel sub-trees under `App.tsx`:
 ## Common tasks → recipe
 
 ### Add a new page (visible on both real + demo trees)
+
 1. Create `src/pages/Foo.tsx`. Read items via `useItems()`; build links/nav via `useModePath()`.
 2. In `src/App.tsx`, add `const Foo = lazy(() => import('./pages/Foo'))` and mirror `<Route path="foo" element={...}/>` inside BOTH the `/demo` route block and the `/` route block.
 3. If the page should be real-only (auth-gated, like Profile/Settings), add it only under `/`.
 4. If you want a sidebar nav row, add a `<NavRow to={path('/foo')} .../>` block in `src/components/Sidebar.tsx`.
 
 ### Add a new sidebar action (top-right "+ ..." button)
+
 1. In `src/components/Sidebar.tsx`'s top `<Group>`, add another `ActionIcon`.
 2. Hook it to a handler that calls something from `dialogs-lazy.ts` (or write a new dialog in `dialogs.tsx` and add a lazy shim).
 3. Add `onMouseEnter={prefetchDialogs}` on the trigger.
 
 ### Add a per-row context-menu action
+
 1. In `Sidebar.tsx`, edit the `RowMenu` memo. Add a `<Menu.Item leftSection={<IconX/>} onClick={...}>`.
 2. For destructive actions, route through `modals.openConfirmModal` (see `openConfirm` in `dialogs.tsx`).
 3. Gate folder-only / note-only with `item.isFolder`.
 
 ### Tweak the dark theme
+
 1. Edit the custom ramp at the top of the `[data-mantine-color-scheme='dark']` block in `src/styles.css`.
 2. The Mantine `--mantine-color-dark-{0..9}` reassignments below ensure third-party Mantine components stay in the ramp.
 3. If you change the shell background, also update the inline `<script>` in `index.html` so the pre-paint matches.
 4. If you change `theme_color`, update both `<meta name="theme-color">` and the manifest in `vite.config.ts`.
 
 ### Regenerate landing screenshots
+
 1. `npm run screenshots` — runs `vite build`, starts a Playwright headless Chromium, navigates to `/demo`, takes a 1600×1000 screenshot in each theme, and pipes through Sharp to emit `public/landing/screenshot-{light,dark}-{800,1200,1600,2400}.webp` plus a PNG fallback.
 2. `index.html` preload AND `LandingDemoFrame.tsx` `<source srcSet>` BOTH reference the same widths — keep them in sync if you change the set.
 
 ### Add a new markdown plugin
+
 1. Add the plugin to BOTH `NoteView.tsx`'s `<LazyMarkdownView>` AND `NoteEdit.tsx`'s `previewOptions` so view and editor preview agree.
 2. If it adds DOM the TOC should pick up, you don't need changes — `TocSidebar` debounces on a MutationObserver scoped to `.markdown`.
 
 ### Add a new repo method
+
 1. Add the signature to `Repo` in `src/lib/repo.ts`.
 2. Implement it in `src/store/mock-repo.ts` (synchronous, localStorage).
 3. Implement it in `src/lib/notes.ts` (optimistic local update + fire-and-forget supabase call + `notifyError` on failure). Use `crypto.randomUUID()` for ids — do NOT use a temp-id-then-swap pattern; it breaks navigation immediately after create.

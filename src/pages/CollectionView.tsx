@@ -1,4 +1,14 @@
-import { Container, Title, Group, Button, Card, Text, SimpleGrid, Breadcrumbs, Anchor } from '@mantine/core';
+import {
+  Container,
+  Title,
+  Group,
+  Button,
+  Card,
+  Text,
+  SimpleGrid,
+  Breadcrumbs,
+  Anchor,
+} from '@mantine/core';
 import { IconFilePlus } from '@tabler/icons-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -38,19 +48,27 @@ export default function CollectionView() {
   return (
     <Container size="md" py="xl">
       <Breadcrumbs mb="md">
-        <Anchor component={Link} to={path('/')} size="sm" c="dimmed">Home</Anchor>
+        <Anchor component={Link} to={path('/')} size="sm" c="dimmed">
+          Home
+        </Anchor>
         {crumbs.map((c) => (
           <Anchor key={c.id} component={Link} to={path(`/c/${c.id}`)} size="sm" c="dimmed">
             {c.title}
           </Anchor>
         ))}
-        <Text size="sm" fw={600} component="span">{collection.title}</Text>
+        <Text size="sm" fw={600} component="span">
+          {collection.title}
+        </Text>
       </Breadcrumbs>
       <Group justify="space-between" mb="lg">
         <Title order={1}>
-          <span style={{ marginRight: 8 }}>{collection.icon}</span>{collection.title}
+          <span style={{ marginRight: 8 }}>{collection.icon}</span>
+          {collection.title}
         </Title>
-        <Button leftSection={<IconFilePlus size={16} />} onClick={() => openItemDialog({ isFolder: false, parentId: collection.id, repo, path })}>
+        <Button
+          leftSection={<IconFilePlus size={16} />}
+          onClick={() => openItemDialog({ isFolder: false, parentId: collection.id, repo, path })}
+        >
           New note
         </Button>
       </Group>
@@ -62,13 +80,21 @@ export default function CollectionView() {
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
           {children.map((c) => (
-            <Card key={c.id} withBorder component={Link} to={path(c.isFolder ? `/c/${c.id}` : `/n/${c.id}`)} style={{ textDecoration: 'none' }}>
+            <Card
+              key={c.id}
+              withBorder
+              component={Link}
+              to={path(c.isFolder ? `/c/${c.id}` : `/n/${c.id}`)}
+              style={{ textDecoration: 'none' }}
+            >
               <Group gap={6}>
                 <span style={{ fontSize: 18 }}>{c.icon}</span>
                 <Text fw={600}>{c.title}</Text>
               </Group>
               <Text size="xs" c="dimmed" mt="xs">
-                {c.isFolder ? 'Collection' : `Updated ${new Date(c.updatedAt).toLocaleDateString()}`}
+                {c.isFolder
+                  ? 'Collection'
+                  : `Updated ${new Date(c.updatedAt).toLocaleDateString()}`}
               </Text>
             </Card>
           ))}

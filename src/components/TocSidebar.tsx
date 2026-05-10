@@ -80,18 +80,25 @@ export default function TocSidebar() {
   }, [headings]);
 
   if (headings.length === 0)
-    return <Text size="xs" c="dimmed">On this page</Text>;
+    return (
+      <Text size="xs" c="dimmed">
+        On this page
+      </Text>
+    );
 
   return (
     <Stack gap={4}>
-      <Text size="xs" c="dimmed" fw={600} tt="uppercase" mb={4}>On this page</Text>
+      <Text size="xs" c="dimmed" fw={600} tt="uppercase" mb={4}>
+        On this page
+      </Text>
       {headings.map((h) => (
         <Box key={h.id} pl={(h.level - 1) * 10}>
           <a
             href={`#${h.id}`}
             style={{
               fontSize: 13,
-              color: active === h.id ? 'var(--mantine-color-blue-4)' : 'var(--mantine-color-dimmed)',
+              color:
+                active === h.id ? 'var(--mantine-color-blue-4)' : 'var(--mantine-color-dimmed)',
               textDecoration: 'none',
             }}
           >

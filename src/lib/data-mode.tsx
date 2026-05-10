@@ -9,7 +9,15 @@
 // loader during the brief "fetching real-repo chunk" window — only when the
 // caller actually mounted in `mode="real"` AND Supabase is configured.
 
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useSyncExternalStore } from 'react';
 import { Center, Loader } from '@mantine/core';
 import { mockRepo } from '../store/mock-repo';
@@ -44,9 +52,7 @@ export function DataModeProvider({ mode, children }: { mode: DataMode; children:
   // Demo always uses mockRepo synchronously (no async needed).
   // Real-with-no-Supabase also resolves synchronously to mockRepo.
   // Real-with-Supabase needs to load the supabaseRepo chunk.
-  const [realRepo, setRealRepo] = useState<Repo | null>(
-    !supabaseConfigured ? mockRepo : null,
-  );
+  const [realRepo, setRealRepo] = useState<Repo | null>(!supabaseConfigured ? mockRepo : null);
 
   useEffect(() => {
     if (mode !== 'real' || realRepo) return;

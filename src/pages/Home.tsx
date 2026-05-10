@@ -21,9 +21,14 @@ export default function Home() {
             <Title order={4}>New note</Title>
           </Group>
           <Text c="dimmed" size="sm" mt="xs">
-            Open the editor with live preview. Headings, code, tables, mermaid diagrams — all standard.
+            Open the editor with live preview. Headings, code, tables, mermaid diagrams — all
+            standard.
           </Text>
-          <Button mt="md" variant="light" onClick={() => openItemDialog({ isFolder: false, repo, path })}>
+          <Button
+            mt="md"
+            variant="light"
+            onClick={() => openItemDialog({ isFolder: false, repo, path })}
+          >
             Create note
           </Button>
         </Card>
@@ -33,9 +38,14 @@ export default function Home() {
             <Title order={4}>New collection</Title>
           </Group>
           <Text c="dimmed" size="sm" mt="xs">
-            Group related notes into a folder. Nest as deep as you need; reorganize later by drag-and-drop.
+            Group related notes into a folder. Nest as deep as you need; reorganize later by
+            drag-and-drop.
           </Text>
-          <Button mt="md" variant="light" onClick={() => openItemDialog({ isFolder: true, repo, path })}>
+          <Button
+            mt="md"
+            variant="light"
+            onClick={() => openItemDialog({ isFolder: true, repo, path })}
+          >
             Create collection
           </Button>
         </Card>
@@ -45,7 +55,8 @@ export default function Home() {
             <Title order={4}>Keyboard shortcuts</Title>
           </Group>
           <Text c="dimmed" size="sm" mt="xs">
-            <strong>⌘K</strong> open search · <strong>⌘\</strong> toggle sidebar · <strong>⌘.</strong> toggle read mode
+            <strong>⌘K</strong> open search · <strong>⌘\</strong> toggle sidebar ·{' '}
+            <strong>⌘.</strong> toggle read mode
           </Text>
         </Card>
         <Card withBorder>
@@ -54,7 +65,8 @@ export default function Home() {
             <Title order={4}>Read mode</Title>
           </Group>
           <Text c="dimmed" size="sm" mt="xs">
-            Collapse the sidebars and the outline for distraction-free reading. Toggle from the toolbar of any note.
+            Collapse the sidebars and the outline for distraction-free reading. Toggle from the
+            toolbar of any note.
           </Text>
         </Card>
       </SimpleGrid>

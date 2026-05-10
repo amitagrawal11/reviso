@@ -100,21 +100,21 @@ export interface Repo {
   get(id: string): Item | undefined;
   create(input: CreateInput): Item;
   update(id: string, patch: Partial<Item>): void;
-  trash(id: string): void;       // soft-delete, cascades to descendants
+  trash(id: string): void; // soft-delete, cascades to descendants
   restore(id: string): void;
-  hardDelete(id: string): void;  // does NOT cascade
+  hardDelete(id: string): void; // does NOT cascade
   subscribe(listener: () => void): () => void;
 }
 ```
 
 Two implementations:
 
-| Impl              | File                       | Backing store                                        |
-| ----------------- | -------------------------- | ---------------------------------------------------- |
-| `mockRepo`        | `src/store/mock-repo.ts`   | `localStorage['notes-demo-items-v1']`                |
-| `supabaseRepo`    | `src/lib/notes.ts`         | Supabase `notes` table + realtime channel            |
+| Impl           | File                     | Backing store                             |
+| -------------- | ------------------------ | ----------------------------------------- |
+| `mockRepo`     | `src/store/mock-repo.ts` | `localStorage['notes-demo-items-v1']`     |
+| `supabaseRepo` | `src/lib/notes.ts`       | Supabase `notes` table + realtime channel |
 
-`mockRepo` is synchronous (in-memory mutate → write localStorage → emit). `supabaseRepo` is **optimistic**: every mutator updates the local cache + emits *first*, then fires a fire-and-forget supabase call; failures call `notifyError(action, error)` which surfaces a toast. Note creation uses `crypto.randomUUID()` client-side, so the id is stable from the first render and routing to `/n/<newId>` doesn't race the network.
+`mockRepo` is synchronous (in-memory mutate → write localStorage → emit). `supabaseRepo` is **optimistic**: every mutator updates the local cache + emits _first_, then fires a fire-and-forget supabase call; failures call `notifyError(action, error)` which surfaces a toast. Note creation uses `crypto.randomUUID()` client-side, so the id is stable from the first render and routing to `/n/<newId>` doesn't race the network.
 
 Realtime: `supabaseRepo` subscribes to a postgres_changes channel on `notes` for the current `user_id` and merges incoming events into the cache.
 
@@ -129,8 +129,8 @@ A small context that ties the chosen `Repo` to a route subtree.
 
 ```tsx
 const { repo, mode } = useDataMode();
-const items = useItems();          // useSyncExternalStore over repo
-const path  = useModePath();       // demo: prefixes /demo, real: identity
+const items = useItems(); // useSyncExternalStore over repo
+const path = useModePath(); // demo: prefixes /demo, real: identity
 ```
 
 This is the **only** correct way for components to acquire a repo — never `import { mockRepo }` or `import { supabaseRepo }` from a UI component.
@@ -144,6 +144,7 @@ This is the **only** correct way for components to acquire a repo — never `imp
 - Sign-out and sign-in are handled by `AuthModalSimple` and `pages/Login.tsx`.
 
 `RealRoot` in `App.tsx` reads `useAuth()`:
+
 - `loading && pathname === '/'` → render `<Landing />` immediately (don't block on the auth round-trip).
 - `loading && other path` → spinner.
 - `!session && pathname === '/'` → `<Landing />`.
@@ -154,15 +155,15 @@ This is the **only** correct way for components to acquire a repo — never `imp
 
 Defined in `src/App.tsx`. **All pages are lazy** (including `Home` and `Landing`). Two parallel route trees:
 
-| Path                         | Page                | Tree | Auth?        |
-| ---------------------------- | ------------------- | ---- | ------------ |
-| `/`                          | `Landing` or Home   | real | guest/signed |
-| `/recent` `/starred` `/trash`| ...                 | real | signed       |
-| `/profile` `/settings`       | ...                 | real | signed       |
-| `/c/:id` `/n/:id` `/n/:id/edit`| ...               | real | signed       |
-| `/login`                     | `Login`             | —    | public       |
-| `/demo`                      | `Home`              | demo | public       |
-| `/demo/recent` …             | mirror of real tree | demo | public       |
+| Path                            | Page                | Tree | Auth?        |
+| ------------------------------- | ------------------- | ---- | ------------ |
+| `/`                             | `Landing` or Home   | real | guest/signed |
+| `/recent` `/starred` `/trash`   | ...                 | real | signed       |
+| `/profile` `/settings`          | ...                 | real | signed       |
+| `/c/:id` `/n/:id` `/n/:id/edit` | ...                 | real | signed       |
+| `/login`                        | `Login`             | —    | public       |
+| `/demo`                         | `Home`              | demo | public       |
+| `/demo/recent` …                | mirror of real tree | demo | public       |
 
 `<Route path="*" element={<Navigate to="/" replace />}/>` catches everything else.
 
@@ -170,18 +171,18 @@ Defined in `src/App.tsx`. **All pages are lazy** (including `Home` and `Landing`
 
 Goal: keep the **landing page** chunk minimal. Shell, Sidebar, DnD-kit, dialogs, markdown, mermaid, supabase — all deferred.
 
-| Chunk                              | Triggered by                                                       |
-| ---------------------------------- | ------------------------------------------------------------------ |
-| `Shell` + `Sidebar` + DnD-kit      | First render of any signed-in or demo route                        |
-| `Home`, `Landing`, every page      | `React.lazy()` in `App.tsx`                                        |
-| `@supabase/supabase-js` (`./supabase`) | First `useAuth()` effect (in `auth.tsx`)                       |
-| `supabaseRepo` (`./notes`)         | First `<DataModeProvider mode="real">` mount (when configured)     |
-| `@uiw/react-md-editor/nohighlight` | `LazyMarkdown.tsx`; warmed via `prefetchMarkdown()` on note hover  |
-| `dialogs.tsx`                      | `dialogs-lazy.ts` shims; warmed via `prefetchDialogs` on "+ New"   |
-| `mermaid`                          | `MermaidBlock.tsx` first render — module-level `mermaidPromise`    |
-| `@mantine/spotlight` + `SpotlightSearch.tsx` | First ⌘K via `spotlight-bridge`                          |
-| `TocSidebar.tsx`                   | Lazy import inside `NoteView.tsx`                                  |
-| `highlight.js/styles/github*.css`  | `useHljsTheme()` injects both as `<style>` tags, toggles `media`   |
+| Chunk                                        | Triggered by                                                      |
+| -------------------------------------------- | ----------------------------------------------------------------- |
+| `Shell` + `Sidebar` + DnD-kit                | First render of any signed-in or demo route                       |
+| `Home`, `Landing`, every page                | `React.lazy()` in `App.tsx`                                       |
+| `@supabase/supabase-js` (`./supabase`)       | First `useAuth()` effect (in `auth.tsx`)                          |
+| `supabaseRepo` (`./notes`)                   | First `<DataModeProvider mode="real">` mount (when configured)    |
+| `@uiw/react-md-editor/nohighlight`           | `LazyMarkdown.tsx`; warmed via `prefetchMarkdown()` on note hover |
+| `dialogs.tsx`                                | `dialogs-lazy.ts` shims; warmed via `prefetchDialogs` on "+ New"  |
+| `mermaid`                                    | `MermaidBlock.tsx` first render — module-level `mermaidPromise`   |
+| `@mantine/spotlight` + `SpotlightSearch.tsx` | First ⌘K via `spotlight-bridge`                                   |
+| `TocSidebar.tsx`                             | Lazy import inside `NoteView.tsx`                                 |
+| `highlight.js/styles/github*.css`            | `useHljsTheme()` injects both as `<style>` tags, toggles `media`  |
 
 `spotlight-bridge.ts` exists so `Shell.tsx` and `Sidebar.tsx` can publish a "user wants to search" intent without statically importing `@mantine/spotlight`. Buffers a `pending` flag + subscriber list; once SpotlightSearch mounts, it drains pending intent.
 
@@ -263,12 +264,12 @@ Heading anchors: `rehype-slug` + `rehype-autolink-headings` (`behavior: 'wrap'`)
 
 Runtime caching:
 
-| Pattern                          | Strategy             | Cache name      | Notes                  |
-| -------------------------------- | -------------------- | --------------- | ---------------------- |
-| `request.mode === 'navigate'`    | NetworkFirst, 3 s    | `pages`         | 20 entries, 30 days    |
-| script / style / worker          | NetworkFirst, 3 s    | `assets`        | 100 entries, 30 days   |
-| image / font                     | StaleWhileRevalidate | `media`         | 60 entries, 30 days    |
-| `*.supabase.co`                  | NetworkFirst, 5 s    | `supabase-api`  | 200 entries, 7 days    |
+| Pattern                       | Strategy             | Cache name     | Notes                |
+| ----------------------------- | -------------------- | -------------- | -------------------- |
+| `request.mode === 'navigate'` | NetworkFirst, 3 s    | `pages`        | 20 entries, 30 days  |
+| script / style / worker       | NetworkFirst, 3 s    | `assets`       | 100 entries, 30 days |
+| image / font                  | StaleWhileRevalidate | `media`        | 60 entries, 30 days  |
+| `*.supabase.co`               | NetworkFirst, 5 s    | `supabase-api` | 200 entries, 7 days  |
 
 ## Performance optimizations (summary)
 

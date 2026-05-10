@@ -22,7 +22,11 @@ const colorSchemeManager = localStorageColorSchemeManager({ key: 'notes-color-sc
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider theme={theme} defaultColorScheme="auto" colorSchemeManager={colorSchemeManager}>
+    <MantineProvider
+      theme={theme}
+      defaultColorScheme="auto"
+      colorSchemeManager={colorSchemeManager}
+    >
       <Notifications position="bottom-center" />
       <BrowserRouter>
         <AuthProvider>

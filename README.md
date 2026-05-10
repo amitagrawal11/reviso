@@ -3,6 +3,7 @@
 A markdown notes PWA with a three-column shell: nested collections and notes on the left, markdown content in the center, and an auto-generated table of contents on the right. It includes live markdown preview, Mermaid diagrams, drag-and-drop organization, search, dark and light themes, a distraction-free read mode, and optional Supabase-backed auth and sync.
 
 The app currently supports two runtime modes:
+
 - `demo` mode at `/demo`, which is public and always uses the local mock repo
 - `real` mode under `/`, which uses Supabase when `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are configured, and otherwise falls back to the local mock repo
 
@@ -19,20 +20,20 @@ Local development runs on Vite. Production output is written to `dist/`.
 
 ## Tech stack
 
-| Concern | Choice |
-| --- | --- |
-| Framework | React 19 + TypeScript |
-| Build tool | Vite 6 |
-| Routing | `react-router-dom` v7 |
-| UI | Mantine v7 |
-| Icons | `@tabler/icons-react` |
-| Markdown | `@uiw/react-md-editor/nohighlight` + `remark-gfm` + `remark-breaks` |
-| HTML transforms | `rehype-slug` + `rehype-autolink-headings` + `rehype-highlight` |
-| Diagrams | `mermaid` |
-| Drag and drop | `@dnd-kit/core` |
-| PWA | `vite-plugin-pwa` |
-| Auth and data | Supabase (`@supabase/supabase-js`) |
-| Image pipeline | Playwright + Sharp for landing screenshots |
+| Concern         | Choice                                                              |
+| --------------- | ------------------------------------------------------------------- |
+| Framework       | React 19 + TypeScript                                               |
+| Build tool      | Vite 6                                                              |
+| Routing         | `react-router-dom` v7                                               |
+| UI              | Mantine v7                                                          |
+| Icons           | `@tabler/icons-react`                                               |
+| Markdown        | `@uiw/react-md-editor/nohighlight` + `remark-gfm` + `remark-breaks` |
+| HTML transforms | `rehype-slug` + `rehype-autolink-headings` + `rehype-highlight`     |
+| Diagrams        | `mermaid`                                                           |
+| Drag and drop   | `@dnd-kit/core`                                                     |
+| PWA             | `vite-plugin-pwa`                                                   |
+| Auth and data   | Supabase (`@supabase/supabase-js`)                                  |
+| Image pipeline  | Playwright + Sharp for landing screenshots                          |
 
 ## How it works
 
@@ -46,6 +47,7 @@ The router serves two parallel trees:
 The demo tree is always public and always uses the local mock repo.
 
 The real tree is gated by auth when Supabase is configured:
+
 - guests visiting `/` see the landing page
 - signed-in users see the app shell
 - guests visiting protected routes are redirected to `/`
@@ -66,6 +68,7 @@ Items are a flat array with `parentId` pointers. Collections and notes share the
 `AuthProvider` is mounted in `src/main.tsx`. It tracks the active Supabase session, loads the current profile, and exposes auth state to the router and account-related pages.
 
 When Supabase is enabled, the repo layer:
+
 - creates notes and collections optimistically
 - persists changes to Postgres
 - listens for auth changes
@@ -176,10 +179,12 @@ Without these variables, the app still runs using the mock repo.
 This is a static Vite app, so deployment is straightforward.
 
 Recommended frontend target:
+
 - build command: `npm run build`
 - output directory: `dist`
 
 Good free hosting options:
+
 - Cloudflare Pages
 - Vercel
 - Netlify

@@ -23,9 +23,9 @@ export function NotFoundCard({
             <Title order={3}>We couldn't find this {kind}</Title>
             <Text size="sm" c="dimmed" ta="center">
               It may have been deleted, moved to Trash, or didn't finish saving.
-              {kind === 'note' ? ' Any unsaved changes are no longer recoverable.' : ''} If you
-              just tried to create it and saw an error, look for the red toast at the bottom of
-              the screen for the exact reason.
+              {kind === 'note' ? ' Any unsaved changes are no longer recoverable.' : ''} If you just
+              tried to create it and saw an error, look for the red toast at the bottom of the
+              screen for the exact reason.
             </Text>
           </Stack>
           <Group>

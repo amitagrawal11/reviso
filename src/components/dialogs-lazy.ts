@@ -33,5 +33,7 @@ let warmed = false;
 export function prefetchDialogs() {
   if (warmed) return;
   warmed = true;
-  load().catch(() => { warmed = false; });
+  load().catch(() => {
+    warmed = false;
+  });
 }

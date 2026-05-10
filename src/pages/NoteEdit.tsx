@@ -5,25 +5,23 @@ import {
   Text,
   SegmentedControl,
   useComputedColorScheme,
-} from "@mantine/core";
-import { NotFoundCard } from "../components/NotFoundCard";
-import { IconCheck } from "@tabler/icons-react";
-import { useMediaQuery } from "@mantine/hooks";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { EditorWithLineNumbers } from "../components/EditorWithLineNumbers";
-import { useEffect, useState } from "react";
-import { useItems, useRepo, useModePath } from "../lib/data-mode";
-import { notifications } from "@mantine/notifications";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
-import remarkBreaks from "remark-breaks";
-import { useHljsTheme } from "../lib/hljs-theme";
-import { CodeBlock } from "../components/CodeBlock";
+} from '@mantine/core';
+import { NotFoundCard } from '../components/NotFoundCard';
+import { IconCheck } from '@tabler/icons-react';
+import { useMediaQuery } from '@mantine/hooks';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { EditorWithLineNumbers } from '../components/EditorWithLineNumbers';
+import { useEffect, useState } from 'react';
+import { useItems, useRepo, useModePath } from '../lib/data-mode';
+import { notifications } from '@mantine/notifications';
+import rehypeHighlight from 'rehype-highlight';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import { useHljsTheme } from '../lib/hljs-theme';
+import { CodeBlock } from '../components/CodeBlock';
 
 const REMARK_PLUGINS = [remarkGfm, remarkBreaks];
-const REHYPE_PLUGINS: any[] = [
-  [rehypeHighlight, { detect: true, ignoreMissing: true }],
-];
+const REHYPE_PLUGINS: any[] = [[rehypeHighlight, { detect: true, ignoreMissing: true }]];
 const PREVIEW_COMPONENTS = { pre: CodeBlock };
 const PREVIEW_OPTIONS = {
   remarkPlugins: REMARK_PLUGINS,
@@ -36,17 +34,17 @@ export default function NoteEdit() {
   const nav = useNavigate();
   const items = useItems();
   const note = items.find((i) => i.id === id);
-  const scheme = useComputedColorScheme("dark");
+  const scheme = useComputedColorScheme('dark');
   useHljsTheme();
   const repo = useRepo();
   const path = useModePath();
-  const isMobile = useMediaQuery("(max-width: 48em)");
-  const [title, setTitle] = useState(note?.title ?? "");
-  const [content, setContent] = useState(note?.content ?? "");
+  const isMobile = useMediaQuery('(max-width: 48em)');
+  const [title, setTitle] = useState(note?.title ?? '');
+  const [content, setContent] = useState(note?.content ?? '');
   const [dirty, setDirty] = useState(false);
   // On mobile we can't show edit + preview side by side. The user picks one
   // pane at a time via this toggle. On desktop it's irrelevant — split view.
-  const [mobilePane, setMobilePane] = useState<"edit" | "preview">("edit");
+  const [mobilePane, setMobilePane] = useState<'edit' | 'preview'>('edit');
 
   useEffect(() => {
     if (!note) return;
@@ -59,33 +57,31 @@ export default function NoteEdit() {
     if (!dirty) return;
     const handler = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = "";
+      e.returnValue = '';
     };
-    window.addEventListener("beforeunload", handler);
-    return () => window.removeEventListener("beforeunload", handler);
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
   }, [dirty]);
 
-  if (!note) return <NotFoundCard kind="note" homePath={path("/")} />;
+  if (!note) return <NotFoundCard kind="note" homePath={path('/')} />;
 
   const handleSave = () => {
     repo.update(note.id, { title, content });
     setDirty(false);
-    notifications.show({ message: "Note saved", color: "green" });
+    notifications.show({ message: 'Note saved', color: 'green' });
     nav(path(`/n/${note.id}`));
   };
 
   // Desktop = split (live), mobile = whichever pane the user picked.
-  const previewMode: "live" | "edit" | "preview" = isMobile
-    ? mobilePane
-    : "live";
+  const previewMode: 'live' | 'edit' | 'preview' = isMobile ? mobilePane : 'live';
 
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "calc(100vh - 60px)",
-        padding: isMobile ? "8px 12px" : "12px 16px",
+        display: 'flex',
+        flexDirection: 'column',
+        height: 'calc(100vh - 60px)',
+        padding: isMobile ? '8px 12px' : '12px 16px',
       }}
     >
       <Group mb="sm" justify="space-between" wrap="wrap" gap="xs">
@@ -96,8 +92,8 @@ export default function NoteEdit() {
             setDirty(true);
           }}
           placeholder="Title"
-          style={{ flex: "1 1 200px", minWidth: 0 }}
-          size={isMobile ? "sm" : "md"}
+          style={{ flex: '1 1 200px', minWidth: 0 }}
+          size={isMobile ? 'sm' : 'md'}
         />
         <Group gap="xs" wrap="nowrap">
           <Button
@@ -108,12 +104,7 @@ export default function NoteEdit() {
           >
             Create
           </Button>
-          <Button
-            variant="default"
-            size="sm"
-            component={Link}
-            to={path(`/n/${note.id}`)}
-          >
+          <Button variant="default" size="sm" component={Link} to={path(`/n/${note.id}`)}>
             Cancel
           </Button>
         </Group>
@@ -126,10 +117,10 @@ export default function NoteEdit() {
           mb="xs"
           size="xs"
           value={mobilePane}
-          onChange={(v) => setMobilePane(v as "edit" | "preview")}
+          onChange={(v) => setMobilePane(v as 'edit' | 'preview')}
           data={[
-            { label: "Edit", value: "edit" },
-            { label: "Preview", value: "preview" },
+            { label: 'Edit', value: 'edit' },
+            { label: 'Preview', value: 'preview' },
           ]}
         />
       )}
@@ -138,18 +129,18 @@ export default function NoteEdit() {
         <EditorWithLineNumbers
           value={content}
           onChange={(v) => {
-            setContent(v ?? "");
+            setContent(v ?? '');
             setDirty(true);
           }}
           height="100%"
           preview={previewMode}
           hideToolbar={false}
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           previewOptions={PREVIEW_OPTIONS}
         />
       </div>
-      <Text size="xs" c={dirty ? "yellow.6" : "dimmed"} mt="xs">
-        {dirty ? "Unsaved changes" : "All changes saved"}
+      <Text size="xs" c={dirty ? 'yellow.6' : 'dimmed'} mt="xs">
+        {dirty ? 'Unsaved changes' : 'All changes saved'}
       </Text>
     </div>
   );

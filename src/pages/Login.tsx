@@ -83,9 +83,7 @@ export default function Login({ embedded = false, initialMode = 'signin', onSucc
       <Stack gap="md">
         <Stack gap={4} align="center">
           <IconBook size={28} />
-          <Title order={3}>
-            {mode === 'signin' ? 'Welcome back' : 'Create your free account'}
-          </Title>
+          <Title order={3}>{mode === 'signin' ? 'Welcome back' : 'Create your free account'}</Title>
           <Text size="sm" c="dimmed" ta="center">
             {mode === 'signin'
               ? 'Sign in to your synced workspace.'

@@ -22,7 +22,11 @@ const Settings = lazy(() => import('./pages/Settings'));
 const Landing = lazy(() => import('./pages/Landing'));
 
 function Fallback() {
-  return <Center h="60vh"><Loader /></Center>;
+  return (
+    <Center h="60vh">
+      <Loader />
+    </Center>
+  );
 }
 
 /**
@@ -84,7 +88,11 @@ export default function App() {
     <Routes>
       <Route
         path="/login"
-        element={<Suspense fallback={<Fallback />}><Login /></Suspense>}
+        element={
+          <Suspense fallback={<Fallback />}>
+            <Login />
+          </Suspense>
+        }
       />
 
       {/* Demo tree — public, mock store, no auth required. */}
@@ -98,26 +106,138 @@ export default function App() {
           </DataModeProvider>
         }
       >
-        <Route index element={<Suspense fallback={<Fallback />}><Home /></Suspense>} />
-        <Route path="recent"     element={<Suspense fallback={<Fallback />}><Recent /></Suspense>} />
-        <Route path="starred"    element={<Suspense fallback={<Fallback />}><Starred /></Suspense>} />
-        <Route path="trash"      element={<Suspense fallback={<Fallback />}><Trash /></Suspense>} />
-        <Route path="c/:id"      element={<Suspense fallback={<Fallback />}><CollectionView /></Suspense>} />
-        <Route path="n/:id"      element={<Suspense fallback={<Fallback />}><NoteView /></Suspense>} />
-        <Route path="n/:id/edit" element={<Suspense fallback={<Fallback />}><NoteEdit /></Suspense>} />
+        <Route
+          index
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="recent"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Recent />
+            </Suspense>
+          }
+        />
+        <Route
+          path="starred"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Starred />
+            </Suspense>
+          }
+        />
+        <Route
+          path="trash"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Trash />
+            </Suspense>
+          }
+        />
+        <Route
+          path="c/:id"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <CollectionView />
+            </Suspense>
+          }
+        />
+        <Route
+          path="n/:id"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <NoteView />
+            </Suspense>
+          }
+        />
+        <Route
+          path="n/:id/edit"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <NoteEdit />
+            </Suspense>
+          }
+        />
       </Route>
 
       {/* Real tree. RealRoot renders either <Landing/> or <Shell/>. */}
       <Route path="/" element={<RealRoot />}>
-        <Route index element={<Suspense fallback={<Fallback />}><Home /></Suspense>} />
-        <Route path="recent"     element={<Suspense fallback={<Fallback />}><Recent /></Suspense>} />
-        <Route path="starred"    element={<Suspense fallback={<Fallback />}><Starred /></Suspense>} />
-        <Route path="trash"      element={<Suspense fallback={<Fallback />}><Trash /></Suspense>} />
-        <Route path="profile"    element={<Suspense fallback={<Fallback />}><Profile /></Suspense>} />
-        <Route path="settings"   element={<Suspense fallback={<Fallback />}><Settings /></Suspense>} />
-        <Route path="c/:id"      element={<Suspense fallback={<Fallback />}><CollectionView /></Suspense>} />
-        <Route path="n/:id"      element={<Suspense fallback={<Fallback />}><NoteView /></Suspense>} />
-        <Route path="n/:id/edit" element={<Suspense fallback={<Fallback />}><NoteEdit /></Suspense>} />
+        <Route
+          index
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="recent"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Recent />
+            </Suspense>
+          }
+        />
+        <Route
+          path="starred"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Starred />
+            </Suspense>
+          }
+        />
+        <Route
+          path="trash"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Trash />
+            </Suspense>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Profile />
+            </Suspense>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Settings />
+            </Suspense>
+          }
+        />
+        <Route
+          path="c/:id"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <CollectionView />
+            </Suspense>
+          }
+        />
+        <Route
+          path="n/:id"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <NoteView />
+            </Suspense>
+          }
+        />
+        <Route
+          path="n/:id/edit"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <NoteEdit />
+            </Suspense>
+          }
+        />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

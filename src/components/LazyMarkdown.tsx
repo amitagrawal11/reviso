@@ -30,5 +30,7 @@ let prefetched = false;
 export function prefetchMarkdown() {
   if (prefetched) return;
   prefetched = true;
-  mdModulePromise().catch(() => { prefetched = false; });
+  mdModulePromise().catch(() => {
+    prefetched = false;
+  });
 }

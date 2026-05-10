@@ -41,7 +41,10 @@ export default function SpotlightSearch() {
       shortcut={['mod + K', 'mod + P']}
       nothingFound="Nothing found…"
       highlightQuery
-      searchProps={{ leftSection: <IconSearch size={18} />, placeholder: 'Search notes & collections…' }}
+      searchProps={{
+        leftSection: <IconSearch size={18} />,
+        placeholder: 'Search notes & collections…',
+      }}
     />
   );
 }

@@ -61,11 +61,17 @@ export default function Settings() {
   return (
     <Container size="sm" py="xl">
       <Breadcrumbs mb="md">
-        <Anchor component={Link} to="/" size="sm" c="dimmed">Home</Anchor>
-        <Text size="sm" c="dimmed" component="span">Settings</Text>
+        <Anchor component={Link} to="/" size="sm" c="dimmed">
+          Home
+        </Anchor>
+        <Text size="sm" c="dimmed" component="span">
+          Settings
+        </Text>
       </Breadcrumbs>
 
-      <Title order={2} mb="lg">Settings</Title>
+      <Title order={2} mb="lg">
+        Settings
+      </Title>
 
       <Stack gap="lg">
         <Card withBorder p="lg" radius="md">
@@ -110,11 +116,7 @@ export default function Settings() {
                 autoComplete="new-password"
               />
               <Group justify="flex-end">
-                <Button
-                  onClick={changePassword}
-                  loading={pwBusy}
-                  disabled={!pw || !pwConfirm}
-                >
+                <Button onClick={changePassword} loading={pwBusy} disabled={!pw || !pwConfirm}>
                   Update password
                 </Button>
               </Group>
@@ -126,7 +128,9 @@ export default function Settings() {
           <Card withBorder p="lg" radius="md">
             <Stack gap="md">
               <div>
-                <Text fw={600} c="red">Sign out</Text>
+                <Text fw={600} c="red">
+                  Sign out
+                </Text>
                 <Text size="sm" c="dimmed" mt={4}>
                   Ends your session on this device.
                 </Text>

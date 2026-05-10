@@ -24,7 +24,13 @@ export function AuthModalSimple({
       padding={0}
       overlayProps={{ backgroundOpacity: 0.6, blur: 2 }}
     >
-      <Suspense fallback={<Center p="xl"><Loader /></Center>}>
+      <Suspense
+        fallback={
+          <Center p="xl">
+            <Loader />
+          </Center>
+        }
+      >
         <Login embedded initialMode={initialMode} onSuccess={onClose} />
       </Suspense>
     </Modal>

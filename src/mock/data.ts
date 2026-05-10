@@ -25,11 +25,51 @@ const now = new Date().toISOString();
 
 export const seedItems: Item[] = [
   // ── Collections ────────────────────────────────────────────────────────
-  { id: 'c-welcome',  parentId: null, title: 'Start here', icon: '👋', isFolder: true, updatedAt: now, content: '' },
-  { id: 'c-work',     parentId: null, title: 'Work',       icon: '💼', isFolder: true, updatedAt: now, content: '' },
-  { id: 'c-personal', parentId: null, title: 'Personal',   icon: '🌱', isFolder: true, updatedAt: now, content: '' },
-  { id: 'c-recipes',  parentId: null, title: 'Recipes',    icon: '🍳', isFolder: true, updatedAt: now, content: '' },
-  { id: 'c-projx',    parentId: 'c-work', title: 'Project X', icon: '📦', isFolder: true, updatedAt: now, content: '' },
+  {
+    id: 'c-welcome',
+    parentId: null,
+    title: 'Start here',
+    icon: '👋',
+    isFolder: true,
+    updatedAt: now,
+    content: '',
+  },
+  {
+    id: 'c-work',
+    parentId: null,
+    title: 'Work',
+    icon: '💼',
+    isFolder: true,
+    updatedAt: now,
+    content: '',
+  },
+  {
+    id: 'c-personal',
+    parentId: null,
+    title: 'Personal',
+    icon: '🌱',
+    isFolder: true,
+    updatedAt: now,
+    content: '',
+  },
+  {
+    id: 'c-recipes',
+    parentId: null,
+    title: 'Recipes',
+    icon: '🍳',
+    isFolder: true,
+    updatedAt: now,
+    content: '',
+  },
+  {
+    id: 'c-projx',
+    parentId: 'c-work',
+    title: 'Project X',
+    icon: '📦',
+    isFolder: true,
+    updatedAt: now,
+    content: '',
+  },
 
   // ── Welcome / Start here ───────────────────────────────────────────────
   {

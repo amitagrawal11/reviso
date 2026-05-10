@@ -94,15 +94,11 @@ function attachRealtime() {
   if (realtimeChannel) return;
   realtimeChannel = supabase
     .channel('notes-changes')
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'notes' },
-      () => {
-        // Coarse refresh — fine for personal scale; optimize to per-row
-        // upsert/delete if/when this becomes hot.
-        void fetchAll();
-      },
-    )
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'notes' }, () => {
+      // Coarse refresh — fine for personal scale; optimize to per-row
+      // upsert/delete if/when this becomes hot.
+      void fetchAll();
+    })
     .subscribe();
 }
 
@@ -239,23 +235,31 @@ export const supabaseRepo: Repo = {
   restore: (id) => {
     cache = cache.map((i) => (i.id === id ? { ...i, trashed: false } : i));
     emit();
-    void supabase.from('notes').update({ trashed: false }).eq('id', id).then(({ error }) => {
-      if (error) {
-        notifyError('restore item', error);
-        void fetchAll();
-      }
-    });
+    void supabase
+      .from('notes')
+      .update({ trashed: false })
+      .eq('id', id)
+      .then(({ error }) => {
+        if (error) {
+          notifyError('restore item', error);
+          void fetchAll();
+        }
+      });
   },
 
   hardDelete: (id) => {
     cache = cache.filter((i) => i.id !== id);
     emit();
-    void supabase.from('notes').delete().eq('id', id).then(({ error }) => {
-      if (error) {
-        notifyError('delete forever', error);
-        void fetchAll();
-      }
-    });
+    void supabase
+      .from('notes')
+      .delete()
+      .eq('id', id)
+      .then(({ error }) => {
+        if (error) {
+          notifyError('delete forever', error);
+          void fetchAll();
+        }
+      });
   },
 
   subscribe: (l) => {

@@ -8,7 +8,8 @@ export function useHljsTheme() {
 
   useEffect(() => {
     const ensure = async (id: string, importer: () => Promise<unknown>) => {
-      if (document.getElementById(id)) return document.getElementById(id) as HTMLLinkElement | HTMLStyleElement;
+      if (document.getElementById(id))
+        return document.getElementById(id) as HTMLLinkElement | HTMLStyleElement;
       // Vite supports ?inline / ?url for CSS — use ?inline so we can swap via a <style> tag.
       const css = (await importer()) as { default: string };
       const el = document.createElement('style');
@@ -30,6 +31,8 @@ export function useHljsTheme() {
       light.setAttribute('media', scheme === 'light' ? 'all' : 'not all');
       dark.setAttribute('media', scheme === 'dark' ? 'all' : 'not all');
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [scheme]);
 }

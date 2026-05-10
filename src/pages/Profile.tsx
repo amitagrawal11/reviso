@@ -33,8 +33,8 @@ export default function Profile() {
       <Container size="sm" py="xl">
         <Title order={2}>Profile</Title>
         <Text c="dimmed" mt="xs">
-          Profile is only available when Supabase is configured. The local demo store does not
-          have user accounts.
+          Profile is only available when Supabase is configured. The local demo store does not have
+          user accounts.
         </Text>
       </Container>
     );
@@ -69,20 +69,32 @@ export default function Profile() {
   return (
     <Container size="sm" py="xl">
       <Breadcrumbs mb="md">
-        <Anchor component={Link} to="/" size="sm" c="dimmed">Home</Anchor>
-        <Text size="sm" c="dimmed" component="span">Profile</Text>
+        <Anchor component={Link} to="/" size="sm" c="dimmed">
+          Home
+        </Anchor>
+        <Text size="sm" c="dimmed" component="span">
+          Profile
+        </Text>
       </Breadcrumbs>
 
-      <Title order={2} mb="lg">Profile</Title>
+      <Title order={2} mb="lg">
+        Profile
+      </Title>
 
       <Card withBorder p="lg" radius="md">
         <Stack gap="lg">
           <Group gap="md">
-            <Avatar size="xl" radius="xl" color="blue">{initial}</Avatar>
+            <Avatar size="xl" radius="xl" color="blue">
+              {initial}
+            </Avatar>
             <div>
               <Title order={4}>{display}</Title>
-              <Text size="sm" c="dimmed">{email}</Text>
-              <Text size="xs" c="dimmed" mt={4}>Member since {memberSince}</Text>
+              <Text size="sm" c="dimmed">
+                {email}
+              </Text>
+              <Text size="xs" c="dimmed" mt={4}>
+                Member since {memberSince}
+              </Text>
             </div>
           </Group>
 
@@ -90,7 +102,10 @@ export default function Profile() {
             label="Name"
             description="Shown in the sidebar."
             value={name}
-            onChange={(e) => { setName(e.currentTarget.value); setDirty(true); }}
+            onChange={(e) => {
+              setName(e.currentTarget.value);
+              setDirty(true);
+            }}
           />
           <TextInput
             label="Email"
@@ -103,7 +118,10 @@ export default function Profile() {
             <Button
               variant="default"
               disabled={!dirty}
-              onClick={() => { setName(profile?.name ?? ''); setDirty(false); }}
+              onClick={() => {
+                setName(profile?.name ?? '');
+                setDirty(false);
+              }}
             >
               Reset
             </Button>

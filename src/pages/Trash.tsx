@@ -57,11 +57,13 @@ export default function Trash() {
         )}
       </Group>
       <Text c="dimmed" size="sm" mb="md">
-        Trashed items are kept for 30 days and then deleted automatically. You can restore them or empty the bin manually at any time.
+        Trashed items are kept for 30 days and then deleted automatically. You can restore them or
+        empty the bin manually at any time.
       </Text>
       {items.length === 0 ? (
         <Text c="dimmed">
-          Trash is empty. Notes and collections you delete from the sidebar will appear here for 30 days before they're removed for good.
+          Trash is empty. Notes and collections you delete from the sidebar will appear here for 30
+          days before they're removed for good.
         </Text>
       ) : (
         <Stack>
@@ -71,7 +73,9 @@ export default function Trash() {
                 <Group gap={6}>
                   <span>{i.icon}</span>
                   <Text fw={600}>{i.title}</Text>
-                  <Text size="xs" c="dimmed">{i.isFolder ? 'Collection' : 'Note'}</Text>
+                  <Text size="xs" c="dimmed">
+                    {i.isFolder ? 'Collection' : 'Note'}
+                  </Text>
                 </Group>
                 <Group gap={4}>
                   <Button
@@ -95,7 +99,11 @@ export default function Trash() {
                         title: `Permanently delete “${i.title}”?`,
                         children: (
                           <Text size="sm">
-                            This action can't be undone. The {i.isFolder ? 'collection and everything inside it' : 'note and its content'} will be removed for good.
+                            This action can't be undone. The{' '}
+                            {i.isFolder
+                              ? 'collection and everything inside it'
+                              : 'note and its content'}{' '}
+                            will be removed for good.
                           </Text>
                         ),
                         labels: { confirm: 'Delete forever', cancel: 'Cancel' },

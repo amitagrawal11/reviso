@@ -1,4 +1,14 @@
-import { Group, Title, Text, Breadcrumbs, Anchor, TypographyStylesProvider, ActionIcon, useComputedColorScheme, Box } from '@mantine/core';
+import {
+  Group,
+  Title,
+  Text,
+  Breadcrumbs,
+  Anchor,
+  TypographyStylesProvider,
+  ActionIcon,
+  useComputedColorScheme,
+  Box,
+} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconBook, IconPencil, IconStar, IconStarFilled, IconTrash } from '@tabler/icons-react';
 import { Tooltip } from '@mantine/core';
@@ -109,13 +119,17 @@ export default function NoteView() {
       {!readMode && (
         <Group justify="space-between" mb="md">
           <Breadcrumbs>
-            <Anchor component={Link} to={path('/')} size="sm" c="dimmed">Home</Anchor>
+            <Anchor component={Link} to={path('/')} size="sm" c="dimmed">
+              Home
+            </Anchor>
             {crumbs.map((c) => (
               <Anchor key={c.id} component={Link} to={path(`/c/${c.id}`)} size="sm" c="dimmed">
                 {c.title}
               </Anchor>
             ))}
-            <Text size="sm" fw={600} component="span">{note.title}</Text>
+            <Text size="sm" fw={600} component="span">
+              {note.title}
+            </Text>
           </Breadcrumbs>
           <Group gap={6}>
             <Tooltip label={note.starred ? 'Unstar' : 'Star'}>
@@ -165,7 +179,8 @@ export default function NoteView() {
         </Group>
       )}
       <Title order={1} mb={4}>
-        <span style={{ marginRight: 8 }}>{note.icon}</span>{note.title}
+        <span style={{ marginRight: 8 }}>{note.icon}</span>
+        {note.title}
       </Title>
       <Text size="xs" c="dimmed" mb="lg">
         Last edited {new Date(note.updatedAt).toLocaleString()} · {wordCount(note.content)} words
