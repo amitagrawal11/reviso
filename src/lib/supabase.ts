@@ -6,7 +6,6 @@ const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 if (!url || !anonKey) {
   // Don't throw — the app still runs against the mock store. Just warn so
   // anyone touching `supabase` knows the client won't talk to a real backend.
-  // eslint-disable-next-line no-console
   console.warn(
     '[supabase] VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY missing — calls against this client will fail.',
   );

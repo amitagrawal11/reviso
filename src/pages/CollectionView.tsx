@@ -32,7 +32,7 @@ export default function CollectionView() {
     if (!collection) {
       nav(path('/'), { replace: true });
     }
-  }, [collection?.id, collection?.trashed, nav, path]);
+  }, [collection, nav, path]);
 
   if (!collection) return null; // redirect effect above takes us home
 

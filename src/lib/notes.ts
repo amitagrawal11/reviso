@@ -12,7 +12,6 @@ import type { RealtimeChannel } from '@supabase/supabase-js';
 import { notifications } from '@mantine/notifications';
 
 function notifyError(action: string, err: unknown) {
-  // eslint-disable-next-line no-console
   console.error(`[supabase] ${action} failed`, err);
   const msg =
     (err as { message?: string } | undefined)?.message ??

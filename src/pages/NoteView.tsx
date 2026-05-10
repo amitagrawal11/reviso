@@ -13,7 +13,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconBook, IconPencil, IconStar, IconStarFilled, IconTrash } from '@tabler/icons-react';
 import { Tooltip } from '@mantine/core';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, type ComponentProps } from 'react';
 import { LazyMarkdownView } from '../components/LazyMarkdown';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -29,7 +29,8 @@ const TocSidebar = lazy(() => import('../components/TocSidebar'));
 
 // Hoisted plugin/component arrays — stable reference across renders so
 // react-md-editor doesn't recompile its plugin pipeline on every keystroke.
-const REHYPE_PLUGINS: any[] = [
+type RehypePlugins = ComponentProps<typeof LazyMarkdownView>['rehypePlugins'];
+const REHYPE_PLUGINS: RehypePlugins = [
   rehypeSlug,
   [rehypeAutolinkHeadings, { behavior: 'wrap' }],
   [rehypeHighlight, { detect: true, ignoreMissing: true }],
@@ -59,6 +60,7 @@ export default function NoteView() {
   const repo = useRepo();
   const path = useModePath();
   const nav = useNavigate();
+  const wideEnough = useMediaQuery('(min-width: 1100px)');
 
   // If the note we're looking at gets deleted or moved to Trash (e.g. via the
   // sidebar context menu while we're viewing it), bail out to home rather
@@ -67,14 +69,15 @@ export default function NoteView() {
     if (!note || note.trashed) {
       nav(path('/'), { replace: true });
     }
-  }, [note?.id, note?.trashed, nav, path]);
-  if (!note || note.trashed) return null;
+  }, [note, nav, path]);
+
   // Default the TOC to open on wide viewports, closed on narrow ones — but only
   // on first viewport-width change for this view; subsequent toggles come from header.
-  const wideEnough = useMediaQuery('(min-width: 1100px)');
   useEffect(() => {
     setTocOpen(!!wideEnough);
   }, [wideEnough, setTocOpen]);
+
+  if (!note || note.trashed) return null;
   const showToc = !readMode && tocOpen;
 
   // (early-return for missing/trashed handled above by the redirect effect)

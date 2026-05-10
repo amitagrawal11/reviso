@@ -11,7 +11,7 @@ import { IconCheck } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { EditorWithLineNumbers } from '../components/EditorWithLineNumbers';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ComponentProps } from 'react';
 import { useItems, useRepo, useModePath } from '../lib/data-mode';
 import { notifications } from '@mantine/notifications';
 import rehypeHighlight from 'rehype-highlight';
@@ -19,9 +19,11 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { useHljsTheme } from '../lib/hljs-theme';
 import { CodeBlock } from '../components/CodeBlock';
+import { LazyMarkdownView } from '../components/LazyMarkdown';
 
 const REMARK_PLUGINS = [remarkGfm, remarkBreaks];
-const REHYPE_PLUGINS: any[] = [[rehypeHighlight, { detect: true, ignoreMissing: true }]];
+type RehypePlugins = ComponentProps<typeof LazyMarkdownView>['rehypePlugins'];
+const REHYPE_PLUGINS: RehypePlugins = [[rehypeHighlight, { detect: true, ignoreMissing: true }]];
 const PREVIEW_COMPONENTS = { pre: CodeBlock };
 const PREVIEW_OPTIONS = {
   remarkPlugins: REMARK_PLUGINS,
@@ -51,7 +53,7 @@ export default function NoteEdit() {
     if (dirty) return;
     setTitle(note.title);
     setContent(note.content);
-  }, [note?.id, note?.title, note?.content, dirty]);
+  }, [note, dirty]);
 
   useEffect(() => {
     if (!dirty) return;

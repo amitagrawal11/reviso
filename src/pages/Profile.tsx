@@ -26,7 +26,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (profile) setName(profile.name);
-  }, [profile?.id, profile?.name]);
+  }, [profile]);
 
   if (!usingSupabase) {
     return (

@@ -78,14 +78,18 @@ function loadOpenState(): Record<string, boolean> {
   try {
     const raw = localStorage.getItem(OPEN_STATE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch {
+    // Ignore malformed localStorage data and fall back to defaults.
+  }
   return {};
 }
 
 function saveOpenState(state: Record<string, boolean>) {
   try {
     localStorage.setItem(OPEN_STATE_KEY, JSON.stringify(state));
-  } catch {}
+  } catch {
+    // Ignore localStorage write failures.
+  }
 }
 
 export default function Sidebar() {
@@ -291,7 +295,7 @@ export default function Sidebar() {
 }
 
 function ProfileMenu() {
-  const { session, profile, loading: _loading } = useAuth();
+  const { session, profile } = useAuth();
   const { mode } = useDataMode();
   const nav = useNav();
 

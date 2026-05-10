@@ -17,17 +17,13 @@ type Props = ComponentProps<typeof LazyMarkdownEditor>;
 export function EditorWithLineNumbers(props: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [lineCount, setLineCount] = useState(() => Math.max(1, splitLines(props.value)));
+  const lineCount = Math.max(1, splitLines(props.value));
   // Toolbar height — measured from the actual rendered toolbar so the cap
   // and line-1 baseline line up perfectly across font / theme changes.
   const [toolbarH, setToolbarH] = useState(0);
   // On phones the line-number gutter eats too much horizontal space.
   // Skip it; the editor renders edge-to-edge.
   const isMobile = useMediaQuery('(max-width: 48em)');
-
-  useEffect(() => {
-    setLineCount(Math.max(1, splitLines(props.value)));
-  }, [props.value]);
 
   useEffect(() => {
     const root = wrapRef.current;

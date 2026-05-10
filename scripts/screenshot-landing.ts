@@ -13,7 +13,7 @@
 
 import { chromium, type Browser } from 'playwright';
 import sharp from 'sharp';
-import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawn, type ChildProcess } from 'node:child_process';
 
@@ -63,7 +63,9 @@ async function snap(browser: Browser, theme: 'light' | 'dark') {
   await page.addInitScript((t) => {
     try {
       localStorage.setItem('notes-color-scheme', t as string);
-    } catch {}
+    } catch {
+      // Ignore localStorage failures in the browser sandbox.
+    }
   }, theme);
 
   await page.goto(URL, { waitUntil: 'networkidle' });
@@ -95,7 +97,6 @@ async function snap(browser: Browser, theme: 'light' | 'dark') {
     .webp({ quality: 82 })
     .toFile(webpDefault);
 
-  // eslint-disable-next-line no-console
   console.log(`✓ ${theme}: PNG + ${RESPONSIVE_WIDTHS.length + 1} WebP variants`);
 }
 
@@ -113,7 +114,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error(err);
   process.exit(1);
 });

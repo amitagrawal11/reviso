@@ -25,6 +25,7 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       'no-console': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 );

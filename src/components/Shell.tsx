@@ -20,7 +20,7 @@ import {
   IconSearch,
   IconSun,
 } from '@tabler/icons-react';
-import { Outlet, useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { requestSpotlight, subscribeSpotlight } from '../lib/spotlight-bridge';

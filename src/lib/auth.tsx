@@ -44,7 +44,6 @@ async function fetchProfile(client: SupabaseClient, userId: string): Promise<Pro
     .eq('id', userId)
     .maybeSingle();
   if (error) {
-    // eslint-disable-next-line no-console
     console.error('[supabase] fetch profile failed', error);
     return null;
   }
