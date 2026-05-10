@@ -15,6 +15,7 @@ import {
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
   IconLayoutSidebarRightExpand,
+  IconLayoutSidebarRightCollapse,
   IconMoon,
   IconSearch,
   IconSun,
@@ -41,19 +42,13 @@ export default function Shell() {
   const { mode } = useDataMode();
   const showBanner = mode === "demo";
   const totalHeaderH = HEADER_HEIGHT + (showBanner ? DEMO_BANNER_HEIGHT : 0);
-  // Only true on the note *view* route, not /edit, not anywhere else.
-  // Match both real (`/n/:id`) and demo (`/demo/n/:id`) views.
-  const isNoteViewReal = !!useMatch("/n/:id");
-  const isNoteViewDemo = !!useMatch("/demo/n/:id");
-  const isNoteView = isNoteViewReal || isNoteViewDemo;
   useLocation(); // re-render on route change
 
   useHotkeys([
     ["mod+\\", () => toggleDesktop()],
     ["mod+.", () => setReadMode((r) => !r)],
+    ["mod+K", () => requestSpotlight()]
   ]);
-
-  useHotkeys([["mod+K", () => requestSpotlight()]]);
 
   useEffect(() => {
     const unsub = subscribeSpotlight(() => setSpotlightLive(true));
@@ -162,17 +157,20 @@ export default function Shell() {
                   )}
                 </ActionIcon>
               </Tooltip>
-              {isNoteView && !tocOpen && (
-                <Tooltip label="Show outline">
+              <Tooltip label="Show outline">
                   <ActionIcon
                     variant="subtle"
                     color="gray"
-                    onClick={() => setTocOpen(true)}
+                    onClick={() => setTocOpen(prev => !prev)}
                   >
-                    <IconLayoutSidebarRightExpand size={20} />
+                    {tocOpen ? (
+                    <IconLayoutSidebarRightCollapse size={20} />
+                  ) : (
+                    <IconLayoutSidebarRightExpand  size={20} />
+                  )}
+                    
                   </ActionIcon>
                 </Tooltip>
-              )}
               <Tooltip label="Theme">
                 <ActionIcon
                   variant="subtle"
