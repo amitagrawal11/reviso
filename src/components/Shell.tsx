@@ -24,7 +24,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { requestSpotlight, subscribeSpotlight } from "../lib/spotlight-bridge";
 import { useDataMode } from "../lib/data-mode";
-import { DEMO_BANNER_HEIGHT } from "./DemoBanner";
+import { DEMO_BANNER_HEIGHT, DemoBanner } from "./DemoBanner";
 
 const HEADER_HEIGHT = 56;
 
@@ -80,7 +80,7 @@ export default function Shell() {
         padding={0}
       >
         <AppShell.Header p={0}>
-          {/* {showBanner && <DemoBanner />} */}
+          {showBanner && <DemoBanner />}
           <div
             className="app-header-row"
             style={{ padding: "0 16px", height: HEADER_HEIGHT }}
