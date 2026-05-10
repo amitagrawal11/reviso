@@ -1,9 +1,9 @@
 ---
-name: notes-app
+name: reviso
 description: Conventions, architecture cheats, and gotchas for the markdown notes PWA at this repo.
 ---
 
-# Notes App — SKILL
+# Reviso Notes — SKILL
 
 ## When to use
 

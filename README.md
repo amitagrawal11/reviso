@@ -1,4 +1,4 @@
-# Notes
+# Reviso Notes
 
 A markdown notes PWA with a three-column shell: nested collections and notes on the left, markdown content in the center, and an auto-generated table of contents on the right. It includes live markdown preview, Mermaid diagrams, drag-and-drop organization, search, dark and light themes, a distraction-free read mode, and optional Supabase-backed auth and sync.
 

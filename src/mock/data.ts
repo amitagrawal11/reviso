@@ -82,7 +82,7 @@ export const seedItems: Item[] = [
     updatedAt: now,
     content: `# Welcome to the demo
 
-This is a working copy of the Notes app, running entirely in your browser.
+This is a working copy of Reviso Notes, running entirely in your browser.
 Your changes here are stored in **localStorage only** — nothing is sent to a
 server. Sign up to keep your notes synced across devices.
 

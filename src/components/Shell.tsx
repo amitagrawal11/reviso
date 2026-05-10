@@ -11,7 +11,6 @@ import {
 } from '@mantine/core';
 import { useDisclosure, useHotkeys } from '@mantine/hooks';
 import {
-  IconBook,
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
   IconLayoutSidebarRightExpand,
@@ -26,6 +25,7 @@ import Sidebar from './Sidebar';
 import { requestSpotlight, subscribeSpotlight } from '../lib/spotlight-bridge';
 import { useDataMode } from '../lib/data-mode';
 import { DEMO_BANNER_HEIGHT, DemoBanner } from './DemoBanner';
+import { BrandMark } from './BrandMark';
 
 const HEADER_HEIGHT = 56;
 
@@ -83,8 +83,8 @@ export default function Shell() {
               {/* Brand always routes to "/" — landing for guests, real Home for
                   signed-in users. From demo mode this also exits the demo. */}
               <Group gap={6} style={{ cursor: 'pointer' }} onClick={() => nav('/')} wrap="nowrap">
-                <IconBook size={20} />
-                <strong>Notes</strong>
+                <BrandMark size={24} />
+                <strong>Reviso</strong>
               </Group>
             </Group>
 

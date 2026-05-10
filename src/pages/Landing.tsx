@@ -18,7 +18,6 @@ import {
 } from '@mantine/core';
 import { LandingDemoFrame } from '../components/LandingDemoFrame';
 import {
-  IconBook,
   IconCheck,
   IconMarkdown,
   IconFolders,
@@ -31,13 +30,14 @@ import {
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { AuthModalSimple } from '../components/AuthModalSimple';
+import { BrandMark } from '../components/BrandMark';
 
 // SEO-aware copy. Tone: honest, specific, no AI-bro adjectives. Headings are
 // kept semantic (h1 → h2 → h3) so search engines can follow the outline.
 
-const TAGLINE = 'Markdown notes that stay yours.';
+const TAGLINE = 'Reviso Notes stay yours.';
 const SUBTITLE =
-  'A free, privacy-friendly notes app for markdown writers. Live preview, mermaid diagrams, nested folders, syntax highlighting, dark mode and offline support — all in your browser.';
+  'A free, privacy-friendly notes app for markdown writers. Reviso Notes gives you live preview, mermaid diagrams, nested folders, syntax highlighting, dark mode and offline support — all in your browser.';
 
 const FEATURES: { title: string; body: string; Icon: typeof IconMarkdown }[] = [
   {
@@ -82,9 +82,9 @@ export default function Landing() {
       <Container size="lg" py="md" component="header">
         <Group justify="space-between">
           <Group gap={6}>
-            <IconBook size={22} aria-hidden />
+            <BrandMark />
             <Text fw={700} component="span">
-              Notes
+              Reviso
             </Text>
           </Group>
           <Group gap="xs">
@@ -131,8 +131,8 @@ export default function Landing() {
             Everything you need to write seriously in markdown
           </Title>
           <Text ta="center" c="dimmed" maw={680} mx="auto" mb="xl">
-            A focused notes app for technical writers, developers, students and anyone who would
-            rather own their content than rent it.
+            Reviso Notes is a focused app for technical writers, developers, students and anyone who
+            would rather own their content than rent it.
           </Text>
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
             {FEATURES.map(({ Icon, title, body }) => (
@@ -158,12 +158,12 @@ export default function Landing() {
           <Card withBorder p="xl" radius="md">
             <Stack gap="md">
               <Title id="why-h" order={2} fz="xl">
-                Why another notes app?
+                Why Reviso Notes?
               </Title>
               <Text size="sm" c="dimmed">
                 Most notes apps trade your content for convenience. They lock you into a proprietary
                 format, charge a subscription for features that should be table-stakes, or store
-                everything in a cloud you can't audit. Notes is the opposite:{' '}
+                everything in a cloud you can't audit. Reviso Notes is the opposite:{' '}
                 <strong>plain markdown files</strong>, <strong>browser-local by default</strong>,{' '}
                 <strong>optional cloud sync</strong>, and <strong>full export</strong> any time you
                 want to leave.
@@ -207,7 +207,7 @@ export default function Landing() {
               {
                 n: '3',
                 title: 'Sync across devices',
-                body: 'Notes synchronize automatically through Supabase. Open a note on your phone in the morning, finish it on your laptop after lunch.',
+                body: 'Reviso Notes synchronizes automatically through Supabase. Open a note on your phone in the morning, finish it on your laptop after lunch.',
               },
             ].map((s) => (
               <Card key={s.n} withBorder p="lg" radius="md">

@@ -62,7 +62,7 @@ export function LandingDemoFrame() {
             <source srcSet={webpSrcSet} sizes={sizesAttr} type="image/webp" />
             <Image
               src={screenshotSrc}
-              alt="Screenshot of the Notes app — click to try the demo."
+              alt="Screenshot of Reviso Notes — click to try the demo."
               fit="cover"
               fallbackSrc={fallbackSvg}
               loading="eager"

@@ -24,9 +24,9 @@ export default defineConfig({
       injectRegister: 'script-defer',
       includeAssets: ['favicon.svg', 'robots.txt'],
       manifest: {
-        name: 'Notes',
-        short_name: 'Notes',
-        description: 'Markdown notes — read anywhere',
+        name: 'Reviso Notes',
+        short_name: 'Reviso',
+        description: 'Markdown notes, revised and ready anywhere.',
         theme_color: '#0a0a0c',
         background_color: '#0a0a0c',
         display: 'standalone',
