@@ -1,118 +1,194 @@
 # Notes
 
-A markdown notes PWA with a Docusaurus-style three-column shell: nested folder/note sidebar on the left, markdown content in the middle, auto-generated table of contents on the right. Includes a Kindle-like read mode, dark/light themes, drag-and-drop reorganization, command-palette search, mermaid diagrams, syntax highlighting, and offline support via a service worker. Currently demo-grade — state lives in `localStorage` via a tiny in-memory store; Supabase + auth are scaffolded but not wired into the running UI.
+A markdown notes PWA with a three-column shell: nested collections and notes on the left, markdown content in the center, and an auto-generated table of contents on the right. It includes live markdown preview, Mermaid diagrams, drag-and-drop organization, search, dark and light themes, a distraction-free read mode, and optional Supabase-backed auth and sync.
+
+The app currently supports two runtime modes:
+- `demo` mode at `/demo`, which is public and always uses the local mock repo
+- `real` mode under `/`, which uses Supabase when `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are configured, and otherwise falls back to the local mock repo
 
 ## Quick start
 
 ```bash
 npm install
-npm run dev      # vite dev server (basic-ssl plugin enables https locally)
-npm run build    # tsc -b && vite build → dist/
-npm run preview  # preview the production build
+npm run dev
+npm run build
+npm run preview
 ```
 
-A `.env.example` exists for the future Supabase wiring; the app today does not require any env vars to run.
+Local development runs on Vite. Production output is written to `dist/`.
 
 ## Tech stack
 
-| Concern         | Choice                                                                     |
-| --------------- | -------------------------------------------------------------------------- |
-| Framework       | React 19 + TypeScript                                                      |
-| Routing         | react-router-dom v7                                                        |
-| UI library      | Mantine v7 (`@mantine/core`, `hooks`, `modals`, `notifications`, `spotlight`) |
-| Icons           | `@tabler/icons-react`                                                      |
-| Markdown stack  | `@uiw/react-md-editor` (`/nohighlight` build) + `remark-gfm` + `rehype-slug` + `rehype-autolink-headings` + `rehype-highlight` (highlight.js) |
-| Diagrams        | `mermaid` (lazy-loaded)                                                    |
-| Drag and drop   | `@dnd-kit/core`                                                            |
-| State           | Custom `useSyncExternalStore` store, persisted to `localStorage`           |
-| Backend (stub)  | `@supabase/supabase-js` — client + types + SQL schema present, not used by the UI |
-| Build           | Vite 6 (es2022, css code split, sourcemaps)                                |
-| PWA             | `vite-plugin-pwa` (Workbox, autoUpdate, NetworkFirst on JS/CSS/nav)        |
-| Hosting target  | Cloudflare Pages (build cmd `npm run build`, output `dist/`)               |
+| Concern | Choice |
+| --- | --- |
+| Framework | React 19 + TypeScript |
+| Build tool | Vite 6 |
+| Routing | `react-router-dom` v7 |
+| UI | Mantine v7 |
+| Icons | `@tabler/icons-react` |
+| Markdown | `@uiw/react-md-editor/nohighlight` + `remark-gfm` + `remark-breaks` |
+| HTML transforms | `rehype-slug` + `rehype-autolink-headings` + `rehype-highlight` |
+| Diagrams | `mermaid` |
+| Drag and drop | `@dnd-kit/core` |
+| PWA | `vite-plugin-pwa` |
+| Auth and data | Supabase (`@supabase/supabase-js`) |
+| Image pipeline | Playwright + Sharp for landing screenshots |
 
-## Project structure
+## How it works
 
-```
-src/
-  App.tsx              Routes: lazy-loaded pages under <Shell> outlet
-  main.tsx             Mantine + ModalsProvider + Notifications + Router bootstrap
-  styles.css           App stylesheet (inlined into <head> via inject-styles.ts)
-  components/
-    Shell.tsx          AppShell header + sidebar slot + outlet, hotkeys (⌘K, ⌘\, ⌘.)
-    Sidebar.tsx        Tree view, dnd-kit DnD, row menus, account footer
-    TocSidebar.tsx     Right-side outline with scroll-spy (IntersectionObserver)
-    SpotlightSearch.tsx Mantine Spotlight, lazy-mounted on first ⌘K
-    LazyMarkdown.tsx   Suspense wrappers around @uiw/react-md-editor/nohighlight
-    CodeBlock.tsx      Custom <pre> renderer — copy button + mermaid detection
-    MermaidBlock.tsx   Lazy mermaid import + theme-aware render
-    dialogs.tsx        New-item, rename, confirm-trash forms (Mantine modals)
-    dialogs-lazy.ts    Async shims so dialogs.tsx stays out of the critical chunk
-    Layout.tsx         Older alternate shell (not currently routed; kept as a reference)
-  pages/
-    Home.tsx           Landing welcome cards
-    NoteView.tsx       Render a note (markdown + TOC)
-    NoteEdit.tsx       Edit note (live preview, autosave debounce 800ms)
-    CollectionView.tsx Folder grid view (/c/:id)
-    Recent.tsx         Last 20 notes by updatedAt
-    Starred.tsx        Filtered list of starred notes
-    Trash.tsx          Trashed items + restore / hard-delete
-    Login.tsx          Supabase email/password form (NOT routed — orphan)
-  store/
-    store.ts           In-memory items array + emit, useSyncExternalStore hook
-  mock/
-    data.ts            Item type + seed items
-  lib/
-    auth.tsx           Supabase AuthProvider context (not mounted in the tree)
-    supabase.ts        Supabase client + Note row type
-    notes.ts           CRUD helpers for the (unused) notes table
-    spotlight-bridge.ts Decouples ⌘K trigger from the spotlight chunk
-    inject-styles.ts   Inlines styles.css into <head> at module init
-    hljs-theme.tsx     Lazy-injects highlight.js github / github-dark CSS, toggles via media attr
-supabase/schema.sql    Postgres schema (notes table + RLS, used only if you wire Supabase)
-.github/workflows/keepalive.yml  Daily Supabase ping (only relevant once Supabase is wired)
-index.html             Inline pre-paint script that sets data-mantine-color-scheme
-vite.config.ts         Vite + VitePWA + basic-ssl + Workbox runtimeCaching rules
-```
+### Real and demo trees
+
+The router serves two parallel trees:
+
+- `real` tree: `/`, `/recent`, `/starred`, `/trash`, `/profile`, `/settings`, `/c/:id`, `/n/:id`, `/n/:id/edit`
+- `demo` tree: `/demo`, `/demo/recent`, `/demo/starred`, `/demo/trash`, `/demo/c/:id`, `/demo/n/:id`, `/demo/n/:id/edit`
+
+The demo tree is always public and always uses the local mock repo.
+
+The real tree is gated by auth when Supabase is configured:
+- guests visiting `/` see the landing page
+- signed-in users see the app shell
+- guests visiting protected routes are redirected to `/`
+
+If Supabase env vars are missing, the real tree falls back to the local mock repo so the app can still run without backend setup.
+
+### Data layer
+
+The UI talks to a `Repo` abstraction rather than calling storage directly:
+
+- `mockRepo` stores items in `localStorage`
+- `supabaseRepo` stores items in the Supabase `notes` table and applies optimistic UI updates
+
+Items are a flat array with `parentId` pointers. Collections and notes share the same shape, and tree structure is derived by filtering children by `parentId`.
+
+### Auth and sync
+
+`AuthProvider` is mounted in `src/main.tsx`. It tracks the active Supabase session, loads the current profile, and exposes auth state to the router and account-related pages.
+
+When Supabase is enabled, the repo layer:
+- creates notes and collections optimistically
+- persists changes to Postgres
+- listens for auth changes
+- subscribes to realtime note updates
 
 ## Key features
 
-- Nested folders ("collections") and notes — single self-referencing `parentId` model
-- Markdown CRUD with live-preview editor and 800ms debounced autosave
-- Drag-and-drop in the sidebar to reparent items, with descendant-loop guard
-- Read mode (⌘.) collapses both sidebars and centers content (max ~1100px)
-- Right-side auto-generated TOC with scroll-spy, defaults open above 1100px
-- Spotlight search (⌘K, ⌘P) over notes and collections
-- Mermaid diagrams rendered from ```` ```mermaid ```` blocks (lazy-loaded, theme-aware)
-- Syntax highlighting via highlight.js with theme-swapped CSS
-- Per-block copy-code button on rendered code
-- Soft-delete to Trash with restore and permanent-delete
-- Star / unstar notes
-- Dark / light theming with localStorage persistence and a synchronous pre-paint script that prevents FOUC
-- Installable PWA, NetworkFirst service worker so deploys never serve stale code
-- Custom emoji pickers (separate sets for notes vs collections)
-- Keyboard shortcuts: ⌘K search, ⌘\ toggle sidebar, ⌘. read mode
+- Nested collections and notes with drag-and-drop reparenting
+- Markdown editing with live preview
+- Syntax-highlighted code blocks
+- Mermaid diagram rendering
+- Spotlight-style search
+- Read mode for distraction-free reading
+- Scroll-aware table of contents
+- Dark and light themes with pre-paint color scheme handling
+- Installable PWA with runtime caching
+- Public demo mode and optional authenticated workspace mode
 
-## Status — what's real vs stub
+## Project structure
 
-Production-shaped:
-- The whole UI shell, routing, sidebar tree + DnD, dialogs, TOC, read mode, theming, code/mermaid rendering, PWA config.
+```text
+src/
+  App.tsx                   Route table for the real and demo trees
+  main.tsx                  Mantine, notifications, router, auth bootstrap
+  styles.css                Theme tokens and app-level styles
+  components/
+    Shell.tsx               Main app shell and toolbar
+    Sidebar.tsx             Collection tree, drag-and-drop, navigation
+    TocSidebar.tsx          Right-side outline with scroll spy
+    SpotlightSearch.tsx     Lazy-mounted search UI
+    LazyMarkdown.tsx        Lazy markdown editor and viewer wrappers
+    CodeBlock.tsx           Code rendering and Mermaid detection
+    MermaidBlock.tsx        Theme-aware Mermaid renderer
+    LandingDemoFrame.tsx    Responsive screenshot frame for the landing page
+    DemoBanner.tsx          Demo-mode banner shown above the shell
+    dialogs.tsx             Create, rename, confirm dialogs
+    dialogs-lazy.ts         Lazy dialog entrypoints and prefetch helpers
+    EditorWithLineNumbers.tsx
+    NotFoundCard.tsx
+  pages/
+    Landing.tsx             Public marketing page at `/`
+    Home.tsx                In-app home screen for signed-in and demo users
+    NoteView.tsx            Render a note
+    NoteEdit.tsx            Edit a note
+    CollectionView.tsx      Render a collection
+    Recent.tsx
+    Starred.tsx
+    Trash.tsx
+    Profile.tsx
+    Settings.tsx
+    Login.tsx
+  lib/
+    auth.tsx                Auth provider and session/profile state
+    data-mode.tsx           Repo selection and mode-aware hooks
+    repo.ts                 Repo interface
+    notes.ts                Supabase-backed repo implementation
+    supabase.ts             Supabase client
+    profile.ts              Profile update helpers
+    spotlight-bridge.ts     Deferred spotlight activation bridge
+    inject-styles.ts        Inlines app styles
+    hljs-theme.tsx          Highlight.js theme swapping
+  store/
+    mock-repo.ts            LocalStorage-backed repo implementation
+  mock/
+    data.ts                 Item types and seed data
+supabase/
+  schema.sql                Notes, profiles, RLS, and auth trigger schema
+scripts/
+  screenshot-landing.ts     Generates landing screenshots and WebP variants
+public/
+  landing/                  Generated landing screenshots
+vite.config.ts              Vite + PWA config
+index.html                  Pre-paint theme script, boot splash, preload logic
+```
 
-Stubbed / not wired:
-- **Persistence is `localStorage` only.** `src/store/store.ts` holds an in-memory `Item[]` seeded from `src/mock/data.ts`. There is no network call.
-- **Supabase is not wired into the app.** `src/lib/supabase.ts`, `lib/notes.ts`, `lib/auth.tsx` exist and compile, but no component imports `AuthProvider` and no page calls `listNotes`/`getNote`/etc. `pages/Login.tsx` is not registered in `App.tsx`.
-- **Account footer is decorative** — the avatar/name/email and Sign out item are hard-coded; they don't call `supabase.auth.signOut()`.
-- **Layout.tsx** is an older two-sidebar shell, kept around but not routed; `Shell.tsx` is what actually renders.
-- **30-day Trash retention** is just copy in the dialogs — no scheduled purge exists.
-- **Realtime cross-tab sync** mentioned in the old README is not implemented (the store fires only within one tab).
-- There is no `register-sw.ts` — the previous explicit registration file has been removed; `vite-plugin-pwa` handles registration via `injectRegister: 'script-defer'`.
+## Current status
 
-## Roadmap / TODO
+What is live in the code today:
 
-- Wire `AuthProvider` into `main.tsx` and gate the app on session
-- Replace `store.ts` with a Supabase-backed implementation (see `lib/notes.ts` for the shape — note the `parent_id` / `parentId` casing difference)
-- Route `pages/Login.tsx` and a `RequireAuth` wrapper
-- Hook the sidebar account footer up to real auth state and `signOut`
-- Implement actual 30-day trash purge (server-side cron or client-side sweep)
-- Realtime sync via Supabase channels on the notes table
-- Drag-and-drop ordering (currently DnD only changes parent, not `position`)
-- Decide whether `components/Layout.tsx` should be deleted or restored
+- `AuthProvider` is mounted
+- login and signup UI exist
+- the app supports both demo and real route trees
+- the repo layer can use either local storage or Supabase
+- profile and settings pages are routed
+- the landing page, shell, markdown, Mermaid, TOC, and PWA flow are all wired
+
+What to know before treating it like a production SaaS:
+
+- without Supabase env vars, both trees run on local data only
+- the demo tree always uses local mock data by design
+- drag and drop changes `parentId`, not sibling ordering
+- Trash retention text exists, but there is no scheduled 30-day purge job
+- the real backend path is intended for personal-scale usage and still has room for hardening
+
+## Environment variables
+
+Supabase is optional. To enable the real authenticated workspace, set:
+
+```bash
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+```
+
+Without these variables, the app still runs using the mock repo.
+
+## Deployment
+
+This is a static Vite app, so deployment is straightforward.
+
+Recommended frontend target:
+- build command: `npm run build`
+- output directory: `dist`
+
+Good free hosting options:
+- Cloudflare Pages
+- Vercel
+- Netlify
+
+If you want authenticated sync, pair the frontend with a Supabase project and apply `supabase/schema.sql`.
+
+## Notes for contributors
+
+- Use `useItems()`, `useRepo()`, and `useModePath()` from `src/lib/data-mode.tsx` instead of reaching into a repo implementation directly.
+- Keep route-building mode-aware so shared components work under both `/` and `/demo`.
+- Be careful with bundle size on the landing path. The app intentionally lazy-loads shell, markdown, dialogs, and Supabase-backed data code.
+- If you change landing screenshots, keep `index.html` preload settings and `LandingDemoFrame.tsx` image sources in sync.
