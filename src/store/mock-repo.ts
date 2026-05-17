@@ -30,7 +30,7 @@ function emit() {
   listeners.forEach((l) => l());
 }
 
-export const mockRepo: Repo & { reset: () => void } = {
+export const mockRepo: Repo & { reset: () => void; clearAll: () => void } = {
   getAll: () => items,
   get: (id) => items.find((i) => i.id === id),
   create: (input: CreateInput) => {
@@ -81,6 +81,12 @@ export const mockRepo: Repo & { reset: () => void } = {
   },
   reset: () => {
     items = structuredClone(seedItems);
+    emit();
+  },
+  // Clears to empty (not seed) — used after a successful import to signed-in
+  // account so the local copy doesn't re-appear as "importable".
+  clearAll: () => {
+    items = [];
     emit();
   },
 };

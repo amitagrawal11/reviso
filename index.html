@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#1a1b1e" />
 
     <!-- Primary SEO -->
@@ -54,6 +54,31 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
 
+    <!-- Fonts: Inter for UI, JetBrains Mono for code. Loaded non-blocking via
+         the media="print" → onload swap trick so the stylesheet never blocks
+         the critical rendering path. display=swap means the system fallback
+         paints immediately; Inter swaps in once the font file arrives.
+         The <noscript> fallback covers the rare no-JS case. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
     <!-- Structured data (Schema.org WebApplication) — helps search engines
          understand what the page describes and may surface a richer result. -->
     <script type="application/ld+json">
@@ -101,7 +126,7 @@
                 : 'light';
           document.documentElement.setAttribute('data-mantine-color-scheme', scheme);
           document.documentElement.style.colorScheme = scheme;
-          document.documentElement.style.background = scheme === 'dark' ? '#1a1b1e' : '#ffffff';
+          document.documentElement.style.background = scheme === 'dark' ? '#0a0a0c' : '#f3f4f6';
         } catch (e) {}
 
         // Preload the LCP image (landing-page screenshot) on the landing

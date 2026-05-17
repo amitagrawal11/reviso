@@ -1,4 +1,3 @@
-import { modals } from '@mantine/modals';
 import {
   TextInput,
   Text,
@@ -15,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Repo } from '../lib/repo';
 import { Item } from '../mock/data';
 import { notifications } from '@mantine/notifications';
+import { openAdaptiveDialog } from './AdaptiveDialog';
 
 // Modals are portalled by Mantine's ModalsProvider, which lives ABOVE the
 // route tree's DataModeProvider — so calling useRepo()/useModePath() inside
@@ -127,7 +127,7 @@ function CollectionPicker({
     >
       <Combobox.Target>
         <InputBase
-          label="Collection (optional)"
+          label="Parent collection (optional)"
           placeholder="None — top level"
           rightSection={
             value.kind !== 'none' ? (
@@ -167,7 +167,7 @@ function CollectionPicker({
           {!exactMatch && search.trim() && (
             <Combobox.Option value={`__new__:${search.trim()}`}>
               <Text size="sm" c="blue">
-                + Create collection “{search.trim()}”
+                + Create collection "{search.trim()}"
               </Text>
             </Combobox.Option>
           )}
@@ -243,12 +243,12 @@ function ItemForm({
     notifications.show({
       message:
         parent.kind === 'new'
-          ? `Note created in new collection “${parent.name}”`
+          ? `Note created in new collection "${parent.name}"`
           : `${isFolder ? 'Collection' : 'Note'} created`,
       color: 'green',
     });
     onClose();
-    if (!isFolder) nav(path(`/n/${item.id}/edit`));
+    if (!isFolder) nav(path(`/n/${item.id}/edit`) + '?new=1');
   }
 
   return (
@@ -261,9 +261,11 @@ function ItemForm({
         data-autofocus
         onKeyDown={(e) => e.key === 'Enter' && submit()}
       />
-      {!isFolder && (
-        <CollectionPicker options={collectionOptions} value={parent} onChange={setParent} />
-      )}
+      <CollectionPicker
+        options={collectionOptions.filter((o) => (isFolder ? o.id !== parentId : true))}
+        value={parent}
+        onChange={setParent}
+      />
       <div>
         <Text size="sm" fw={500} mb={4}>
           Icon
@@ -305,16 +307,10 @@ export function openItemDialog({
   repo: Repo;
   path: PathFn;
 }) {
-  const id = modals.open({
+  openAdaptiveDialog({
     title: isFolder ? 'New collection' : 'New note',
-    children: (
-      <ItemForm
-        isFolder={isFolder}
-        parentId={parentId}
-        repo={repo}
-        path={path}
-        onClose={() => modals.close(id)}
-      />
+    children: (close) => (
+      <ItemForm isFolder={isFolder} parentId={parentId} repo={repo} path={path} onClose={close} />
     ),
   });
 }
@@ -367,29 +363,40 @@ function RenameForm({ item, onClose, repo }: { item: Item; onClose: () => void; 
 }
 
 export function openRenameDialog(item: Item, repo: Repo) {
-  const id = modals.open({
+  openAdaptiveDialog({
     title: `Rename ${item.isFolder ? 'collection' : 'note'}`,
-    children: <RenameForm item={item} repo={repo} onClose={() => modals.close(id)} />,
+    children: (close) => <RenameForm item={item} repo={repo} onClose={close} />,
   });
 }
 
 // Caller passes the active repo from useRepo() — confirm is imperative and
 // runs outside React, so it can't read context itself.
 export function openConfirm(item: Item, repo: Repo) {
-  modals.openConfirmModal({
-    title: `Move “${item.title}” to Trash?`,
-    children: (
-      <Text size="sm">
-        {item.isFolder
-          ? 'The collection and every note inside it will be moved to Trash. You can restore them at any time within the next 30 days, after which they’ll be deleted automatically.'
-          : 'This note will be moved to Trash. You can restore it at any time within the next 30 days, after which it’ll be deleted automatically.'}
-      </Text>
+  openAdaptiveDialog({
+    title: `Move to Trash?`,
+    children: (close) => (
+      <Stack>
+        <Text size="sm">
+          {item.isFolder
+            ? `"${item.title}" and every note inside it will be moved to Trash. You can restore them within 30 days.`
+            : `"${item.title}" will be moved to Trash. You can restore it within 30 days.`}
+        </Text>
+        <Group justify="flex-end">
+          <Button variant="default" onClick={close}>
+            Cancel
+          </Button>
+          <Button
+            color="red"
+            onClick={() => {
+              repo.trash(item.id);
+              notifications.show({ message: 'Moved to Trash', color: 'gray' });
+              close();
+            }}
+          >
+            Move to Trash
+          </Button>
+        </Group>
+      </Stack>
     ),
-    labels: { confirm: 'Move to Trash', cancel: 'Cancel' },
-    confirmProps: { color: 'red' },
-    onConfirm: () => {
-      repo.trash(item.id);
-      notifications.show({ message: 'Moved to Trash', color: 'gray' });
-    },
   });
 }

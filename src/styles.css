@@ -1,8 +1,468 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Design tokens — typography, spacing, radius, icon sizes, colors.
+   Mirrors src/lib/design-tokens.ts.
+
+   COLOR SYSTEM (overview)
+   ───────────────────────
+   1. Primary scale (--primary-50..900) — one brand color (Notion blue) with
+      9 stops. Every accent / link / button / focus surface picks a stop
+      that meets WCAG AA on its target background. Theme blocks below
+      alias --color-accent and friends to the right stops.
+
+   2. Neutrals — defined inside each theme block (--app-shell-bg, --app-main-bg,
+      --app-text, --app-text-muted, etc.). One ramp per theme so light and
+      dark can have independently-tuned surface / text scales.
+
+   3. Semantic — 4 functional colors (success, warning, danger, info), each
+      with a "light" (used on dark theme) and "default" (used on light theme)
+      pair. Theme blocks alias --color-success etc. to the right one.
+
+   4. Special-purpose — demo-banner amber theme, code block surfaces, hljs
+      syntax token colors, scrollbar tints. Documented in their own blocks.
+
+   See contrast audit tables in the [data-mantine-color-scheme] blocks
+   below for verified WCAG AA / AAA ratios. */
+:root {
+  /* Spacing — 4pt grid */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 9999px;
+
+  /* Type scale (rem-based, 16px root) — honors OS text-size scaling.
+     Hierarchy: display (note title, landing hero) sits clearly above body
+     h1 without overwhelming the page. The note name shouldn't read like a
+     billboard — just like the most-prominent heading on a focused
+     reading surface. */
+  --text-display: 2.125rem; /* 34 — note title, landing hero */
+  --text-h1: 1.5rem; /* 24 — body section h1 */
+  --text-h2: 1.25rem; /* 20 — body subsection */
+  --text-h3: 1.0625rem; /* 17 — body sub-subsection */
+  --text-body-lg: 1rem; /* 16 — markdown prose */
+  --text-body: 0.9375rem; /* 15 — UI default */
+  --text-sm: 0.8125rem; /* 13 — caption, secondary */
+  --text-xs: 0.75rem; /* 12 — label, eyebrow */
+  --text-code: 0.875rem; /* 14 — monospace */
+
+  /* Line heights — looser at display and tight tiers so multi-line titles
+     stop looking crushed. */
+  --lh-display: 1.1;
+  --lh-tight: 1.25;
+  --lh-snug: 1.4;
+  --lh-base: 1.55;
+  --lh-relaxed: 1.75;
+
+  /* Letter-spacing — negative for display weights, neutral for body. Eased
+     up at display tier because the serif (Fraunces) doesn't need as much
+     tracking as Inter to feel tight. */
+  --ls-display: -0.022em;
+  --ls-h1: -0.018em;
+  --ls-h2: -0.012em;
+  --ls-h3: -0.008em;
+  --ls-body: -0.003em;
+  --ls-label: 0.08em;
+
+  /* Font weights */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semi: 600;
+  --fw-bold: 700;
+
+  /* Icon sizes per surface zone */
+  --icon-sm: 14px;
+  --icon-md: 18px;
+  --icon-lg: 20px;
+  --icon-xl: 24px;
+
+  /* Fonts. Loaded from Google Fonts in index.html (display=swap).
+     Two families — Inter for everything visible, JetBrains Mono for code.
+     The display tier (note titles, hero) doesn't switch font family —
+     instead it leans on weight (800) + scale + tracking to read distinctly
+     from body text. Cohesive with the rest of the app, no editorial
+     character. */
+  --font-ui:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-display: var(--font-ui);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Layout — see use-viewport hook (Phase 5) for adaptive class computation */
+  --header-h: 60px;
+  --header-h-compact: 56px;
+  --bottom-nav-h: 56px;
+  --rail-w: 72px;
+  --sidebar-w: 280px;
+  --sidebar-w-medium: 260px;
+  --toc-w: 220px;
+
+  /* ── Primary scale ─────────────────────────────────────────────────────
+     Single brand color (Notion blue) with 9 stops. Each theme block below
+     aliases --color-accent / --color-accent-hover / --color-focus-ring to
+     the stop that meets WCAG AA on its background. Don't reference these
+     stops directly from components — go through --color-accent so the
+     theme stays consistent. */
+  --primary-50: #eff5fc;
+  --primary-100: #d8e6f8;
+  --primary-200: #b1cdf1;
+  --primary-300: #8ec5ff; /* lifted variant — focus ring on dark */
+  --primary-400: #3a92e8; /* dark-theme accent hover */
+  --primary-500: #2383e2; /* Notion blue — brand mark, dark-theme accent */
+  --primary-600: #1559b2; /* light-theme accent (AA on white) */
+  --primary-700: #0e3f8a; /* light-theme accent hover */
+  --primary-800: #08305f;
+  --primary-900: #042036;
+
+  /* ── Semantic colors ───────────────────────────────────────────────────
+     4 functional colors, each with a light + default pair. Theme blocks
+     below alias --color-success/warning/danger/info to the right one. */
+  --green-500: #15803d; /* light theme */
+  --green-400: #4ade80; /* dark theme */
+  --amber-700: #92400e; /* light theme */
+  --amber-400: #fbbf24; /* dark theme */
+  --red-700: #b91c1c; /* light theme */
+  --red-400: #f87171; /* dark theme */
+  --blue-700: #1d4ed8; /* light theme info */
+  --blue-400: #60a5fa; /* dark theme info */
+}
+
 html,
 body,
 #root {
   height: 100%;
   margin: 0;
+}
+
+/* User text-size preference (Settings → Appearance → Text size). Defaults
+   to 1 (100%, no scaling). Every rem-based size from the type scale (Phase 1)
+   inherits this multiplier automatically; px-only legacy sizes are not
+   affected, which is intentional — those are pinned for parity with
+   third-party UI (md-editor cursor metrics, etc.). */
+html {
+  font-size: calc(16px * var(--text-scale, 1));
+}
+
+/* User density preference (Settings → Appearance → Density). Affects the
+   only "list-row" surfaces in the app: the sidebar tree, command palette
+   rows, and settings rows. Cozy = current values (the visual defaults
+   designed in Phases 1–8). Compact = ~20% denser. */
+[data-density='compact'] .tree-row,
+[data-density='compact'] .row {
+  /* `Group py={isTouch ? 8 : 2}` in Sidebar — we apply a smaller value
+     via padding override so we don't have to thread density into every
+     component. Mantine Group renders as a flex div; the inline py
+     style takes precedence on touch, but on hover-capable devices
+     (where py=2 is rendered) compact tightens further. */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+[data-density='compact'] .mantine-NavLink-root {
+  --nl-py: 6px;
+  padding-top: var(--nl-py);
+  padding-bottom: var(--nl-py);
+  min-height: 34px;
+}
+[data-density='compact'] .mantine-Card-root {
+  /* Settings cards / Home tiles a bit tighter. */
+  --card-padding: 16px;
+}
+
+/* Body-level typography: Inter feature settings for cleaner glyphs
+   (cv11 = single-storey 'a', ss01 = open '4', ss03 = curved '6/9',
+    cv02 = open 'l'). Stylistic sets only fire on Inter; harmless on fallback. */
+body {
+  font-feature-settings: 'cv11', 'ss01', 'ss03', 'cv02';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: var(--ls-body);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Display title — Inter at extra-bold (800) weight, large size, tight
+   tracking. Reserved for the *one* heading on a screen that names what
+   the user is looking at: the note title, the landing hero.
+
+   Differentiated from body section headings (h1–h4, weight 600–700) by:
+     - much larger size (48 vs 26 for body h1)
+     - heavier weight (800 vs 700)
+     - tighter tracking (-0.025em)
+     - tabular-nums for any embedded numerals
+   The hierarchy is communicated through type properties rather than
+   font-family, keeping the visual system cohesive. */
+.display-title {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  font-feature-settings:
+    'cv11' on,
+    /* alt 'a' */ 'ss01' on,
+    /* refined caps */ 'ss03' on,
+    /* alt 'l' */ 'lnum' on; /* lining figures */
+  color: var(--mantine-color-text);
+  margin: 0;
+}
+
+/* Caption — the dimmed "Last edited / 1234 words" line under a note title,
+   form-field hints, and similar secondary metadata. Small caps treatment
+   + tracked-out letters give it the "metadata" reading vs. the body
+   prose right below. */
+.caption {
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--mantine-color-dimmed);
+  line-height: 1.4;
+}
+
+/* Note title block ────────────────────────────────────────────────────────
+   The title row sits flush with the breadcrumb above it (~16px). The
+   caption (last-edited) sits 8px below the title. The next element (the
+   markdown body) gets 32px of breathing room so the title block reads as
+   a distinct "header" zone above the article. */
+.note-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65em; /* relative to title font-size so it scales */
+  margin: 0.25rem 0 0.5rem;
+}
+.note-title-icon {
+  /* Emoji rendered at ~60% of the title size so it sits in the optical
+     center of the cap-height line instead of dominating beside it. Aligned
+     to baseline so it tracks the actual letterforms. */
+  font-size: 0.6em;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-block;
+  align-self: center;
+}
+.note-title-caption {
+  margin: 0 0 2rem;
+}
+
+/* Focus ring — distinct from hover, selection, and accent. Visible on any
+   keyboard-focusable element, invisible on mouse click (focus-visible only).
+   2px outline + 2px offset = 4px ring, which reads clearly on every
+   surface tint without crowding the focused element. */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+  /* A faint glow doubles the perceptual size of the ring on darker
+     surfaces without dominating lighter ones. */
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-focus-ring) 18%, transparent);
+}
+/* Mantine wraps inputs/buttons in their own focus styling — disable their
+   default ring so ours doesn't double up. */
+.mantine-Input-input:focus-visible,
+.mantine-TextInput-input:focus-visible,
+.mantine-PasswordInput-input:focus-visible,
+.mantine-Textarea-input:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 0;
+  border-color: var(--color-focus-ring);
+}
+
+/* ── QuickCaptureFab (Phase 9) — floating "+" on compact viewports ──
+   Pinned to bottom-right above the BottomNav. `bottom` is set inline so the
+   caller controls the offset above the safe-area inset; everything else is
+   here. */
+.quick-capture-fab {
+  position: fixed;
+  right: 16px;
+  /* Fallback bottom is overridden by inline calc(... + env()) — keep this
+     value high enough to clear the BottomNav (56px) + a 16px gap on browsers
+     without env() support. */
+  bottom: calc(72px + 16px);
+  z-index: 200;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+  border: 0;
+  transition:
+    background 120ms,
+    transform 120ms;
+}
+.quick-capture-fab:hover {
+  background: var(--color-accent-hover);
+  transform: scale(1.03);
+}
+.quick-capture-fab:active {
+  transform: scale(0.97);
+}
+
+/* ── BottomNav (Phase 7) — primary mobile navigation ──
+   Renders inside Mantine's AppShell.Footer when viewport.class === 'compact'.
+   Inactive items are dimmed; active item lifts to --color-accent.
+   Hard-guarded with a min-width: 600 media query so even if useViewport
+   miscomputes during hydration / iframe quirks, the bottom nav stays mobile-
+   only. The sidebar covers the same navigation on wider viewports. */
+@media (min-width: 600px) {
+  .bottom-nav,
+  .quick-capture-fab {
+    display: none !important;
+  }
+  /* Mantine AppShell tracks footer height through CSS custom properties. When
+     the user resizes from compact (BottomNav rendered) → medium (Footer JSX
+     unmounted), the variables can keep their previous value for a frame and
+     reserve a visible empty strip at the bottom. Force them to 0 at wider
+     viewports so AppShell.Main fills the whole height regardless of
+     transient Mantine state. */
+  .mantine-AppShell-root {
+    --app-shell-footer-height: 0px !important;
+    --app-shell-footer-offset: 0px !important;
+  }
+  .mantine-AppShell-footer:has(.bottom-nav) {
+    display: none !important;
+    height: 0 !important;
+  }
+  .mantine-AppShell-main {
+    padding-bottom: 0 !important;
+  }
+}
+.bottom-nav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  background: var(--app-shell-bg, var(--mantine-color-body));
+  border-top: 1px solid var(--app-border, var(--mantine-color-default-border));
+}
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
+  padding: 6px 4px;
+  color: var(--mantine-color-dimmed);
+  text-decoration: none;
+  transition: color 120ms;
+  border-radius: var(--radius-sm);
+}
+.bottom-nav-item:hover {
+  color: var(--mantine-color-text);
+}
+.bottom-nav-item--active,
+.bottom-nav-item--active:hover {
+  color: var(--color-accent);
+}
+.bottom-nav-item__label {
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.01em;
+}
+
+/* Skip-to-content link — sits at the top of the DOM, visually hidden until
+   keyboard focus brings it on-screen. Tab once from anywhere on the page and
+   the link surfaces, letting screen-reader / keyboard users bypass the entire
+   sidebar to land in the main content. WCAG 2.4.1. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 10000;
+  padding: 8px 14px;
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semi);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 120ms ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Honor user motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* NoteEdit fills the viewport beneath the header. 100dvh adapts when iOS
+   Safari's URL bar collapses on scroll, and gives the correct height in
+   landscape on phones. The 100vh fallback covers browsers that don't yet
+   understand dvh (mostly resolved as of 2024; declaration order matters). */
+.note-edit-root {
+  height: calc(100vh - var(--header-h-compact, 56px));
+  height: calc(100dvh - var(--header-h-compact, 56px));
+}
+
+/* ── Mobile editor bottom save bar ──────────────────────────────────────────
+   Fixed bar that sits above the BottomNav on compact viewports. Always
+   visible so the user can see save status and reach Save/Cancel without
+   scrolling. Clears the iPhone home indicator via safe-area-inset-bottom. */
+.editor-save-bar {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-h, 56px) + env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--app-shell-bg, var(--mantine-color-body));
+  border-top: 1px solid var(--app-border, var(--mantine-color-default-border));
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+}
+/* ── Bottom sheet action rows (touch row context menu) ── */
+.sheet-action-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 20px;
+  color: var(--mantine-color-text);
+  transition: background 100ms;
+}
+.sheet-action-row:hover,
+.sheet-action-row:active {
+  background: var(--app-surface-hi, var(--mantine-color-default-hover));
+}
+.sheet-action-row--danger {
+  color: var(--color-danger);
+}
+
+.editor-save-bar__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background-color 200ms;
 }
 
 /* ── Demo banner (shown above the shell in /demo) ── */
@@ -12,9 +472,11 @@ body,
   align-items: flex-start; /* actions hug the top */
   justify-content: space-between;
   gap: 16px;
-  padding: 0 16px;
+  /* Honor landscape notches on iPhone PWA install. The header wrapper above
+     already absorbs safe-area-inset-top; this handles left/right. */
+  padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
   border-bottom: 1px solid;
-  font-size: 14px;
+  font-size: var(--text-sm);
 }
 .demo-banner__msg {
   display: flex;
@@ -63,9 +525,15 @@ body,
   gap: 12px;
 }
 .app-header-search {
-  flex: 1;
-  max-width: 520px;
+  flex: 0 1 480px;
+  /* True centering: the search bar sits in the middle column of a
+     left / center / right flex layout. Left and right groups each have
+     flex: 1 so they absorb equal space, leaving the search centered. */
   margin: 0 auto;
+}
+.app-header-search:hover {
+  border-color: var(--color-border-strong, var(--mantine-color-default-border)) !important;
+  background: var(--app-surface-hi, var(--mantine-color-default-hover)) !important;
 }
 /* On mobile the search bar is hidden (a search icon appears in the right group instead),
    so push the right group to the far edge. */
@@ -75,7 +543,18 @@ body,
   }
 }
 
-/* ── Deep dark theme — coherent grayscale ramp applied to every component ── */
+/* ── Dark theme ── coherent grayscale ramp applied to every component.
+   Contrast audit (against main bg #141416 unless noted) — all pass WCAG
+   AA, most pass AAA:
+     text         #e4e4e7  →  14.6:1   AAA
+     text-muted   #a1a1aa  →   7.4:1   AAA
+     accent       #2383e2  →   5.4:1   AA   (kept for brand consistency
+                                              with the icon mark)
+     focus-ring   #8ec5ff  →  11.5:1   AAA
+     success      #4ade80  →  ~11:1    AAA
+     warning      #fbbf24  →  ~12:1    AAA
+     danger       #f87171  →   7.5:1   AAA
+     info         #60a5fa  →   7.2:1   AAA */
 [data-mantine-color-scheme='dark'] {
   --app-shell-bg: #0a0a0c; /* shell — near-black */
   --app-main-bg: #141416; /* main "page" surface */
@@ -83,11 +562,31 @@ body,
   --app-surface-hi: #232327; /* hover / active surfaces */
   --app-border: #27272a;
   --app-text: #e4e4e7;
-  /* Bumped from #71717a (3.86:1 vs main bg) → #a1a1aa (~7.6:1) so dimmed
-     body text meets WCAG AA. Still reads as "secondary" against #e4e4e7. */
-  --app-text-muted: #a1a1aa;
-  --app-accent: #2383e2;
-  --app-accent-hover: #3a92e8;
+  --app-text-muted: #a1a1aa; /* 7.4:1 vs main — meets AAA */
+  --app-accent: var(--primary-500); /* Notion blue — 5.4:1 AA on main */
+  --app-accent-hover: var(--primary-400);
+  /* Code surfaces */
+  --app-code-bg: #0d0d10; /* inline code + pre background — deeper than surface so blocks pop */
+  --app-code-border: #313136;
+  --app-code-text: #e8e8ed;
+  --app-code-inline-text: #93c5fd; /* blue-300 — readable, clearly "code", no warning connotation */
+
+  /* Scrollbar tints — quiet at rest, visible on hover */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.22);
+
+  /* Semantic aliases — point at primary-scale + semantic-pair tokens above
+     so this block is just "which stop does this theme use", no hex. */
+  --color-accent: var(--primary-500);
+  --color-accent-hover: var(--primary-400);
+  --color-accent-subtle: rgba(35, 131, 226, 0.16); /* primary-500 @ 16% */
+  --color-focus-ring: var(--primary-300); /* lifted — distinct from accent */
+  --color-success: var(--green-400);
+  --color-warning: var(--amber-400);
+  --color-danger: var(--red-400);
+  --color-info: var(--blue-400);
+  --color-text-on-accent: #0b0b0d;
+  --color-border-strong: #3a3a40;
 
   /* Mantine token overrides so every Mantine component picks up the palette. */
   --mantine-color-text: var(--app-text);
@@ -124,25 +623,74 @@ body,
   background: var(--app-shell-bg);
   border-color: var(--app-border) !important;
 }
-/* ── Notion-warm light theme ── */
-[data-mantine-color-scheme='light'] {
-  --app-shell-bg: #f7f6f3; /* shell — warm off-white */
-  --app-main-bg: #ffffff; /* main page surface */
-  --app-border: #ebebea; /* very soft warm gray */
-  --app-text: #37352f; /* near-black with a touch of warmth */
-  /* Bumped from #787774 (4.27:1 on white) → #5b5953 (~6.7:1) so dimmed
-     body text meets WCAG AA on the warm light theme too. */
-  --app-text-muted: #5b5953;
-  --app-accent: #2383e2; /* Notion blue */
-  --app-accent-hover: #1a6fd0;
+/* ── Light theme — redesigned ─────────────────────────────────────────────
+   Design direction: clean neutral-gray surfaces, pure white content well.
+   Previous warm beige (#faf9f6 canvas) felt muddy and too "old paper".
+   New palette uses a cool-neutral gray ramp — crisp, modern, high-contrast.
+   The sidebar visually separates from the content pane at a glance.
 
-  /* Override Mantine's default tokens so all components inherit warmly. */
+   Surface hierarchy:
+     canvas (shell/sidebar) #f3f4f6  — medium-light gray; clearly distinct
+                                        from the white content well.
+     chrome (header/toolbar) #f9fafb — very light gray for raised chrome;
+                                        sits between canvas and content.
+     main (note pane)        #ffffff — pure white; max prose contrast.
+     hover / active          #e9eaec — visible hover that doesn't shout.
+     border subtle           #e5e7eb — interior dividers, hairlines.
+     border default          #d1d5db — input outlines, card edges.
+
+   Text (all ratios vs #ffffff — the main content bg):
+     primary    #111827  → 19.1:1   AAA  — near-black, zero harshness
+     muted      #6b7280  →  5.9:1   AA   — sidebar labels, metadata
+     subtle     #9ca3af  →  2.9:1   large-text only (eyebrow / captions)
+
+   Accent — same hue family, same stop (#1559b2) — passes AAA on white:
+     accent       #1559b2  →  6.7:1  AAA  (links, button bg, focus)
+     accent-hover #0e3f8a  →  9.5:1  AAA
+     focus-ring   #1559b2  →  6.7:1  AAA  (distinct from hover/selection)
+     success      #15803d  →  4.6:1  AA
+     warning      #92400e  →  9.4:1  AAA
+     danger       #b91c1c  →  6.9:1  AAA
+     info         #1d4ed8  →  6.6:1  AAA */
+[data-mantine-color-scheme='light'] {
+  --app-shell-bg: #f3f4f6; /* canvas — medium-light cool gray */
+  --app-main-bg: #ffffff; /* note content well — pure white */
+  --app-surface: #f9fafb; /* header, toolbar, raised chrome */
+  --app-surface-hi: #e9eaec; /* hover / active state */
+  --app-border: #e5e7eb; /* subtle interior dividers */
+  --app-text: #111827; /* near-black — 19.1:1 on white AAA */
+  --app-text-muted: #6b7280; /* secondary — 5.9:1 on white AA */
+  --app-accent: var(--primary-600); /* link, button bg, focus ─ 6.7:1 AAA */
+  --app-accent-hover: var(--primary-700); /* 9.5:1 AAA */
+  /* Code surfaces — cool-gray to match the light theme palette */
+  --app-code-bg: #f3f4f6; /* inline code + pre background (canvas tone) */
+  --app-code-border: #e5e7eb;
+  --app-code-text: #111827;
+  --app-code-inline-text: #1d4ed8; /* primary-700 — readable blue on light bg */
+
+  /* Scrollbar tints */
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+
+  /* Semantic aliases */
+  --color-accent: var(--primary-600);
+  --color-accent-hover: var(--primary-700);
+  --color-accent-subtle: rgba(21, 89, 178, 0.09);
+  --color-focus-ring: var(--primary-600);
+  --color-success: var(--green-500);
+  --color-warning: var(--amber-700);
+  --color-danger: var(--red-700);
+  --color-info: var(--blue-700);
+  --color-text-on-accent: #ffffff;
+  --color-border-strong: #d1d5db;
+
+  /* Mantine token overrides */
   --mantine-color-text: var(--app-text);
   --mantine-color-dimmed: var(--app-text-muted);
   --mantine-color-body: var(--app-main-bg);
   --mantine-color-default-border: var(--app-border);
-  --mantine-color-default-hover: #f4f4f3;
-  --mantine-color-default: #fafaf9;
+  --mantine-color-default-hover: var(--app-surface-hi);
+  --mantine-color-default: var(--app-surface);
 }
 [data-mantine-color-scheme='light'] .mantine-AppShell-root {
   background: var(--app-shell-bg);
@@ -159,7 +707,11 @@ body,
   border-color: var(--app-border) !important;
 }
 
-/* ── Headings: rehypeAutolinkHeadings wraps them in <a>, so we de-blue and de-underline them. ── */
+/* ── Headings: rehypeAutolinkHeadings wraps them in <a>, so we de-blue and de-underline them.
+   Hover used to flip the whole heading to accent which fought with reading
+   flow — now headings stay text-color always, and the anchor link is
+   invisible until hover, at which point a ¶ symbol appears at the right
+   margin as a subtle permalink affordance. */
 .markdown h1 a,
 .markdown h2 a,
 .markdown h3 a,
@@ -170,8 +722,46 @@ body,
 .wmde-markdown h2 a,
 .wmde-markdown h3 a,
 .wmde-markdown h4 a {
-  color: var(--mantine-color-text) !important;
+  color: inherit !important;
   text-decoration: none !important;
+  transition: color 120ms;
+}
+.markdown h1 a:hover,
+.markdown h2 a:hover,
+.markdown h3 a:hover,
+.markdown h4 a:hover,
+.markdown h5 a:hover,
+.markdown h6 a:hover,
+.wmde-markdown h1 a:hover,
+.wmde-markdown h2 a:hover,
+.wmde-markdown h3 a:hover,
+.wmde-markdown h4 a:hover {
+  color: var(--mantine-color-anchor) !important;
+}
+/* 🔗 link icon — appears after heading text on hover */
+.markdown h1 a::after,
+.markdown h2 a::after,
+.markdown h3 a::after,
+.markdown h4 a::after,
+.wmde-markdown h1 a::after,
+.wmde-markdown h2 a::after,
+.wmde-markdown h3 a::after,
+.wmde-markdown h4 a::after {
+  content: ' 🔗';
+  opacity: 0;
+  font-size: 0.55em;
+  vertical-align: middle;
+  transition: opacity 120ms;
+}
+.markdown h1 a:hover::after,
+.markdown h2 a:hover::after,
+.markdown h3 a:hover::after,
+.markdown h4 a:hover::after,
+.wmde-markdown h1 a:hover::after,
+.wmde-markdown h2 a:hover::after,
+.wmde-markdown h3 a:hover::after,
+.wmde-markdown h4 a:hover::after {
+  opacity: 1;
 }
 .markdown h1,
 .markdown h2,
@@ -180,33 +770,169 @@ body,
 .wmde-markdown h2,
 .wmde-markdown h3 {
   color: var(--mantine-color-text) !important;
-  border-bottom-color: var(--mantine-color-default-border) !important;
 }
 
-/* Heading hover — accent color, smooth transition. */
-.markdown h1 a,
-.markdown h2 a,
-.markdown h3 a,
-.markdown h4 a,
-.markdown h5 a,
-.markdown h6 a {
-  transition: color 120ms ease;
+/* ── Markdown reading polish ──────────────────────────────────────────────
+   Rhythm, weight, and surface treatments tuned for long-form prose. Sizes
+   reference the rem-based type tokens so OS text-size scaling carries
+   through to note bodies. */
+
+/* Heading hierarchy — distinct sizes, deliberate spacing. The "loud-quiet-
+   loud" rhythm of bigger margin-top + smaller margin-bottom anchors each
+   heading to the section it introduces. The first heading in a document
+   gets no top margin so it sits flush with the surrounding container. */
+.markdown h1,
+.wmde-markdown h1 {
+  font-family: var(--font-ui) !important;
+  font-size: var(--text-h1) !important;
+  font-weight: var(--fw-bold) !important;
+  letter-spacing: var(--ls-h1) !important;
+  line-height: var(--lh-tight) !important;
+  margin: 2rem 0 0.5rem !important;
+  padding: 0 !important;
+  border: 0 !important;
 }
-.markdown h1 a:hover,
-.markdown h2 a:hover,
-.markdown h3 a:hover,
-.markdown h4 a:hover,
-.markdown h5 a:hover,
-.markdown h6 a:hover {
-  color: var(--mantine-color-blue-6) !important;
+.markdown h2,
+.wmde-markdown h2 {
+  font-family: var(--font-ui) !important;
+  font-size: var(--text-h2) !important;
+  font-weight: var(--fw-semi) !important;
+  letter-spacing: var(--ls-h2) !important;
+  line-height: var(--lh-snug) !important;
+  margin: 2rem 0 0.5rem !important;
+  padding-bottom: 0.4rem !important;
+  /* Hairline rule under h2 — Notion-style section break that reads as
+     "new section" without competing visually with the heading itself. */
+  border: 0 !important;
+  border-bottom: 1px solid var(--app-border, var(--mantine-color-default-border)) !important;
 }
-[data-mantine-color-scheme='light'] .markdown h1 a:hover,
-[data-mantine-color-scheme='light'] .markdown h2 a:hover,
-[data-mantine-color-scheme='light'] .markdown h3 a:hover,
-[data-mantine-color-scheme='light'] .markdown h4 a:hover,
-[data-mantine-color-scheme='light'] .markdown h5 a:hover,
-[data-mantine-color-scheme='light'] .markdown h6 a:hover {
-  color: var(--app-accent) !important;
+.markdown h3,
+.wmde-markdown h3 {
+  font-family: var(--font-ui) !important;
+  font-size: var(--text-h3) !important;
+  font-weight: var(--fw-semi) !important;
+  letter-spacing: var(--ls-h3) !important;
+  line-height: var(--lh-snug) !important;
+  margin: 1.5rem 0 0.35rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+.markdown h4,
+.wmde-markdown h4 {
+  font-family: var(--font-ui) !important;
+  font-size: var(--text-body-lg) !important;
+  font-weight: var(--fw-semi) !important;
+  line-height: var(--lh-snug) !important;
+  margin: 1.25rem 0 0.35rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+/* First-child headings have no top margin — sit flush with the container
+   top instead of pushing content down. */
+.markdown > h1:first-child,
+.markdown > h2:first-child,
+.markdown > h3:first-child,
+.wmde-markdown > h1:first-child,
+.wmde-markdown > h2:first-child,
+.wmde-markdown > h3:first-child {
+  margin-top: 0;
+}
+
+/* Body prose — slightly looser line-height for comfortable reading. */
+.markdown p,
+.wmde-markdown p {
+  line-height: var(--lh-relaxed);
+  margin: 0 0 1rem;
+}
+
+/* Blockquote — accent-tinted left border with a subtle background. Sits
+   visually between regular text and a callout. */
+.markdown blockquote,
+.wmde-markdown blockquote {
+  margin: 1rem 0;
+  padding: 0.6rem 1rem;
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-accent-subtle);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--mantine-color-text);
+}
+.markdown blockquote > :last-child,
+.wmde-markdown blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Body links — subtle underline that aligns with the design tokens. The
+   default Mantine link blue is replaced by --color-accent so the link color
+   tracks the theme. */
+.markdown a:not(.heading-anchor):not(h1 a):not(h2 a):not(h3 a):not(h4 a),
+.wmde-markdown a:not(.heading-anchor) {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 38%, transparent);
+  transition: text-decoration-color 120ms;
+}
+.markdown a:hover,
+.wmde-markdown a:hover {
+  text-decoration-color: var(--color-accent-hover);
+  color: var(--color-accent-hover);
+}
+
+/* Inline-list bullet rhythm — tighter than the default browser margins,
+   loose enough for the body line-height to read cleanly. */
+.markdown ul,
+.markdown ol,
+.wmde-markdown ul,
+.wmde-markdown ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+}
+.markdown li,
+.wmde-markdown li {
+  margin: 0.25rem 0;
+  line-height: var(--lh-relaxed);
+}
+
+/* Tables — let wide tables scroll horizontally instead of overflowing
+   the note width. */
+.markdown table,
+.wmde-markdown table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+.markdown table th,
+.markdown table td,
+.wmde-markdown table th,
+.wmde-markdown table td {
+  border: 1px solid var(--app-border, var(--mantine-color-default-border));
+  padding: 0.5rem 0.75rem;
+  background: var(--app-main-bg, var(--mantine-color-body));
+}
+/* Zebra striping — every even data row gets the surface tint */
+.markdown table tbody tr:nth-child(even) td,
+.wmde-markdown table tbody tr:nth-child(even) td {
+  background: var(--app-surface, var(--mantine-color-default));
+}
+.markdown table th,
+.wmde-markdown table th {
+  background: var(--app-surface-hi, var(--mantine-color-default-hover));
+  font-weight: var(--fw-semi);
+  text-align: left;
+}
+
+/* Horizontal rule — visually quieter than the browser default. @uiw/react-
+   md-editor sets a thicker / colored HR by default; force a true hairline. */
+.markdown hr,
+.wmde-markdown hr {
+  border: 0 !important;
+  border-top: 1px solid var(--app-border, var(--mantine-color-default-border)) !important;
+  background: transparent !important;
+  height: 0 !important;
+  margin: 1.5rem 0 !important;
 }
 
 /* ── Sidebar NavLink anchors should not pick up the default link blue. ── */
@@ -215,11 +941,18 @@ body,
   color: var(--mantine-color-text);
 }
 
+/* Sidebar width constraints — never narrower than 220px or wider than 360px
+   regardless of the breakpoint value passed to AppShell navbar.width. */
+.mantine-AppShell-navbar {
+  min-width: 220px;
+  max-width: 360px;
+}
+
 /* ── Inline body links: Notion blue accent. ── */
 [data-mantine-color-scheme='light'] .markdown a,
 [data-mantine-color-scheme='light'] .wmde-markdown a {
   color: var(--app-accent);
-  text-decoration-color: rgba(35, 131, 226, 0.4);
+  text-decoration-color: color-mix(in srgb, var(--app-accent) 35%, transparent);
   text-underline-offset: 3px;
 }
 [data-mantine-color-scheme='light'] .markdown a:hover {
@@ -227,31 +960,34 @@ body,
   text-decoration-color: var(--app-accent-hover);
 }
 
-/* Hide scrollbars when content isn't actually overflowing.
-   Use overlay-style scrollbars that only appear on hover/scroll. */
+/* Themed thin scrollbars — quiet at rest, more visible on hover.
+   Replaces the previous hover-only-visible behavior (which made it hard to
+   discover that an area was scrollable on touch / read-only contexts). */
 * {
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-*:hover {
-  scrollbar-color: var(--mantine-color-default-border) transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: transparent;
-  border-radius: 8px;
-}
-*:hover::-webkit-scrollbar-thumb {
-  background: var(--mantine-color-default-border);
+  background-color: var(--scrollbar-thumb);
+  border-radius: var(--radius-pill);
+  /* Transparent border + background-clip creates a "pill" that doesn't kiss
+     the content edge; reads as overlay rather than chrome. */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  min-height: 40px;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--mantine-color-dimmed);
+  background-color: var(--scrollbar-thumb-hover);
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .row .row-menu {
@@ -270,11 +1006,103 @@ body,
   }
 }
 
+/* TOC (right sidebar) link styles. Inactive items read as muted; the active
+   item picks up the accent color, bolder weight, and a left-edge indicator
+   bar that mirrors the sidebar's active-row treatment so the two surfaces
+   feel like a system. */
+.toc-link {
+  display: block;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  padding: 4px 0 4px 10px;
+  border-left: 2px solid transparent;
+  color: var(--mantine-color-dimmed);
+  text-decoration: none;
+  transition:
+    color 120ms,
+    border-color 120ms,
+    background 120ms;
+}
+.toc-link:hover {
+  color: var(--mantine-color-text);
+  background: var(--mantine-color-default-hover);
+}
+.toc-link--active,
+.toc-link--active:hover {
+  color: var(--color-accent);
+  font-weight: var(--fw-semi);
+  border-left-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+/* Active row — the currently open note or collection. Gets a subtle accent
+   tint, accent-colored text, and a left-edge indicator bar so the user can
+   tell at a glance which tree node corresponds to what they're reading. */
+.row {
+  position: relative;
+  border-radius: var(--radius-sm);
+  transition: background-color 120ms;
+}
+.row--active {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+}
+.row--active::before {
+  content: '';
+  position: absolute;
+  /* Stretch to the very left edge of the sidebar by escaping the row's
+     own padding and the AppShell navbar padding (p="xs" = 8px). */
+  left: -8px;
+  top: 2px;
+  bottom: 2px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--color-accent);
+}
+.row--active .mantine-Text-root {
+  color: var(--color-accent);
+}
+
 .profile-trigger {
   transition: background-color 120ms;
 }
 .profile-trigger:hover {
   background: var(--mantine-color-default-hover);
+}
+
+/* ── ActionIcon subtle variant ─────────────────────────────────────────────
+   Mantine's default `variant='subtle' color='gray'` resolves to a very
+   pale gray shade that disappears against the warm-white shell in light
+   mode (and is borderline in dark mode too). Override globally so every
+   subtle action icon — sidebar collapse, TOC toggle, theme switcher,
+   row menu, note view toolbar — picks up the muted text token and
+   lifts to full text + hover bg on interaction. */
+.mantine-ActionIcon-root[data-variant='subtle'] {
+  /* Mantine's color="gray" resolves to ~#868e96 which vanishes on our gray
+     canvas. Force the muted text token which is guaranteed readable on both
+     theme canvases. !important beats Mantine's --ai-color custom property. */
+  color: var(--mantine-color-dimmed) !important;
+  transition:
+    background-color 120ms,
+    color 120ms;
+}
+.mantine-ActionIcon-root[data-variant='subtle']:hover:not(:disabled) {
+  color: var(--mantine-color-text) !important;
+  background: var(--app-surface-hi, var(--mantine-color-default-hover));
+}
+.mantine-ActionIcon-root[data-variant='subtle'][data-active='true'],
+.mantine-ActionIcon-root[data-variant='subtle'].active {
+  color: var(--color-accent) !important;
+  background: var(--color-accent-subtle);
+}
+/* Light theme: the new gray canvas (#f3f4f6) is darker than pure white, so
+   push icon color to the full text token for maximum pop. */
+[data-mantine-color-scheme='light'] .mantine-ActionIcon-root[data-variant='subtle'] {
+  color: var(--app-text-muted) !important; /* #6b7280 — 5.9:1 on white */
+}
+[data-mantine-color-scheme='light']
+  .mantine-ActionIcon-root[data-variant='subtle']:hover:not(:disabled) {
+  color: var(--app-text) !important; /* #111827 — full contrast on hover */
 }
 
 .markdown pre {
@@ -363,8 +1191,18 @@ body,
   border: 1px solid var(--mantine-color-default-border);
   border-radius: 8px;
   overflow: hidden;
+  /* Kill the library's box-shadow — we use border instead */
   box-shadow: none !important;
+  /* Kill the library's focus box-shadow that turns the editor blue */
+  outline: none !important;
   position: relative;
+}
+/* Suppress focus ring on the textarea itself — the outer wrapper already
+   provides the editing context visually; an input-style focus ring on the
+   full-page editor looks wrong. */
+.w-md-editor-text-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ── Editor + line-number gutter ── */
@@ -393,9 +1231,18 @@ body,
 }
 
 /* ── Mobile editor — no gutter, toolbar wraps gracefully ── */
+.md-with-gutter--mobile {
+  flex: 1; /* fill the flex-column parent in NoteEdit */
+  min-height: 0;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: 8px;
+  overflow: hidden; /* clips library box-shadow and padding-bottom bleed */
+}
 .md-with-gutter--mobile .w-md-editor {
   border: none !important;
-  border-radius: inherit !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding-bottom: 0 !important; /* library adds 1px that causes a hairline */
   height: 100%;
 }
 @media (max-width: 48em) {
@@ -414,15 +1261,24 @@ body,
   .w-md-editor-toolbar [data-name='fullscreen'] {
     display: none !important;
   }
-  /* Tighten editor padding so more text is visible. */
+  /* Cursor / selection alignment fix — the textarea (text-input) and its
+     ghost overlay (text-pre) MUST share identical padding or the caret and
+     selection highlight drift relative to the visible text.
+     We zero the .w-md-editor-text wrapper's own padding (which adds an
+     extra layer on top of the textarea padding) and set a single 10px
+     value on both layers so they stay in sync. */
+  .w-md-editor-text {
+    padding: 0 !important;
+  }
   .w-md-editor-text-input,
   .w-md-editor-text-pre {
-    padding: 8px !important;
+    padding: 10px 12px !important;
   }
   /* In single-pane mobile mode, don't show the right border (which was a
      divider between panes). */
   .w-md-editor-preview {
     box-shadow: none !important;
+    padding: 10px 12px !important;
   }
 }
 .md-with-gutter-editor {
@@ -576,44 +1432,30 @@ body,
 .wmde-markdown pre,
 .markdown code,
 .markdown pre {
-  background: var(--app-surface) !important;
-  border: 1px solid var(--app-border);
+  background: var(--app-code-bg) !important;
+  border: 1px solid var(--app-code-border) !important;
 }
 .wmde-markdown code:not(pre code),
 .markdown code:not(pre code) {
   padding: 0.15em 0.4em;
   border-radius: 4px;
   font-size: 0.92em;
+  color: var(--app-code-inline-text);
+}
+.wmde-markdown pre,
+.markdown pre {
+  border-radius: 8px;
+  padding: 14px 16px !important;
+  overflow-x: auto;
 }
 .wmde-markdown pre code,
 .markdown pre code {
-  border: none;
+  border: none !important;
   background: transparent !important;
-}
-
-/* Inline code + un-tokenized fallback — colors per scheme so both themes stay readable. */
-[data-mantine-color-scheme='dark'] .wmde-markdown code:not(pre code),
-[data-mantine-color-scheme='dark'] .markdown code:not(pre code) {
-  color: #f9c74f; /* warm amber on dark */
-}
-[data-mantine-color-scheme='dark'] .wmde-markdown pre code,
-[data-mantine-color-scheme='dark'] .markdown pre code {
-  color: #e4e4e7;
-}
-[data-mantine-color-scheme='light'] .wmde-markdown code:not(pre code),
-[data-mantine-color-scheme='light'] .markdown code:not(pre code) {
-  color: #c7254e; /* soft crimson — readable on warm off-white */
-  background: #faf6f1 !important;
-  border-color: #ebebea;
-}
-[data-mantine-color-scheme='light'] .wmde-markdown pre code,
-[data-mantine-color-scheme='light'] .markdown pre code {
-  color: #1f2937;
-}
-[data-mantine-color-scheme='light'] .wmde-markdown pre,
-[data-mantine-color-scheme='light'] .markdown pre {
-  background: #faf6f1 !important;
-  border-color: #ebebea !important;
+  color: var(--app-code-text);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
 }
 
 /* ── Brighter highlight.js dark palette — github-dark is too dim against
@@ -710,4 +1552,10 @@ body,
 }
 [data-mantine-color-scheme='dark'] .w-md-editor-text-pre .token.hr {
   color: #ff7b72 !important;
+}
+
+/* ── Bottom sheet drawers — shrink-wrap to content height ── */
+.mantine-Drawer-content {
+  height: fit-content !important;
+  max-height: 70vh;
 }

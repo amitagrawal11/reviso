@@ -1,6 +1,7 @@
 import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { LazyMarkdownEditor } from './LazyMarkdown';
+import { usePreferences } from '../lib/preferences';
 
 type Props = ComponentProps<typeof LazyMarkdownEditor>;
 
@@ -24,6 +25,25 @@ export function EditorWithLineNumbers(props: Props) {
   // On phones the line-number gutter eats too much horizontal space.
   // Skip it; the editor renders edge-to-edge.
   const isMobile = useMediaQuery('(max-width: 48em)');
+  const { lineNumbers: showLineNumbers, spellcheck } = usePreferences();
+
+  // Apply the user's spellcheck preference to the underlying textarea after
+  // it mounts. @uiw/react-md-editor doesn't expose a `spellCheck` prop, so
+  // we reach into the rendered DOM. Re-applies whenever the pref flips.
+  useEffect(() => {
+    const root = wrapRef.current;
+    if (!root) return;
+    const apply = () => {
+      const ta = root.querySelector<HTMLTextAreaElement>('.w-md-editor-text-input');
+      if (ta) ta.spellcheck = spellcheck;
+    };
+    apply();
+    // Textarea may mount after this effect runs (md-editor is lazy). Watch
+    // for it so we re-apply once it appears.
+    const obs = new MutationObserver(apply);
+    obs.observe(root, { childList: true, subtree: true });
+    return () => obs.disconnect();
+  }, [spellcheck]);
 
   useEffect(() => {
     const root = wrapRef.current;
@@ -69,7 +89,8 @@ export function EditorWithLineNumbers(props: Props) {
     };
   }, []);
 
-  if (isMobile) {
+  // Mobile or user-disabled line numbers — render edge-to-edge, no gutter.
+  if (isMobile || !showLineNumbers) {
     return (
       <div ref={wrapRef} className="md-with-gutter md-with-gutter--mobile">
         <div className="md-with-gutter-editor">

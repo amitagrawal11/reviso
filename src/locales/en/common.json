@@ -1,0 +1,69 @@
+{
+  "brand": {
+    "name": "Reviso"
+  },
+  "nav": {
+    "home": "Home",
+    "starred": "Starred",
+    "recent": "Recent",
+    "trash": "Trash",
+    "search": "Search",
+    "more": "More",
+    "notes": "Notes",
+    "settings": "Settings",
+    "profile": "Profile",
+    "signOut": "Sign out",
+    "newNote": "New note",
+    "newCollection": "New collection"
+  },
+  "header": {
+    "searchPlaceholder": "Search notes & collections…",
+    "toggleSidebar": "Toggle sidebar",
+    "showSidebar": "Show sidebar",
+    "hideSidebar": "Hide sidebar",
+    "showOutline": "Show outline",
+    "toggleReadMode": "Toggle read mode",
+    "exitReadMode": "Exit read mode",
+    "enterReadMode": "Read mode",
+    "toggleTheme": "Toggle theme",
+    "skipToContent": "Skip to main content"
+  },
+  "editor": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "savedJustNow": "Saved just now",
+    "unsavedChanges": "Unsaved changes",
+    "titlePlaceholder": "Title"
+  },
+  "sidebar": {
+    "notes": "Notes",
+    "rename": "Rename",
+    "moveTo": "Move to…",
+    "copyLink": "Copy link",
+    "star": "Star",
+    "unstar": "Unstar",
+    "delete": "Move to Trash",
+    "actionsFor": "Actions for {{title}}"
+  },
+  "demo": {
+    "title": "You're in the public demo.",
+    "warning": "Notes are stored in this browser only and won't sync across devices. Create a free account to keep them safe.",
+    "createAccount": "Create Account"
+  },
+  "trash": {
+    "title": "Trash",
+    "empty": "Trash is empty. Notes and collections you delete from the sidebar will appear here for 30 days before they're removed for good.",
+    "retention": "Trashed items are kept for 30 days and then deleted automatically. You can restore them or empty the bin manually at any time.",
+    "emptyTrash": "Empty trash",
+    "emptyConfirm": "Empty trash?",
+    "restore": "Restore",
+    "permanentDelete": "Permanently delete"
+  },
+  "notFound": {
+    "headingNote": "We couldn't find this note",
+    "headingCollection": "We couldn't find this collection",
+    "body": "It may have been deleted, moved to Trash, or didn't finish saving.",
+    "goHome": "Go home"
+  }
+}

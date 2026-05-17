@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Text, Button } from '@mantine/core';
-import { IconAlertTriangle } from '@tabler/icons-react';
+import { AlertTriangle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AuthModalSimple } from './AuthModalSimple';
 import { useAuth } from '../lib/auth';
+import { Icon } from './Icon';
 
 export const DEMO_BANNER_HEIGHT = 44;
 
@@ -27,7 +28,7 @@ export function DemoBanner() {
     <>
       <div className="demo-banner" role="status" aria-live="polite">
         <div className="demo-banner__msg">
-          <IconAlertTriangle size={16} className="demo-banner__icon" />
+          <Icon icon={AlertTriangle} size={16} className="demo-banner__icon" />
           <Text size="sm" truncate>
             <Text span fw={600}>
               You're in the public demo.

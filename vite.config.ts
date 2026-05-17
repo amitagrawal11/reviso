@@ -26,14 +26,60 @@ export default defineConfig({
       manifest: {
         name: 'Reviso Notes',
         short_name: 'Reviso',
-        description: 'Markdown notes, revised and ready anywhere.',
+        description:
+          'Markdown-first notes with live preview, mermaid diagrams, and offline support.',
         theme_color: '#0a0a0c',
         background_color: '#0a0a0c',
         display: 'standalone',
-        start_url: '/',
+        display_override: ['window-controls-overlay', 'standalone'],
+        start_url: '/?source=pwa',
+        scope: '/',
+        orientation: 'any',
+        categories: ['productivity', 'utilities'],
         icons: [
           { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+          // Maskable icons — safe zone is the inner 80% circle; the outer 20%
+          // is cropped on Android adaptive icon masks.
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+        shortcuts: [
+          {
+            name: 'New note',
+            short_name: 'New',
+            description: 'Create a new note',
+            url: '/?action=new',
+            icons: [{ src: '/icon-192.png', sizes: '192x192' }],
+          },
+          {
+            name: 'Search',
+            short_name: 'Search',
+            description: 'Search notes',
+            url: '/?action=search',
+            icons: [{ src: '/icon-192.png', sizes: '192x192' }],
+          },
+        ],
+        share_target: {
+          action: '/share-target',
+          method: 'GET',
+          params: { title: 'title', text: 'text', url: 'url' },
+        },
+        screenshots: [
+          {
+            src: '/landing/screenshot-dark.png',
+            sizes: '1600x1000',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Reviso Notes — dark theme',
+          },
+          {
+            src: '/landing/screenshot-light.png',
+            sizes: '1600x1000',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Reviso Notes — light theme',
+          },
         ],
       },
       workbox: {

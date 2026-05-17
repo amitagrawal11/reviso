@@ -1,6 +1,7 @@
 import { isValidElement, ReactNode, useRef, useState } from 'react';
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconCheck, IconCopy } from '@tabler/icons-react';
+import { Check, Copy } from 'lucide-react';
+import { Icon } from './Icon';
 import { MermaidBlock } from './MermaidBlock';
 
 // Recursively flatten React children into plain text for clipboard / mermaid source.
@@ -67,7 +68,7 @@ export function CodeBlock(props: React.HTMLAttributes<HTMLPreElement>) {
           onClick={handleCopy}
           aria-label="Copy code"
         >
-          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+          {copied ? <Icon icon={Check} size="sm" /> : <Icon icon={Copy} size="sm" />}
         </ActionIcon>
       </Tooltip>
     </div>

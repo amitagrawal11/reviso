@@ -9,7 +9,8 @@ import {
   Breadcrumbs,
   Anchor,
 } from '@mantine/core';
-import { IconFilePlus } from '@tabler/icons-react';
+import { FilePlus } from 'lucide-react';
+import { Icon } from '../components/Icon';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useItems, useModePath, useRepo } from '../lib/data-mode';
@@ -66,7 +67,7 @@ export default function CollectionView() {
           {collection.title}
         </Title>
         <Button
-          leftSection={<IconFilePlus size={16} />}
+          leftSection={<Icon icon={FilePlus} size={16} />}
           onClick={() => openItemDialog({ isFolder: false, parentId: collection.id, repo, path })}
         >
           New note

@@ -1,6 +1,5 @@
 import {
   Group,
-  Title,
   Text,
   Breadcrumbs,
   Anchor,
@@ -10,10 +9,11 @@ import {
   Box,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconBook, IconPencil, IconStar, IconStarFilled, IconTrash } from '@tabler/icons-react';
+import { BookOpen, Pencil, Star, Trash2 } from 'lucide-react';
+import { Icon } from '../components/Icon';
 import { Tooltip } from '@mantine/core';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { lazy, Suspense, useEffect, type ComponentProps } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type ComponentProps } from 'react';
 import { LazyMarkdownView } from '../components/LazyMarkdown';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -61,6 +61,11 @@ export default function NoteView() {
   const path = useModePath();
   const nav = useNavigate();
   const wideEnough = useMediaQuery('(min-width: 1100px)');
+  const isMobile = useMediaQuery('(max-width: 48em)');
+  // Sentinel div sits just below the note title. When it scrolls out of view
+  // the title condenses into the header bar (iOS large-title pattern).
+  const titleSentinelRef = useRef<HTMLDivElement>(null);
+  const [, setTitleScrolled] = useState(false);
 
   // If the note we're looking at gets deleted or moved to Trash (e.g. via the
   // sidebar context menu while we're viewing it), bail out to home rather
@@ -76,6 +81,34 @@ export default function NoteView() {
   useEffect(() => {
     setTocOpen(!!wideEnough);
   }, [wideEnough, setTocOpen]);
+
+  // Large-title-on-scroll: observe the sentinel div just below the title.
+  // When it exits the top of the viewport, write the note title into a
+  // data attribute on <html> so the Shell header can display it.
+  useEffect(() => {
+    if (!isMobile) {
+      document.documentElement.removeAttribute('data-condensed-title');
+      return;
+    }
+    const el = titleSentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setTitleScrolled(!entry.isIntersecting);
+        if (!entry.isIntersecting) {
+          document.documentElement.setAttribute('data-condensed-title', note?.title ?? '');
+        } else {
+          document.documentElement.removeAttribute('data-condensed-title');
+        }
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      document.documentElement.removeAttribute('data-condensed-title');
+    };
+  }, [isMobile, note?.id, note?.title]);
 
   if (!note || note.trashed) return null;
   const showToc = !readMode && tocOpen;
@@ -95,10 +128,12 @@ export default function NoteView() {
     <div
       style={{
         padding: readMode ? '40px 48px' : '24px 32px',
-        // Use most of the viewport in read mode but keep a comfortable cap so
-        // line length doesn't blow past ~120 chars on huge displays.
-        maxWidth: readMode ? 'min(1100px, 92vw)' : 'none',
-        margin: readMode ? '0 auto' : 0,
+        // Content well — capped at a comfortable reading width on every
+        // surface. Long lines hurt scan speed; ~65-75 characters per line
+        // is the readability sweet spot. Read mode gets a slightly wider
+        // cap (1100px) for code blocks / diagrams.
+        maxWidth: readMode ? 'min(1100px, 92vw)' : '760px',
+        margin: '0 auto',
         position: 'relative',
       }}
     >
@@ -115,7 +150,7 @@ export default function NoteView() {
             // padding zone outside it.
             style={{ position: 'absolute', top: 40, right: 48 }}
           >
-            <IconBook size={18} />
+            <Icon icon={BookOpen} size="md" />
           </ActionIcon>
         </Tooltip>
       )}
@@ -142,7 +177,11 @@ export default function NoteView() {
                 onClick={() => repo.update(note.id, { starred: !note.starred })}
                 aria-label={note.starred ? 'Unstar note' : 'Star note'}
               >
-                {note.starred ? <IconStarFilled size={18} color="gold" /> : <IconStar size={18} />}
+                {note.starred ? (
+                  <Icon icon={Star} size="md" fill="currentColor" color="gold" />
+                ) : (
+                  <Icon icon={Star} size="md" />
+                )}
               </ActionIcon>
             </Tooltip>
             <Tooltip label={readMode ? 'Exit read mode (⌘.)' : 'Read mode (⌘.)'}>
@@ -153,7 +192,7 @@ export default function NoteView() {
                 onClick={() => setReadMode((r) => !r)}
                 aria-label="Toggle read mode"
               >
-                <IconBook size={18} />
+                <Icon icon={BookOpen} size="md" />
               </ActionIcon>
             </Tooltip>
             <Tooltip label="Edit">
@@ -164,7 +203,7 @@ export default function NoteView() {
                 size="lg"
                 aria-label="Edit note"
               >
-                <IconPencil size={18} />
+                <Icon icon={Pencil} size="md" />
               </ActionIcon>
             </Tooltip>
             <Tooltip label="Move to Trash">
@@ -175,19 +214,26 @@ export default function NoteView() {
                 onClick={() => openConfirm(note, repo)}
                 aria-label="Move note to Trash"
               >
-                <IconTrash size={18} />
+                <Icon icon={Trash2} size="md" />
               </ActionIcon>
             </Tooltip>
           </Group>
         </Group>
       )}
-      <Title order={1} mb={4}>
-        <span style={{ marginRight: 8 }}>{note.icon}</span>
-        {note.title}
-      </Title>
-      <Text size="xs" c="dimmed" mb="lg">
+      {/* Title block */}
+      <h1 className="display-title note-title-row">
+        <span className="note-title-icon" aria-hidden="true">
+          {note.icon}
+        </span>
+        <span>{note.title}</span>
+      </h1>
+      <p className="caption note-title-caption">
         Last edited {new Date(note.updatedAt).toLocaleString()} · {wordCount(note.content)} words
-      </Text>
+      </p>
+      {/* Sentinel: sits right after the title block. IntersectionObserver
+          watches it — when it scrolls off-screen the header shows the
+          condensed note title (mobile large-title pattern). */}
+      <div ref={titleSentinelRef} aria-hidden="true" style={{ height: 0 }} />
       <TypographyStylesProvider>
         <div className="markdown" data-color-mode={scheme}>
           <LazyMarkdownView

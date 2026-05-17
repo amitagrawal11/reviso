@@ -87,25 +87,24 @@ export default function TocSidebar() {
     );
 
   return (
-    <Stack gap={4}>
+    <Stack gap={2}>
       <Text size="xs" c="dimmed" fw={600} tt="uppercase" mb={4}>
         On this page
       </Text>
-      {headings.map((h) => (
-        <Box key={h.id} pl={(h.level - 1) * 10}>
-          <a
-            href={`#${h.id}`}
-            style={{
-              fontSize: 13,
-              color:
-                active === h.id ? 'var(--mantine-color-blue-4)' : 'var(--mantine-color-dimmed)',
-              textDecoration: 'none',
-            }}
-          >
-            {h.text}
-          </a>
-        </Box>
-      ))}
+      {headings.map((h) => {
+        const isActive = active === h.id;
+        return (
+          <Box key={h.id} pl={(h.level - 1) * 10}>
+            <a
+              href={`#${h.id}`}
+              className={`toc-link${isActive ? ' toc-link--active' : ''}`}
+              style={{ paddingLeft: 10 }}
+            >
+              {h.text}
+            </a>
+          </Box>
+        );
+      })}
     </Stack>
   );
 }

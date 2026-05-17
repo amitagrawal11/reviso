@@ -6,7 +6,8 @@
 // page navigation — no iframes, no nested instances of the landing page.
 
 import { AspectRatio, Box, Card, Center, Image, useComputedColorScheme } from '@mantine/core';
-import { IconPlayerPlayFilled } from '@tabler/icons-react';
+import { PlayCircle } from 'lucide-react';
+import { Icon } from './Icon';
 import { Link } from 'react-router-dom';
 
 export function LandingDemoFrame() {
@@ -106,7 +107,7 @@ export function LandingDemoFrame() {
                 pointerEvents: 'none',
               }}
             >
-              <IconPlayerPlayFilled size={18} aria-hidden />
+              <Icon icon={PlayCircle} size="md" aria-hidden />
               Try it
             </Box>
           </Center>

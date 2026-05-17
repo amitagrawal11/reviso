@@ -1,6 +1,7 @@
 import { Center, Stack, Card, Title, Text, Button, Group, ThemeIcon } from '@mantine/core';
-import { IconAlertCircle, IconHome } from '@tabler/icons-react';
+import { AlertCircle, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Icon } from './Icon';
 
 // Friendly fallback shown when a note / collection the user is trying to view
 // no longer exists or never persisted (e.g. a Supabase insert failed after
@@ -17,7 +18,7 @@ export function NotFoundCard({
       <Card withBorder p="xl" radius="md" maw={460}>
         <Stack align="center" gap="md">
           <ThemeIcon variant="light" color="yellow" size={48} radius="xl">
-            <IconAlertCircle size={26} />
+            <Icon icon={AlertCircle} size={26} />
           </ThemeIcon>
           <Stack gap={4} align="center">
             <Title order={3}>We couldn't find this {kind}</Title>
@@ -29,7 +30,7 @@ export function NotFoundCard({
             </Text>
           </Stack>
           <Group>
-            <Button component={Link} to={homePath} leftSection={<IconHome size={16} />}>
+            <Button component={Link} to={homePath} leftSection={<Icon icon={Home} size={16} />}>
               Go home
             </Button>
           </Group>

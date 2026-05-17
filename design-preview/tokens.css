@@ -1,0 +1,239 @@
+/* Reviso Notes — Design Tokens (draft v0.2) */
+
+:root {
+  /* Spacing — 4pt grid */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* Type scale (rem-based, refined v0.2) */
+  --text-display: 2.75rem; /* 44 */
+  --text-h1: 1.875rem; /* 30 */
+  --text-h2: 1.5rem; /* 24 */
+  --text-h3: 1.125rem; /* 18 */
+  --text-body-lg: 1rem; /* 16 */
+  --text-body: 0.9375rem; /* 15 */
+  --text-sm: 0.8125rem; /* 13 */
+  --text-xs: 0.75rem; /* 12 */
+  --text-code: 0.875rem; /* 14 */
+
+  /* Line heights */
+  --lh-display: 1.05;
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-base: 1.55;
+  --lh-relaxed: 1.7;
+
+  /* Letter-spacing (negative for display, neutral for body) */
+  --ls-display: -0.028em;
+  --ls-h1: -0.022em;
+  --ls-h2: -0.015em;
+  --ls-h3: -0.01em;
+  --ls-body: -0.003em;
+  --ls-label: 0.06em;
+
+  /* Font weights */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semi: 600;
+  --fw-bold: 700;
+  --fw-display: 750;
+
+  /* Layout */
+  --header-h: 60px;
+  --header-h-compact: 56px;
+  --bottom-nav-h: 56px;
+  --rail-w: 72px;
+  --sidebar-w: 280px;
+  --sidebar-w-medium: 260px;
+  --toc-w: 220px;
+
+  /* Icon sizes */
+  --icon-sm: 14px; /* inline within text, chips */
+  --icon-md: 18px; /* sidebar nav, header */
+  --icon-lg: 20px; /* primary action */
+  --icon-xl: 24px; /* prominent only */
+
+  /* Fonts */
+  --font-ui:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Shadow */
+  --shadow-overlay: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* ============ DARK ============ */
+[data-theme='dark'] {
+  --canvas: #0b0b0d;
+  --raised: #141417;
+  --overlay: #1c1c20;
+  --hover: #232328;
+  --selected: rgba(74, 158, 255, 0.14);
+  --border: #2a2a2f;
+  --border-strong: #3a3a40;
+
+  --text: #ececef;
+  --text-muted: #a8a8b0;
+  --text-subtle: #76767e;
+  --text-on-accent: #0b0b0d;
+
+  --accent: #4a9eff;
+  --accent-hover: #66adff;
+  --accent-subtle: rgba(74, 158, 255, 0.14);
+  --focus-ring: #8ec5ff;
+
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
+
+  --code-bg: #18181b;
+  --inline-code: #fbbf24;
+  --scrim: rgba(0, 0, 0, 0.55);
+
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.22);
+}
+
+/* ============ LIGHT ============ */
+[data-theme='light'] {
+  --canvas: #faf9f6;
+  --raised: #ffffff;
+  --overlay: #ffffff;
+  --hover: #f1efe9;
+  --selected: rgba(26, 111, 208, 0.1);
+  --border: #e7e6e1;
+  --border-strong: #d6d4cd;
+
+  --text: #2b2a26;
+  --text-muted: #5b5953;
+  --text-subtle: #8a8780;
+  --text-on-accent: #ffffff;
+
+  --accent: #1a6fd0;
+  --accent-hover: #155eb5;
+  --accent-subtle: rgba(26, 111, 208, 0.1);
+  --focus-ring: #1a6fd0;
+
+  --success: #16a34a;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --info: #1d4ed8;
+
+  --code-bg: #f5f1ea;
+  --inline-code: #c7254e;
+  --scrim: rgba(0, 0, 0, 0.35);
+
+  --scrollbar-thumb: rgba(0, 0, 0, 0.14);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+}
+
+/* ============ Reset / base ============ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-body);
+  color: var(--text);
+  background: var(--canvas);
+  font-feature-settings: 'cv11', 'ss01', 'ss03', 'cv02';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+  font-family: inherit;
+  font-feature-settings: inherit;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ============ Custom themed scrollbars ============ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  min-height: 40px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ============ Tabler-style SVG icon base ============ */
+.svg-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -3px;
+}
+.svg-icon.sm {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+.svg-icon.lg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+.svg-icon.xl {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+}

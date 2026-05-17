@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { Loader, Center } from '@mantine/core';
+
 import { useAuth } from './lib/auth';
 import { DataModeProvider, usingSupabase } from './lib/data-mode';
 
@@ -21,59 +21,56 @@ const Profile = lazy(() => import('./pages/Profile'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Landing = lazy(() => import('./pages/Landing'));
 
+// Null fallback keeps the boot splash visible instead of flashing a spinner.
 function Fallback() {
-  return (
-    <Center h="60vh">
-      <Loader />
-    </Center>
-  );
+  return null;
 }
 
 /**
- * Root layout — see RealRoot in the previous design. Renders Landing for
- * logged-out guests on `/` (no Shell), Shell for logged-in users (with
- * Outlet so child routes render).
+ * Root layout for the real (`/`) tree. Three states:
+ *   1. Supabase NOT configured        → permanent guest. Landing on `/`;
+ *                                        deeper paths bounce to `/demo` so
+ *                                        the user has a working app surface.
+ *   2. Supabase configured, no session → Landing on `/`; deeper paths → `/`.
+ *   3. Supabase configured, with session → Shell (real data).
+ *
+ * Landing is the entry point for every unauthenticated arrival — including
+ * the local-dev case (no env vars) where it used to be invisible.
  */
 function RealRoot() {
   const { session, loading } = useAuth();
   const location = useLocation();
+  const isRoot = location.pathname === '/';
 
+  const renderLanding = () => (
+    <Suspense fallback={<Fallback />}>
+      <Landing />
+    </Suspense>
+  );
+
+  // No Supabase configured: auth will never resolve to a session, so the user
+  // is a permanent guest. Show Landing on `/` and route deeper paths to
+  // `/demo` (the public, no-auth-required application path). This matches
+  // the architecture in docs/ARCHITECTURE.md: the demo tree is the canonical
+  // no-auth surface; the real tree without Supabase has no extra value.
   if (!usingSupabase) {
-    return (
-      <DataModeProvider mode="real">
-        <Suspense fallback={<Fallback />}>
-          <Shell />
-        </Suspense>
-      </DataModeProvider>
-    );
+    return isRoot ? renderLanding() : <Navigate to="/demo" replace />;
   }
 
-  // Render landing immediately for guests, even while supabase is still
-  // loading. Supabase auth resolves in the background; if a session arrives
-  // (cached/persisted), the next render of this component will swap to Shell.
-  // Only show the spinner for *protected* paths during initial auth load.
+  // Supabase configured but auth still resolving. Render Landing immediately
+  // on `/` (no perceived blank screen) — once the session arrives this
+  // component re-renders into Shell. Other paths show the spinner because
+  // we don't yet know whether to allow them.
   if (loading) {
-    if (location.pathname === '/') {
-      return (
-        <Suspense fallback={<Fallback />}>
-          <Landing />
-        </Suspense>
-      );
-    }
-    return <Fallback />;
+    return isRoot ? renderLanding() : <Fallback />;
   }
 
+  // Auth resolved, no session: Landing on `/`, bounce everything else home.
   if (!session) {
-    if (location.pathname === '/') {
-      return (
-        <Suspense fallback={<Fallback />}>
-          <Landing />
-        </Suspense>
-      );
-    }
-    return <Navigate to="/" replace />;
+    return isRoot ? renderLanding() : <Navigate to="/" replace />;
   }
 
+  // Authenticated — real data, real Shell.
   return (
     <DataModeProvider mode="real">
       <Suspense fallback={<Fallback />}>
@@ -135,6 +132,18 @@ export default function App() {
           element={
             <Suspense fallback={<Fallback />}>
               <Trash />
+            </Suspense>
+          }
+        />
+        {/* Mirror real-tree /settings so the NavRail (and any nav surface
+            that uses useModePath) has a working target in demo mode. The
+            Settings page hides its account-only sections when there's no
+            session, so the demo render is safe. */}
+        <Route
+          path="settings"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <Settings />
             </Suspense>
           }
         />

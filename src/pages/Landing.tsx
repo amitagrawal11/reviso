@@ -18,19 +18,21 @@ import {
 } from '@mantine/core';
 import { LandingDemoFrame } from '../components/LandingDemoFrame';
 import {
-  IconCheck,
-  IconMarkdown,
-  IconFolders,
-  IconPaint,
-  IconSun,
-  IconMoon,
-  IconBolt,
-  IconLock,
-  IconWorld,
-} from '@tabler/icons-react';
+  Check,
+  FileText,
+  FolderOpen,
+  Palette,
+  Sun,
+  Moon,
+  Zap,
+  Lock,
+  Globe,
+  type LucideIcon,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AuthModalSimple } from '../components/AuthModalSimple';
 import { BrandMark } from '../components/BrandMark';
+import { Icon } from '../components/Icon';
 
 // SEO-aware copy. Tone: honest, specific, no AI-bro adjectives. Headings are
 // kept semantic (h1 → h2 → h3) so search engines can follow the outline.
@@ -39,30 +41,30 @@ const TAGLINE = 'Reviso Notes stay yours.';
 const SUBTITLE =
   'A free, privacy-friendly notes app for markdown writers. Reviso Notes gives you live preview, mermaid diagrams, nested folders, syntax highlighting, dark mode and offline support — all in your browser.';
 
-const FEATURES: { title: string; body: string; Icon: typeof IconMarkdown }[] = [
+const FEATURES: { title: string; body: string; Icon: LucideIcon }[] = [
   {
-    Icon: IconMarkdown,
+    Icon: FileText,
     title: 'Real markdown, live preview',
     body: 'Write in plain GitHub-Flavored Markdown and watch it render side-by-side. Code blocks pick up syntax highlighting in 190+ languages. Mermaid flowcharts, sequence diagrams and gantt charts render as you type. Inline tables, task lists, footnotes and quotes — all standard.',
   },
   {
-    Icon: IconFolders,
+    Icon: FolderOpen,
     title: 'Organize without rigidity',
     body: 'Group notes into nested collections — fold them as deep as your brain wants. Drag-and-drop to reparent, star the ones you reach for, and soft-delete to a Trash bin you can review or empty later. The whole tree is searchable from a single keyboard shortcut.',
   },
   {
-    Icon: IconPaint,
+    Icon: Palette,
     title: 'Built for long sessions',
     body: 'Read mode collapses every distraction for Kindle-like reading. An auto-generated outline tracks your scroll position. Dark and light themes, both tuned for hours of writing. Installs as a Progressive Web App on macOS, Windows, Linux, iOS and Android.',
   },
 ];
 
 // Secondary value props — short, scannable, keyword-rich.
-const TRUST_POINTS: { Icon: typeof IconCheck; label: string }[] = [
-  { Icon: IconLock, label: 'Browser-local by default — no account required' },
-  { Icon: IconBolt, label: 'Offline-first — works on planes and bad Wi-Fi' },
-  { Icon: IconWorld, label: 'Plain markdown — yours to export at any time' },
-  { Icon: IconCheck, label: 'Free for personal use — no card, no email confirmation' },
+const TRUST_POINTS: { Icon: LucideIcon; label: string }[] = [
+  { Icon: Lock, label: 'Browser-local by default — no account required' },
+  { Icon: Zap, label: 'Offline-first — works on planes and bad Wi-Fi' },
+  { Icon: Globe, label: 'Plain markdown — yours to export at any time' },
+  { Icon: Check, label: 'Free for personal use — no card, no email confirmation' },
 ];
 
 export default function Landing() {
@@ -95,7 +97,11 @@ export default function Landing() {
                 onClick={() => setColorScheme(computed === 'dark' ? 'light' : 'dark')}
                 aria-label="Toggle dark / light theme"
               >
-                {computed === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+                {computed === 'dark' ? (
+                  <Icon icon={Sun} size="md" />
+                ) : (
+                  <Icon icon={Moon} size="md" />
+                )}
               </ActionIcon>
             </Tooltip>
             <Button variant="subtle" onClick={() => openAuth('signin')}>
@@ -111,7 +117,19 @@ export default function Landing() {
         {/* ── Hero ── */}
         <Container size="lg" pt={48} pb={32} component="section" aria-label="Hero">
           <Stack align="center" gap="lg">
-            <Title order={1} ta="center" maw={760} size={48} fw={800} lh={1.1}>
+            <Title
+              order={1}
+              ta="center"
+              maw={760}
+              fw={800}
+              style={{
+                // Use the redesigned display token so the hero respects
+                // OS text-size scaling and Inter's tighter tracking.
+                fontSize: 'var(--text-display)',
+                lineHeight: 'var(--lh-display)',
+                letterSpacing: 'var(--ls-display)',
+              }}
+            >
               {TAGLINE}
             </Title>
             <Text ta="center" c="dimmed" maw={680} size="lg">
@@ -134,12 +152,12 @@ export default function Landing() {
             Reviso Notes is a focused app for technical writers, developers, students and anyone who
             would rather own their content than rent it.
           </Text>
-          <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
-            {FEATURES.map(({ Icon, title, body }) => (
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+            {FEATURES.map(({ Icon: FeatIcon, title, body }) => (
               <Card key={title} withBorder p="lg" radius="md">
                 <Stack gap="sm">
                   <ThemeIcon variant="light" size="lg" radius="md">
-                    <Icon size={20} />
+                    <Icon icon={FeatIcon} size="lg" />
                   </ThemeIcon>
                   <Title order={3} fz="md" fw={600} m={0}>
                     {title}
@@ -173,9 +191,9 @@ export default function Landing() {
                 writing, reading, and finding markdown notes. That's it.
               </Text>
               <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs" mt="xs">
-                {TRUST_POINTS.map(({ Icon, label }) => (
+                {TRUST_POINTS.map(({ Icon: TrustIcon, label }) => (
                   <Group gap={8} key={label} wrap="nowrap">
-                    <Icon size={16} color="var(--mantine-color-green-5)" />
+                    <Icon icon={TrustIcon} size={16} color="var(--mantine-color-green-5)" />
                     <Text size="sm">{label}</Text>
                   </Group>
                 ))}
@@ -192,7 +210,7 @@ export default function Landing() {
           <Text ta="center" c="dimmed" maw={680} mx="auto" mb="xl">
             From zero to your first synced note in under a minute.
           </Text>
-          <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
             {[
               {
                 n: '1',

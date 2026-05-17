@@ -19,7 +19,7 @@ import {
   useState,
 } from 'react';
 import { useSyncExternalStore } from 'react';
-import { Center, Loader } from '@mantine/core';
+
 import { mockRepo } from '../store/mock-repo';
 import type { Repo } from './repo';
 
@@ -72,13 +72,9 @@ export function DataModeProvider({ mode, children }: { mode: DataMode; children:
   }, [mode, realRepo]);
 
   if (!value) {
-    // Real-mode tree but the repo chunk hasn't loaded yet. Brief spinner —
-    // typically a single network round-trip on first visit, cached afterward.
-    return (
-      <Center h="100vh">
-        <Loader />
-      </Center>
-    );
+    // Real-mode tree but the repo chunk hasn't loaded yet. Return null so the
+    // boot splash stays visible rather than flashing a spinner mid-load.
+    return null;
   }
 
   return <DataModeCtx.Provider value={value}>{children}</DataModeCtx.Provider>;

@@ -12,9 +12,10 @@ import {
   Anchor,
   Alert,
 } from '@mantine/core';
-import { IconAlertCircle, IconBook } from '@tabler/icons-react';
+import { AlertCircle, BookOpen } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/auth';
+import { Icon } from '../components/Icon';
 
 type Props = {
   /** Render without the full-viewport Center wrapper (e.g., when shown inside a modal). */
@@ -82,7 +83,7 @@ export default function Login({ embedded = false, initialMode = 'signin', onSucc
     <Card withBorder shadow="sm" radius="md" w={400} p="lg">
       <Stack gap="md">
         <Stack gap={4} align="center">
-          <IconBook size={28} />
+          <Icon icon={BookOpen} size={28} />
           <Title order={3}>{mode === 'signin' ? 'Welcome back' : 'Create your free account'}</Title>
           <Text size="sm" c="dimmed" ta="center">
             {mode === 'signin'
@@ -121,7 +122,7 @@ export default function Login({ embedded = false, initialMode = 'signin', onSucc
               placeholder="At least 8 characters"
             />
             {err && (
-              <Alert color="red" variant="light" icon={<IconAlertCircle size={16} />}>
+              <Alert color="red" variant="light" icon={<Icon icon={AlertCircle} size={16} />}>
                 {err}
               </Alert>
             )}
