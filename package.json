@@ -15,6 +15,15 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check": "npm run format:check && npm run lint && npm run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report",
+    "test:install": "playwright install chromium webkit",
+    "postinstall": "playwright install chromium webkit",
     "prepare": "husky"
   },
   "dependencies": {
@@ -42,14 +51,20 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^25.6.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^2.1.8",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
+    "jsdom": "^25.0.1",
     "playwright": "^1.59.1",
     "postcss": "^8.4.49",
     "postcss-preset-mantine": "^1.17.0",
@@ -60,6 +75,7 @@
     "typescript": "^5.6.0",
     "typescript-eslint": "^8.59.2",
     "vite": "^6.0.0",
-    "vite-plugin-pwa": "^0.21.0"
+    "vite-plugin-pwa": "^0.21.0",
+    "vitest": "^2.1.8"
   }
 }

@@ -8,10 +8,12 @@ Project docs live in `docs/`. Read these when working in this repo:
 Quick orientation:
 
 - React 19 + Vite 6 + Mantine v7 + Supabase + react-router v7. Markdown via `@uiw/react-md-editor/nohighlight`.
-- Two parallel route trees in `src/App.tsx`: `/` (real, gated by `RealRoot` + auth) and `/demo` (public, always `mockRepo`).
-- Components acquire a `Repo` via `useRepo()` / `useItems()` from `src/lib/data-mode.tsx`. **Never** static-import `mockRepo` or `supabaseRepo` from a UI component.
+- Source is organized by **feature folder** under `src/features/` (`notes/`, `authentication/`, `command-palette/`, `landing-page/`), with cross-feature primitives in `src/shared/` and the route + entry point in `src/app/`.
+- Two parallel route trees in `src/app/App.tsx`: `/` (real, gated by `RealRoot` + auth) and `/demo` (public, always `mockRepo`).
+- Components acquire a `Repo` via `useRepo()` / `useItems()` from `@/features/notes/repository/NoteRepositoryContext`. **Never** static-import `noteRepositoryMock` or `noteRepositorySupabase` from a UI component.
 - Always build internal links via `useModePath()` so they work in both real and demo trees.
-- Supabase client + `supabaseRepo` are dynamic-imported. Don't add a static `import` from `./supabase` or `./notes` to the entry path.
+- Supabase client + `noteRepositorySupabase` are dynamic-imported. Don't add a static `import` from `@/features/authentication/api/SupabaseClient` or `@/features/notes/repository/NoteRepositorySupabase` to the entry path.
+- File naming: PascalCase everywhere in `src/` (components, modules, hooks, contexts, types). Cross-feature imports use the `@/*` alias.
 
 Build / scripts:
 

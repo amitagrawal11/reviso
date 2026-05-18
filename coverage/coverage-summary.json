@@ -1,0 +1,291 @@
+{
+  "total": {
+    "lines": { "total": 4698, "covered": 4337, "skipped": 0, "pct": 92.31 },
+    "statements": { "total": 4698, "covered": 4337, "skipped": 0, "pct": 92.31 },
+    "functions": { "total": 297, "covered": 229, "skipped": 0, "pct": 77.1 },
+    "branches": { "total": 981, "covered": 778, "skipped": 0, "pct": 79.3 },
+    "branchesTrue": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/AdaptiveDialog.tsx": {
+    "lines": { "total": 72, "covered": 72, "skipped": 0, "pct": 100 },
+    "functions": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 },
+    "statements": { "total": 72, "covered": 72, "skipped": 0, "pct": 100 },
+    "branches": { "total": 14, "covered": 14, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/AuthModalSimple.tsx": {
+    "lines": { "total": 26, "covered": 26, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 26, "covered": 26, "skipped": 0, "pct": 100 },
+    "branches": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/BottomNav.tsx": {
+    "lines": { "total": 40, "covered": 40, "skipped": 0, "pct": 100 },
+    "functions": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "statements": { "total": 40, "covered": 40, "skipped": 0, "pct": 100 },
+    "branches": { "total": 6, "covered": 4, "skipped": 0, "pct": 66.66 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/BrandMark.tsx": {
+    "lines": { "total": 21, "covered": 21, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 21, "covered": 21, "skipped": 0, "pct": 100 },
+    "branches": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/CodeBlock.tsx": {
+    "lines": { "total": 55, "covered": 52, "skipped": 0, "pct": 94.54 },
+    "functions": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "statements": { "total": 55, "covered": 52, "skipped": 0, "pct": 94.54 },
+    "branches": { "total": 27, "covered": 21, "skipped": 0, "pct": 77.77 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/DemoBanner.tsx": {
+    "lines": { "total": 41, "covered": 41, "skipped": 0, "pct": 100 },
+    "functions": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "statements": { "total": 41, "covered": 41, "skipped": 0, "pct": 100 },
+    "branches": { "total": 4, "covered": 3, "skipped": 0, "pct": 75 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/EditorWithLineNumbers.tsx": {
+    "lines": { "total": 84, "covered": 75, "skipped": 0, "pct": 89.28 },
+    "functions": { "total": 7, "covered": 5, "skipped": 0, "pct": 71.42 },
+    "statements": { "total": 84, "covered": 75, "skipped": 0, "pct": 89.28 },
+    "branches": { "total": 29, "covered": 22, "skipped": 0, "pct": 75.86 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/Icon.tsx": {
+    "lines": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "branches": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/InstallPrompt.tsx": {
+    "lines": { "total": 34, "covered": 34, "skipped": 0, "pct": 100 },
+    "functions": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 },
+    "statements": { "total": 34, "covered": 34, "skipped": 0, "pct": 100 },
+    "branches": { "total": 10, "covered": 10, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/LandingDemoFrame.tsx": {
+    "lines": { "total": 75, "covered": 75, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 75, "covered": 75, "skipped": 0, "pct": 100 },
+    "branches": { "total": 5, "covered": 2, "skipped": 0, "pct": 40 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/LazyMarkdown.tsx": {
+    "lines": { "total": 24, "covered": 23, "skipped": 0, "pct": 95.83 },
+    "functions": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "statements": { "total": 24, "covered": 23, "skipped": 0, "pct": 95.83 },
+    "branches": { "total": 7, "covered": 7, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/MermaidBlock.tsx": {
+    "lines": { "total": 80, "covered": 70, "skipped": 0, "pct": 87.5 },
+    "functions": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 },
+    "statements": { "total": 80, "covered": 70, "skipped": 0, "pct": 87.5 },
+    "branches": { "total": 16, "covered": 12, "skipped": 0, "pct": 75 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/NotFoundCard.tsx": {
+    "lines": { "total": 27, "covered": 27, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 27, "covered": 27, "skipped": 0, "pct": 100 },
+    "branches": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/OfflineIndicator.tsx": {
+    "lines": { "total": 26, "covered": 26, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 26, "covered": 26, "skipped": 0, "pct": 100 },
+    "branches": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/QuickCaptureFab.tsx": {
+    "lines": { "total": 221, "covered": 221, "skipped": 0, "pct": 100 },
+    "functions": { "total": 13, "covered": 12, "skipped": 0, "pct": 92.3 },
+    "statements": { "total": 221, "covered": 221, "skipped": 0, "pct": 100 },
+    "branches": { "total": 39, "covered": 35, "skipped": 0, "pct": 89.74 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/QuickCapturePreview.tsx": {
+    "lines": { "total": 28, "covered": 28, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 28, "covered": 28, "skipped": 0, "pct": 100 },
+    "branches": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/Shell.tsx": {
+    "lines": { "total": 191, "covered": 172, "skipped": 0, "pct": 90.05 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 191, "covered": 172, "skipped": 0, "pct": 90.05 },
+    "branches": { "total": 18, "covered": 8, "skipped": 0, "pct": 44.44 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/Sidebar.tsx": {
+    "lines": { "total": 706, "covered": 588, "skipped": 0, "pct": 83.28 },
+    "functions": { "total": 42, "covered": 26, "skipped": 0, "pct": 61.9 },
+    "statements": { "total": 706, "covered": 588, "skipped": 0, "pct": 83.28 },
+    "branches": { "total": 117, "covered": 74, "skipped": 0, "pct": 63.24 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/SpotlightSearch.tsx": {
+    "lines": { "total": 127, "covered": 112, "skipped": 0, "pct": 88.18 },
+    "functions": { "total": 12, "covered": 3, "skipped": 0, "pct": 25 },
+    "statements": { "total": 127, "covered": 112, "skipped": 0, "pct": 88.18 },
+    "branches": { "total": 21, "covered": 13, "skipped": 0, "pct": 61.9 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/TocSidebar.tsx": {
+    "lines": { "total": 87, "covered": 78, "skipped": 0, "pct": 89.65 },
+    "functions": { "total": 4, "covered": 2, "skipped": 0, "pct": 50 },
+    "statements": { "total": 87, "covered": 78, "skipped": 0, "pct": 89.65 },
+    "branches": { "total": 20, "covered": 17, "skipped": 0, "pct": 85 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/dialogs-lazy.ts": {
+    "lines": { "total": 19, "covered": 18, "skipped": 0, "pct": 94.73 },
+    "functions": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "statements": { "total": 19, "covered": 18, "skipped": 0, "pct": 94.73 },
+    "branches": { "total": 7, "covered": 7, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/components/dialogs.tsx": {
+    "lines": { "total": 322, "covered": 291, "skipped": 0, "pct": 90.37 },
+    "functions": { "total": 27, "covered": 17, "skipped": 0, "pct": 62.96 },
+    "statements": { "total": 322, "covered": 291, "skipped": 0, "pct": 90.37 },
+    "branches": { "total": 70, "covered": 54, "skipped": 0, "pct": 77.14 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/auth.tsx": {
+    "lines": { "total": 94, "covered": 88, "skipped": 0, "pct": 93.61 },
+    "functions": { "total": 10, "covered": 9, "skipped": 0, "pct": 90 },
+    "statements": { "total": 94, "covered": 88, "skipped": 0, "pct": 93.61 },
+    "branches": { "total": 34, "covered": 29, "skipped": 0, "pct": 85.29 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/data-mode.tsx": {
+    "lines": { "total": 57, "covered": 56, "skipped": 0, "pct": 98.24 },
+    "functions": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 },
+    "statements": { "total": 57, "covered": 56, "skipped": 0, "pct": 98.24 },
+    "branches": { "total": 31, "covered": 27, "skipped": 0, "pct": 87.09 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/design-tokens.ts": {
+    "lines": { "total": 78, "covered": 78, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 78, "covered": 78, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/hljs-theme.tsx": {
+    "lines": { "total": 29, "covered": 29, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 29, "covered": 29, "skipped": 0, "pct": 100 },
+    "branches": { "total": 15, "covered": 13, "skipped": 0, "pct": 86.66 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/i18n.ts": {
+    "lines": { "total": 39, "covered": 33, "skipped": 0, "pct": 84.61 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 39, "covered": 33, "skipped": 0, "pct": 84.61 },
+    "branches": { "total": 6, "covered": 1, "skipped": 0, "pct": 16.66 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/import-from-local.ts": {
+    "lines": { "total": 65, "covered": 64, "skipped": 0, "pct": 98.46 },
+    "functions": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 },
+    "statements": { "total": 65, "covered": 64, "skipped": 0, "pct": 98.46 },
+    "branches": { "total": 27, "covered": 22, "skipped": 0, "pct": 81.48 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/inject-styles.ts": {
+    "lines": { "total": 8, "covered": 8, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 8, "covered": 8, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/notes.ts": {
+    "lines": { "total": 210, "covered": 208, "skipped": 0, "pct": 99.04 },
+    "functions": { "total": 17, "covered": 17, "skipped": 0, "pct": 100 },
+    "statements": { "total": 210, "covered": 208, "skipped": 0, "pct": 99.04 },
+    "branches": { "total": 72, "covered": 56, "skipped": 0, "pct": 77.77 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/preferences.ts": {
+    "lines": { "total": 101, "covered": 100, "skipped": 0, "pct": 99 },
+    "functions": { "total": 16, "covered": 15, "skipped": 0, "pct": 93.75 },
+    "statements": { "total": 101, "covered": 100, "skipped": 0, "pct": 99 },
+    "branches": { "total": 52, "covered": 49, "skipped": 0, "pct": 94.23 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/profile.ts": {
+    "lines": { "total": 15, "covered": 15, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 15, "covered": 15, "skipped": 0, "pct": 100 },
+    "branches": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/quick-capture-bridge.ts": {
+    "lines": { "total": 8, "covered": 8, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 8, "covered": 8, "skipped": 0, "pct": 100 },
+    "branches": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/spotlight-bridge.ts": {
+    "lines": { "total": 17, "covered": 17, "skipped": 0, "pct": 100 },
+    "functions": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 },
+    "statements": { "total": 17, "covered": 17, "skipped": 0, "pct": 100 },
+    "branches": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/lib/use-viewport.ts": {
+    "lines": { "total": 68, "covered": 64, "skipped": 0, "pct": 94.11 },
+    "functions": { "total": 8, "covered": 6, "skipped": 0, "pct": 75 },
+    "statements": { "total": 68, "covered": 64, "skipped": 0, "pct": 94.11 },
+    "branches": { "total": 27, "covered": 20, "skipped": 0, "pct": 74.07 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/CollectionView.tsx": {
+    "lines": { "total": 76, "covered": 63, "skipped": 0, "pct": 82.89 },
+    "functions": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "statements": { "total": 76, "covered": 63, "skipped": 0, "pct": 82.89 },
+    "branches": { "total": 15, "covered": 10, "skipped": 0, "pct": 66.66 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Home.tsx": {
+    "lines": { "total": 149, "covered": 149, "skipped": 0, "pct": 100 },
+    "functions": { "total": 3, "covered": 1, "skipped": 0, "pct": 33.33 },
+    "statements": { "total": 149, "covered": 149, "skipped": 0, "pct": 100 },
+    "branches": { "total": 18, "covered": 16, "skipped": 0, "pct": 88.88 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Landing.tsx": {
+    "lines": { "total": 207, "covered": 203, "skipped": 0, "pct": 98.06 },
+    "functions": { "total": 7, "covered": 1, "skipped": 0, "pct": 14.28 },
+    "statements": { "total": 207, "covered": 203, "skipped": 0, "pct": 98.06 },
+    "branches": { "total": 5, "covered": 4, "skipped": 0, "pct": 80 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Login.tsx": {
+    "lines": { "total": 117, "covered": 111, "skipped": 0, "pct": 94.87 },
+    "functions": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 },
+    "statements": { "total": 117, "covered": 111, "skipped": 0, "pct": 94.87 },
+    "branches": { "total": 35, "covered": 29, "skipped": 0, "pct": 82.85 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/NoteEdit.tsx": {
+    "lines": { "total": 170, "covered": 159, "skipped": 0, "pct": 93.52 },
+    "functions": { "total": 8, "covered": 5, "skipped": 0, "pct": 62.5 },
+    "statements": { "total": 170, "covered": 159, "skipped": 0, "pct": 93.52 },
+    "branches": { "total": 46, "covered": 38, "skipped": 0, "pct": 82.6 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/NoteView.tsx": {
+    "lines": { "total": 191, "covered": 171, "skipped": 0, "pct": 89.52 },
+    "functions": { "total": 7, "covered": 5, "skipped": 0, "pct": 71.42 },
+    "statements": { "total": 191, "covered": 171, "skipped": 0, "pct": 89.52 },
+    "branches": { "total": 34, "covered": 27, "skipped": 0, "pct": 79.41 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Profile.tsx": {
+    "lines": { "total": 99, "covered": 88, "skipped": 0, "pct": 88.88 },
+    "functions": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "statements": { "total": 99, "covered": 88, "skipped": 0, "pct": 88.88 },
+    "branches": { "total": 21, "covered": 15, "skipped": 0, "pct": 71.42 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Recent.tsx": {
+    "lines": { "total": 36, "covered": 36, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 36, "covered": 36, "skipped": 0, "pct": 100 },
+    "branches": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Settings.tsx": {
+    "lines": { "total": 325, "covered": 271, "skipped": 0, "pct": 83.38 },
+    "functions": { "total": 16, "covered": 7, "skipped": 0, "pct": 43.75 },
+    "statements": { "total": 325, "covered": 271, "skipped": 0, "pct": 83.38 },
+    "branches": { "total": 28, "covered": 20, "skipped": 0, "pct": 71.42 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Starred.tsx": {
+    "lines": { "total": 28, "covered": 28, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 28, "covered": 28, "skipped": 0, "pct": 100 },
+    "branches": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/pages/Trash.tsx": {
+    "lines": { "total": 120, "covered": 120, "skipped": 0, "pct": 100 },
+    "functions": { "total": 9, "covered": 9, "skipped": 0, "pct": 100 },
+    "statements": { "total": 120, "covered": 120, "skipped": 0, "pct": 100 },
+    "branches": { "total": 22, "covered": 19, "skipped": 0, "pct": 86.36 }
+  },
+  "/Users/amitagrawal/Downloads/reviso-master/src/store/mock-repo.ts": {
+    "lines": { "total": 80, "covered": 75, "skipped": 0, "pct": 93.75 },
+    "functions": { "total": 13, "covered": 13, "skipped": 0, "pct": 100 },
+    "statements": { "total": 80, "covered": 75, "skipped": 0, "pct": 93.75 },
+    "branches": { "total": 38, "covered": 35, "skipped": 0, "pct": 92.1 }
+  }
+}

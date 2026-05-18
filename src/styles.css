@@ -158,7 +158,7 @@ html {
    rows, and settings rows. Cozy = current values (the visual defaults
    designed in Phases 1–8). Compact = ~20% denser. */
 [data-density='compact'] .tree-row,
-[data-density='compact'] .row {
+[data-density='compact'] .sidebar-row {
   /* `Group py={isTouch ? 8 : 2}` in Sidebar — we apply a smaller value
      via padding override so we don't have to thread density into every
      component. Mantine Group renders as a flex div; the inline py
@@ -594,13 +594,17 @@ body {
   --mantine-color-body: var(--app-main-bg);
   --mantine-color-default-border: var(--app-border);
   --mantine-color-default: var(--app-surface);
+
+  /* Blue-6 (#228be6) gives only 3.5:1 with white text on dark backgrounds —
+     fails WCAG AA. Shift to blue-8 (#1971c2) which gives 4.6:1. */
+  --mantine-color-blue-6: #1971c2;
   --mantine-color-default-hover: var(--app-surface-hi);
 
   /* Override Mantine's full dark palette so any component referencing
      dark-N (Tooltip, Card, Popover, etc.) lands inside this ramp. */
   --mantine-color-dark-0: #d4d4d8;
   --mantine-color-dark-1: #a1a1aa;
-  --mantine-color-dark-2: #71717a;
+  --mantine-color-dark-2: #a1a1aa; /* bumped from #71717a — passes 4.5:1 AA on all dark surfaces */
   --mantine-color-dark-3: #52525b;
   --mantine-color-dark-4: #3f3f46;
   --mantine-color-dark-5: var(--app-surface-hi);
@@ -990,18 +994,18 @@ body {
   background: transparent;
 }
 
-.row .row-menu {
+.sidebar-row .sidebar-row-menu {
   opacity: 0;
   transition: opacity 120ms;
 }
-.row:hover .row-menu,
-.row:focus-within .row-menu {
+.sidebar-row:hover .sidebar-row-menu,
+.sidebar-row:focus-within .sidebar-row-menu {
   opacity: 1;
 }
 /* Touch devices have no hover — always show the menu trigger so users
    can rename / delete / move notes from the sidebar. */
 @media (hover: none) {
-  .row .row-menu {
+  .sidebar-row .sidebar-row-menu {
     opacity: 1;
   }
 }
@@ -1038,16 +1042,16 @@ body {
 /* Active row — the currently open note or collection. Gets a subtle accent
    tint, accent-colored text, and a left-edge indicator bar so the user can
    tell at a glance which tree node corresponds to what they're reading. */
-.row {
+.sidebar-row {
   position: relative;
   border-radius: var(--radius-sm);
   transition: background-color 120ms;
 }
-.row--active {
+.sidebar-row--active {
   background: var(--color-accent-subtle);
   color: var(--color-accent);
 }
-.row--active::before {
+.sidebar-row--active::before {
   content: '';
   position: absolute;
   /* Stretch to the very left edge of the sidebar by escaping the row's
@@ -1059,7 +1063,7 @@ body {
   border-radius: 0 2px 2px 0;
   background: var(--color-accent);
 }
-.row--active .mantine-Text-root {
+.sidebar-row--active .mantine-Text-root {
   color: var(--color-accent);
 }
 
@@ -1136,7 +1140,7 @@ body {
    guideline. On touch devices, bump everything in the sidebar / row context
    to at least 36px so they're easy to hit without breaking the dense layout. */
 @media (hover: none) {
-  .row .mantine-ActionIcon-root,
+  .sidebar-row .mantine-ActionIcon-root,
   .mantine-AppShell-navbar .mantine-ActionIcon-root {
     --ai-size: 36px !important;
     width: 36px !important;
@@ -1145,7 +1149,7 @@ body {
     min-height: 36px !important;
   }
   /* Give rows a bit more vertical breathing room so they're easier to tap. */
-  .row {
+  .sidebar-row {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
   }

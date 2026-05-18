@@ -65,7 +65,7 @@ Items are a flat array with `parentId` pointers. Collections and notes share the
 
 ### Auth and sync
 
-`AuthProvider` is mounted in `src/main.tsx`. It tracks the active Supabase session, loads the current profile, and exposes auth state to the router and account-related pages.
+`AuthProvider` (from `@/features/authentication/context/AuthContext`) is mounted in `src/app/main.tsx`. It tracks the active Supabase session, loads the current profile, and exposes auth state to the router and account-related pages.
 
 When Supabase is enabled, the repo layer:
 
@@ -89,59 +89,64 @@ When Supabase is enabled, the repo layer:
 
 ## Project structure
 
+The source is organized by **domain feature** under `src/features/`, with cross-feature primitives in `src/shared/` and the entry point + route table in `src/app/`. Cross-feature imports use the `@/*` alias (mapped to `src/`).
+
 ```text
 src/
-  App.tsx                   Route table for the real and demo trees
-  main.tsx                  Mantine, notifications, router, auth bootstrap
-  styles.css                Theme tokens and app-level styles
-  components/
-    Shell.tsx               Main app shell and toolbar
-    Sidebar.tsx             Collection tree, drag-and-drop, navigation
-    TocSidebar.tsx          Right-side outline with scroll spy
-    SpotlightSearch.tsx     Lazy-mounted search UI
-    LazyMarkdown.tsx        Lazy markdown editor and viewer wrappers
-    CodeBlock.tsx           Code rendering and Mermaid detection
-    MermaidBlock.tsx        Theme-aware Mermaid renderer
-    LandingDemoFrame.tsx    Responsive screenshot frame for the landing page
-    DemoBanner.tsx          Demo-mode banner shown above the shell
-    dialogs.tsx             Create, rename, confirm dialogs
-    dialogs-lazy.ts         Lazy dialog entrypoints and prefetch helpers
-    EditorWithLineNumbers.tsx
-    NotFoundCard.tsx
-  pages/
-    Landing.tsx             Public marketing page at `/`
-    Home.tsx                In-app home screen for signed-in and demo users
-    NoteView.tsx            Render a note
-    NoteEdit.tsx            Edit a note
-    CollectionView.tsx      Render a collection
-    Recent.tsx
-    Starred.tsx
-    Trash.tsx
-    Profile.tsx
-    Settings.tsx
-    Login.tsx
-  lib/
-    auth.tsx                Auth provider and session/profile state
-    data-mode.tsx           Repo selection and mode-aware hooks
-    repo.ts                 Repo interface
-    notes.ts                Supabase-backed repo implementation
-    supabase.ts             Supabase client
-    profile.ts              Profile update helpers
-    spotlight-bridge.ts     Deferred spotlight activation bridge
-    inject-styles.ts        Inlines app styles
-    hljs-theme.tsx          Highlight.js theme swapping
-  store/
-    mock-repo.ts            LocalStorage-backed repo implementation
-  mock/
-    data.ts                 Item types and seed data
-supabase/
-  schema.sql                Notes, profiles, RLS, and auth trigger schema
-scripts/
-  screenshot-landing.ts     Generates landing screenshots and WebP variants
-public/
-  landing/                  Generated landing screenshots
-vite.config.ts              Vite + PWA config
-index.html                  Pre-paint theme script, boot splash, preload logic
+  app/
+    main.tsx                          Mantine, notifications, router, auth bootstrap
+    App.tsx                           Route table for the real and demo trees
+    AppLayout.tsx                     Three-column shell + header chrome
+  features/
+    notes/
+      pages/                          HomePage, NoteViewPage, NoteEditPage, FolderPage,
+                                      RecentNotesPage, StarredNotesPage, TrashPage
+      sidebar/NotesSidebar.tsx        Collection tree + drag-and-drop + row menus + account
+      editor/
+        NoteEditor.tsx                Editor pane with synced line-number gutter
+        NoteEditorLineGutter.tsx      Gutter sub-component
+        MarkdownEditor.tsx            Lazy markdown editor wrapper
+      viewer/
+        MarkdownViewer.tsx            Lazy markdown viewer wrapper
+        NoteTableOfContents.tsx       Right-side outline with scroll spy
+        CodeBlockRenderer.tsx         Code rendering + Mermaid detection
+        MermaidDiagramRenderer.tsx    Theme-aware Mermaid renderer
+        NoteNotFoundCard.tsx          404 fallback
+      dialogs/
+        NotesDialogs.ts               Lazy dialog entrypoints + prefetch
+        NotesDialogsImpl.tsx          Create / rename / confirm dialog implementations
+      quick-capture/                  NoteQuickCaptureButton + Preview + intent module
+      repository/
+        NoteRepositoryTypes.ts        Repo interface + Item type
+        NoteRepositoryMock.ts         LocalStorage-backed repo
+        NoteRepositorySupabase.ts     Supabase-backed repo (optimistic, realtime)
+        NoteRepositoryContext.tsx     DataModeProvider + useRepo / useItems / useModePath
+    authentication/
+      pages/                          SignInPage, UserProfilePage, SettingsPage
+      modal/SignInModal.tsx           Embedded sign-in modal
+      context/AuthContext.tsx         AuthProvider + useAuth
+      api/                            SupabaseClient, UserProfileApi, ImportLocalNotes
+    command-palette/
+      CommandPaletteSearch.tsx        Lazy-mounted ⌘K search UI
+      CommandPaletteIntent.ts         Deferred-activation bridge
+    landing-page/
+      LandingPage.tsx                 Public marketing page at `/`
+      LandingPageDemoPreview.tsx      Responsive screenshot frame
+  shared/
+    components/                       ItemIcon, BrandLogo, AdaptiveDialog,
+                                      DemoModeBanner, MobileBottomNavigationBar,
+                                      PwaInstallPrompt, OfflineStatusIndicator
+    hooks/UseViewport.ts              Responsive breakpoint hook
+    lib/                              UserPreferences, DesignTokens,
+                                      CodeHighlightTheme, InjectAppStyles, I18n
+  mock/SeedData.ts                    Item types + seed items
+  styles.css                          Theme tokens and app-level styles
+  test/                               Vitest setup, supabase mock, render helper
+supabase/schema.sql                   Notes, profiles, RLS, and auth trigger schema
+scripts/screenshot-landing.ts         Generates landing screenshots + WebP variants
+public/landing/                       Generated landing screenshots
+vite.config.ts                        Vite + PWA + @/* alias config
+index.html                            Pre-paint theme script, boot splash, preload logic
 ```
 
 ## Current status
@@ -193,7 +198,9 @@ If you want authenticated sync, pair the frontend with a Supabase project and ap
 
 ## Notes for contributors
 
-- Use `useItems()`, `useRepo()`, and `useModePath()` from `src/lib/data-mode.tsx` instead of reaching into a repo implementation directly.
+- File naming: PascalCase for every source file under `src/` (components, modules, hooks, contexts, types). Filename matches the primary export.
+- Cross-feature imports: use the `@/*` alias (e.g. `import { useAuth } from '@/features/authentication/context/AuthContext'`). Within-feature imports may stay relative.
+- Use `useItems()`, `useRepo()`, and `useModePath()` from `@/features/notes/repository/NoteRepositoryContext` instead of reaching into a repo implementation directly.
 - Keep route-building mode-aware so shared components work under both `/` and `/demo`.
-- Be careful with bundle size on the landing path. The app intentionally lazy-loads shell, markdown, dialogs, and Supabase-backed data code.
-- If you change landing screenshots, keep `index.html` preload settings and `LandingDemoFrame.tsx` image sources in sync.
+- Be careful with bundle size on the landing path. The app intentionally lazy-loads `AppLayout`, the markdown editor + viewer, dialogs, the command palette, and Supabase-backed data code.
+- If you change landing screenshots, keep `index.html` preload settings and `LandingPageDemoPreview.tsx` image sources in sync.

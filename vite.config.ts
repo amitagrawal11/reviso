@@ -1,6 +1,10 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const noCacheHeaders = {
   'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
@@ -10,10 +14,29 @@ const noCacheHeaders = {
 };
 
 export default defineConfig({
+  resolve: {
+    alias: { '@': path.resolve(__dirname, 'src') },
+  },
   build: {
     target: 'es2022',
     cssCodeSplit: true,
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Keep react-dom in its own chunk — largest single dep, always needed.
+          if (id.includes('node_modules/react-dom')) return 'react-dom';
+          // Mantine UI components — loaded with Shell, not on landing.
+          if (id.includes('@mantine/')) return 'mantine';
+          // react-router in its own chunk.
+          if (id.includes('react-router')) return 'router';
+          // Lucide icons — tree-shaken per icon, but group them so they don't
+          // pollute the entry chunk.
+          if (id.includes('lucide-react')) return 'icons';
+        },
+      },
+    },
   },
   server: { host: true, headers: noCacheHeaders },
   preview: { host: true, headers: noCacheHeaders },
@@ -22,7 +45,14 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'script-defer',
-      includeAssets: ['favicon.svg', 'robots.txt'],
+      includeAssets: [
+        'favicon.svg',
+        'robots.txt',
+        'icon-192.png',
+        'icon-512.png',
+        'icon-maskable-512.png',
+        'apple-touch-icon.png',
+      ],
       manifest: {
         name: 'Reviso Notes',
         short_name: 'Reviso',
@@ -37,12 +67,17 @@ export default defineConfig({
         orientation: 'any',
         categories: ['productivity', 'utilities'],
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-          // Maskable icons — safe zone is the inner 80% circle; the outer 20%
-          // is cropped on Android adaptive icon masks.
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          // Maskable icon — full-bleed background so Android adaptive icon
+          // masks (circle, squircle, etc.) never crop into the logo. The logo
+          // sits within the inner 60% safe zone.
+          {
+            src: '/icon-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
         shortcuts: [
           {
