@@ -1,7 +1,7 @@
 {
   "name": "reviso",
   "private": true,
-  "version": "0.1.0",
+  "version": "3.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -23,7 +23,6 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
     "test:install": "playwright install chromium webkit",
-    "postinstall": "playwright install chromium webkit",
     "prepare": "husky"
   },
   "dependencies": {
